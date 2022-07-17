@@ -58,11 +58,8 @@
     "start": "react-app-rewired start",
     "build": "node tasks/build.js",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s storybook-static",
-    "build-storybook": "build-storybook -s storybook-static",
-    "build:js:modules": "babel src --ignore '**/__tests__','**/*.test.js','**/*.stories.js','src/utils/**/*'",
-    "build:js-esm": "cross-env BABEL_ENV=esm npm run build:js:modules -d es",
-    "build:js-cjs": "cross-env BABEL_ENV=cjs npm run build:js:modules -d lib"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "eslintConfig": {
     "extends": [
