@@ -1,26 +1,68 @@
 {
   "name": "carbon-ailinkedlaw-react",
   "version": "0.0.1",
-  "private": false,
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "installConfig": {
+    "hoistingLimits": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ailinkedlaw/carbon-ailinkedlaw-react.git"
+  },
+  "bugs": "https://github.com/Ailinkedlaw/carbon-ailinkedlaw-react/issues",
+  "sideEffects": [
+    "es/index.js",
+    "lib/index.js",
+    "src/index.js",
+    "index.scss",
+    "**/global/js/utils/props-helper.js",
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "files": [
+    "es",
+    "lib",
+    "scss",
+    "index.scss"
+  ],
+  "keywords": [
+    "carbon",
+    "carbon design system",
+    "carbon community",
+    "carbon for cloud & cognitive",
+    "carbon for ibm products"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@carbon/colors": "^11.3.0",
     "@carbon/icons-react": "^11.5.0",
+    "@carbon/layout": "^11.3.0",
+    "@carbon/motion": "^11.2.0",
     "@carbon/pictograms-react": "^11.28.0",
     "@carbon/react": "^1.6.0",
     "@carbon/styles": "^1.6.0",
     "@carbon/themes": "^11.4.0",
     "@carbon/type": "^11.4.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.8.6 || ^17.0.1",
+    "react-dom": "^16.8.6 || ^17.0.1",
+    "react-resize-detector": "^7.1.2",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "sass": "^1.53.0",
-    "web-vitals": "^2.1.4"
+    "sass": "^1.33.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "eject": "react-scripts eject"
+    "build": "node tasks/build.js",
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s storybook-static",
+    "build-storybook": "build-storybook -s storybook-static",
+    "build:js:modules": "babel src --ignore '**/__tests__','**/*.test.js','**/*.stories.js','src/utils/**/*'",
+    "build:js-esm": "cross-env BABEL_ENV=esm npm run build:js:modules -d es",
+    "build:js-cjs": "cross-env BABEL_ENV=cjs npm run build:js:modules -d lib"
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +85,25 @@
     "@babel/core": "^7.18.6",
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-react": "^7.18.6",
+    "@rollup/plugin-alias": "^3.1.9",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@storybook/addon-actions": "^6.5.9",
+    "@storybook/addon-essentials": "^6.5.9",
+    "@storybook/addon-interactions": "^6.5.9",
+    "@storybook/addon-links": "^6.5.9",
+    "@storybook/builder-webpack5": "^6.5.9",
+    "@storybook/manager-webpack5": "^6.5.9",
+    "@storybook/node-logger": "^6.5.9",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.9",
+    "@storybook/testing-library": "^0.0.13",
+    "babel-plugin-dev-expression": "^0.2.3",
+    "babel-plugin-named-exports-order": "^0.0.2",
+    "browserslist-config-carbon": "^11.0.0",
+    "classnames": "^2.3.1",
+    "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
@@ -50,7 +111,16 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "rollup": "^2.46.0",
+    "rollup-plugin-strip-banner": "^2.0.0",
+    "webpack": "^5.73.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6 || ^17.0.1",
+    "react-dom": "^16.8.6 || ^17.0.1",
+    "sass": "^1.33.0"
   }
 }

@@ -1,13 +1,21 @@
+/**
+ * Copyright IBM Corp. 2021, 2021
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// Import portions of React that are needed.
 import React from 'react'
 
 // Other standard imports.
 import PropTypes from 'prop-types'
 import cx from 'classnames'
+import { pkg } from '@/settings'
+import { allPropTypes } from '@/global/js/utils/props-helper'
 
 // Carbon and package components we use.
 import { Button, ButtonSet, InlineLoading } from '@carbon/react'
-
-const pkg  = { prefix: 'c4p' }
 
 const blockClass = `${pkg.prefix}--action-set`
 const componentName = 'ActionSet'
@@ -74,7 +82,6 @@ const willStack = (size, numberOfActions) =>
 const defaults = {
   size: 'md'
 }
-
 
 /**
  * An ActionSet presents a set of action buttons, constructed from bundles
@@ -163,7 +170,6 @@ export const ActionSet = React.forwardRef(
 
 ActionSet.displayName = componentName
 
-
 /**
  * A validator function to help validate the actions supplied for a particular
  * size of component. When the size is sm, or md with three actions, the
@@ -178,8 +184,7 @@ ActionSet.displayName = componentName
  * an explanatory message.
  */
 ActionSet.validateActions =
-  (sizeFn) => (props, propName, componentName, location, propFullName) =>
-  {
+  (sizeFn) => (props, propName, componentName, location, propFullName) => {
     const name = propFullName || propName
     const prop = props[name]
     const actions = prop && prop?.length
@@ -245,15 +250,12 @@ ActionSet.validateActions =
 
 ActionSet.propTypes = {
   /**
-   * The action buttons to show. Each action is specified as an
-   * object with optional fields 'label' to supply the button label, 'kind'
-   * to select the button kind (must be 'primary', 'secondary' or 'ghost'),
-   * 'loading' to display a loading indicator, and 'onClick' to receive
-   * notifications when the button is clicked. Additional fields in the object
-   * will be passed to the Button component, and these can include 'disabled',
-   * 'ref', 'className', and any other Button props. Any other fields in the
-   * object will be passed through to the button element as HTML attributes.
-   *
+   * 要显示的操作按钮。
+   * 每个动作都被指定为一个对象，带有可选字段“label”提供按钮标签，
+   * “kind”选择按钮类型（必须是“primary”、“secondary”或“ghost”），
+   * “loading”显示加载 指示器和“onClick”以在单击按钮时接收通知。
+   * 对象中的其他字段将传递给 Button 组件，这些字段可以包括 'disabled'、'ref'，
+   * 对象将作为 HTML 属性传递给按钮元素。
    * See https://react.carbondesignsystem.com/?path=/docs/components-button--default#component-api
    */
   actions: allPropTypes([

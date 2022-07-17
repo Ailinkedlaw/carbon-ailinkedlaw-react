@@ -6,6 +6,16 @@
     "es6": true,
     "node": false
   },
+  "overrides": [
+    {
+      "files": [
+        "**/*.stories.*"
+      ],
+      "rules": {
+        "import/no-anonymous-default-export": "off"
+      }
+    }
+  ],
   "parser": "@babel/eslint-parser",
   "extends": [
     "prettier",
