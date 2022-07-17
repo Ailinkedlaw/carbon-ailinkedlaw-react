@@ -1,0 +1,82 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": false
+  },
+  "parser": "@babel/eslint-parser",
+  "extends": [
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "parserOptions": {
+    "requireConfigFile": false,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module",
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "17.0.2"
+    }
+  },
+  "plugins": ["react", "babel"],
+  "rules": {
+    // "react/display-name": 0,
+    // "react/prop-types": 0,
+    "semi":[ 2, "never"],
+    "react-hooks/exhaustive-deps": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0,
+    "eqeqeq": [1, "allow-null"],
+    "quotes": [2, "single"], // 单引号
+    "jsx-quotes": [2, "prefer-double"], // jsx语法中使用双引号
+    "indent": [2, 2], // 缩进
+    "max-len": [2, 150], // 检查每行的最大字符数不能超过150
+    "camelcase": 2, // 驼峰命名
+    "react/jsx-tag-spacing": 2, // 自闭合标签前留一个空格
+    "react/jsx-indent": [2, 2], // 语法缩进控制
+    "react/self-closing-comp": 0, // 防止没有children的组件的额外结束标签
+    "react/sort-comp": 2,
+    "react/jsx-no-undef": 1, // 在JSX中禁止未声明的变量
+    "react/jsx-pascal-case": 2, // 为用户定义的JSX组件强制使用PascalCase
+    "react/jsx-equals-spacing": 2, // 在JSX属性中强制或禁止等号周围的空格
+    "no-mixed-spaces-and-tabs": 2, // 禁止混用tab和空格
+    "react/jsx-indent-props": [2, 2], // 验证JSX中的props缩进是否为2个
+    "arrow-spacing": 2, // 强制箭头函数的箭头前后使用一致的空格
+    "no-label-var": "warn", // 不允许标签与变量同名
+    // "line-comment-position": "warn", // 强制行注释的位置
+    "linebreak-style": 2, // 强制使用一致的换行风格
+    // "arrow-body-style": [2, "always"], // 要求箭头函数体使用大括号
+    // "arrow-parens": 2, // 强制箭头函数的参数使用圆括号括起来
+    "no-var": 2,
+    "prefer-destructuring": 1, // 优先使用解构
+    "no-spaced-func": 2, // 函数调用时 函数名与()之间不能有空格
+    "consistent-this": [2, "self"], // this别名
+    "curly": [2, "all"], //必须使用 if(){} 中的{}
+    "comma-dangle": [2, "never"], // 控制逗号前后的空格
+    "spaced-comment": 1, // 注释风格不要有空格什么的
+    // "space-unary-ops": [1, { "words": true, "nonwords": false }], // 一元运算符的前/后要不要加空格
+    "space-infix-ops": ["error", {"int32Hint": false}],
+    "space-before-function-paren": [1, "always"], //函数定义时括号前面要不要有空格
+    "space-in-parens": [1, "never"], //小括号里面要不要有空格
+    "id-match": 0, // 命名检测
+    "space-unary-ops": [
+      2, {
+        "words": true,
+        "nonwords": false,
+        "overrides": {
+          "new": false,
+          "++": true
+        }
+    }]
+  }
+}
