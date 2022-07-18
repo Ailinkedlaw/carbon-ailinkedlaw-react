@@ -1,4 +1,5 @@
-const path = require('path')
+const { resolve } = require('path');
+const { merge } = require('webpack-merge');
 
 
 module.exports = {
@@ -17,10 +18,12 @@ module.exports = {
     "builder": "@storybook/builder-webpack5"
   },
   "webpackFinal": (config) => {
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      '@': path.resolve(__dirname, '../src'),
-    }
-    return config
+    return merge(config, {
+      resolve: {
+        alias: {
+          '@': resolve(__dirname, '../src')
+        }
+      }
+    })
   }
 }

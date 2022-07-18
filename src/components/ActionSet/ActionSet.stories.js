@@ -32,8 +32,8 @@ const Template = ({ actions, size = 'md', ...args }) => {
   )
 }
 
-export const actionSet  = Template.bind({})
+export const actionSet = Template.bind({})
 actionSet.args = {
-  actions: 3
+  actions: 10
 }
 

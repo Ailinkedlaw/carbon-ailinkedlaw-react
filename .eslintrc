@@ -72,7 +72,6 @@
     "no-spaced-func": 2, // 函数调用时 函数名与()之间不能有空格
     "consistent-this": [2, "self"], // this别名
     "curly": [2, "all"], //必须使用 if(){} 中的{}
-    "comma-dangle": [2, "never"], // 控制逗号前后的空格
     "spaced-comment": 1, // 注释风格不要有空格什么的
     // "space-unary-ops": [1, { "words": true, "nonwords": false }], // 一元运算符的前/后要不要加空格
     "space-infix-ops": ["error", {"int32Hint": false}],

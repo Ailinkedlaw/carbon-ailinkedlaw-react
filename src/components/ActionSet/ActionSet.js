@@ -84,16 +84,19 @@ const defaults = {
 }
 
 /**
- * An ActionSet presents a set of action buttons, constructed from bundles
- * of prop values and applying some layout rules. When the size is 'sm'
- * the buttons are stacked, and should only include primary and secondary
- * kinds. When the size is 'md' the buttons are stacked if there are three or
- * more. When the size is 'md' or 'lg', two buttons share the horizontal space.
- * When the size is 'lg', three or more buttons use a quarter of the available
- * horizontal space, and if the size is 'xlg' or 'max' the buttons always use
- * a quarter of the available horizontal space. If there is a ghost button,
- * it appears at the left side. If there is a primary button it appears at the
- * right.
+ * ActionSet 呈现一组动作按钮，由一组 prop 值构成并应用一些布局规则。
+ * 当大小为“sm”时，按钮是堆叠的，并且应该只包括主要和次要类型。
+ * 当大小为“md”时，如果按钮有三个或更多，则堆叠。 当大小为 'md' 或 'lg' 时，两个按钮共享水平空间。
+ * 当大小为“lg”时，三个或更多按钮使用可用水平空间的四分之一，
+ * 如果大小为“xlg”或“max”，则按钮始终使用可用水平空间的四分之一。
+ * 如果有幻影按钮，它会出现在左侧。 如果有一个主按钮，它会出现在右侧。
+ *
+ * ### 引用方法
+ *
+ *
+ * ~~~js
+ * import { ActionSet } from 'carbon-ailinkedlaw-react'
+ * ~~~
  */
 export const ActionSet = React.forwardRef(
   (

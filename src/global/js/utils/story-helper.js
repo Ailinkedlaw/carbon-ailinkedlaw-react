@@ -7,38 +7,9 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import { sanitize } from '@storybook/csf'
 import pkg from '../package-settings'
-
-
-const getPath = (s, componentAndPrefix, componentName) =>
-  s.reduce(
-    (found, next) =>
-      // if a previous entry has already matched, pass it forward
-      found ||
-      (typeof next === 'string'
-        ? // if this entry is a string, and it matches the component name
-      // we're looking for, return it as an array, else return null
-        getEntryPrefixAndComponentName(next) === componentAndPrefix
-          ? [getEntryDisplayName(next)]
-          : null
-        : // if this entry is another structure, find the materialized path
-      // into it and prepend its name if found and return null otherwise
-        prepend(next.n, getPath(next.s, componentAndPrefix, componentName))),
-    null
-  )
-
-/**
- * Return the storybook path for a component, given the prefix and name of the
- * component. The prefix enables different components with the same name to be
- * included in the storybook structure.
- * @param {string} prefix The prefix for the component.
- * @param {string} componentName The name of the component.
- * @returns The path for the component storybook entry, or null if the
- * component is not listed in the storybook structure.
- */
-export const getPathForComponent = (prefix, componentName) =>
-  getPath(s, `${prefix}/${componentName}`, componentName)?.join('/')
-
+import { getPathForComponent } from './story-structure'
 
 /**
  * A helper function to return the structured story title for a component.
@@ -50,14 +21,23 @@ export const getStoryTitle = (componentName) => {
     // if the component isn't in the master structure, put it in a lost+found section
     getPathForComponent('c', componentName) ||
     `Carbon for IBM Products/Lost + found/${componentName}`
-
+  
   // add a canary tag if the component is public but not normally enabled
   return !pkg.isComponentEnabled(componentName, true) &&
-    pkg.isComponentPublic(componentName, true)
+  pkg.isComponentPublic(componentName, true)
     ? `${title}#canary`
     : title
 }
 
+/**
+ * A helper function to return the slug (structured path name reduced to lower
+ * case text and hyphens) which identifies individual story instances.
+ * @param {string} componentName The name of the component.
+ * @param {string} scenario The scenario name, also as a slug.
+ * @returns The story id.
+ */
+export const getStoryId = (componentName, scenario) =>
+  `${sanitize(getStoryTitle(componentName))}--${scenario}`
 
 /**
  * A helper function to prepare storybook stories for export. This function
