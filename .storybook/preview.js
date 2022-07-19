@@ -14,7 +14,7 @@ pkg._silenceWarnings(true);
 pkg.setAllComponents(true);
 
 const Style = ({ children, styles }) => {
-  console.log("styles", styles)
+  // console.log("styles", styles)
   // const { unuse, use } = styles;
   //
   // useEffect(() => {

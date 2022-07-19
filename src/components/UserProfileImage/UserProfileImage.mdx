@@ -1,0 +1,41 @@
+import { ArgsTable, Canvas, Story } from '@storybook/addon-docs';
+
+## User Profile Avatar
+
+<Canvas>
+  <Story id="components-userprofileimage--with-image" />
+</Canvas>
+
+## Overview
+
+The user profile avatar allows for an image of the user to be displayed by
+passing in the image prop. By default the component will display a user icon on
+a blue background.
+
+### Default Avatar
+
+<Canvas>
+  <Story id="components-userprofileimage--default" />
+</Canvas>
+
+### Avatar with Group Icons
+
+By passing in icon prop with a value of 'group', the avatar will display the
+group icon
+
+<Canvas>
+  <Story id="components-userprofileimage--with-group-icon" />
+</Canvas>
+
+### Avatar with Initials
+
+When passing a display name to the component, the display name will be distilled
+down to the first and last initials of the display name. 'Thomas Watson' and
+'Thomas J. Watson' will both display 'TW' as the initials.
+
+<Canvas>
+  <Story id="components-userprofileimage--with-initials" />
+</Canvas>
+
+
+<ArgsTable />
