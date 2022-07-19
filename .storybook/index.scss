@@ -1,0 +1,66 @@
+//
+// Copyright IBM Corp. 2020, 2022
+//
+// This source code is licensed under the Apache-2.0 license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
+// Load the C&CS styles first, excluding Carbon styles. We will then load full
+// Carbon styles at the end -- this is to obtain a "worst case" for our own CSS,
+// to ensure we are resilient against different CSS loading orders and our
+// styles have the specificity necessary to override Carbon styles when needed.
+//@use '../src/index-without-carbon' as *;
+@use '../src/global/styles/project-settings' as c4p-settings;
+@use '@carbon/themes/scss/themes' as themeeee;
+@use '@carbon/themes';
+@use "@carbon/colors";
+
+.component-playground .#{c4p-settings.$pkg-prefix}--side-panel__overlay {
+  z-index: 7999;
+}
+
+#custom-root {
+  section {
+    width: 100%;
+  }
+}
+
+// Load all Carbon styles now
+//@use '../css/carbon';
+// @import '../../security/src/index';
+// @import 'docs';
+
+
+// Setting attribute storybook-carbon-theme="XXX" on the html element
+// will set the carbon theme used for the storybook pane.
+// Adding class sb--use-carbon-theme-XXX on any element
+// will set the carbon theme used within that element.
+
+body {
+  background-color: themes.$background;
+}
+
+:root,
+.sb--use-carbon-theme-white {
+  @include themes.theme(themeeee.$white);
+}
+
+:root[storybook-carbon-theme='g10'],
+.sb--use-carbon-theme-g10 {
+  @include themes.theme(themeeee.$g10);
+}
+
+:root[storybook-carbon-theme='g90'],
+.sb--use-carbon-theme-g90 {
+  @include themes.theme(themeeee.$g90);
+}
+
+[storybook-carbon-theme='debug'],
+:root[storybook-carbon-theme='g100'],
+.sb--use-carbon-theme-g100 {
+  @include themes.theme(themeeee.$g100);
+}
+
+[storybook-carbon-theme='debug'] body {
+  color: initial;
+}
