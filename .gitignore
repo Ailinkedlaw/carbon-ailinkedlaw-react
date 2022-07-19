@@ -14,6 +14,12 @@
 
 # production
 /build
+es
+lib
+dist
+umd
+css
+scss
 
 # misc
 .DS_Store

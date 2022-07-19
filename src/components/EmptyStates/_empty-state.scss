@@ -1,0 +1,57 @@
+//
+// Copyright IBM Corp. 2020, 2021
+//
+// This source code is licensed under the Apache-2.0 license found in the
+// LICENSE file in the root directory of this source tree.
+//
+
+// Standard imports.
+@use '@carbon/styles/scss/theme' as *;
+@use '@carbon/styles/scss/spacing' as *;
+@use '@carbon/styles/scss/type';
+@use '../../global/styles/project-settings' as c4p-settings;
+
+// Empty states use the following Carbon components:
+// Button, Link
+@use '@carbon/react/scss/components/button';
+@use '@carbon/react/scss/components/link';
+
+$empty-block-class: #{c4p-settings.$pkg-prefix}--empty-state;
+
+.#{$empty-block-class} {
+  color: $text-primary;
+
+  .#{$empty-block-class}__header,
+  .#{$empty-block-class}__subtitle {
+    padding-bottom: $spacing-02;
+    margin: 0;
+  }
+  .#{$empty-block-class}__header--small {
+    @include type.type-style('productive-heading-03');
+  }
+  .#{$empty-block-class}__subtitle--small {
+    @include type.type-style('body-short-01');
+  }
+}
+
+.#{$empty-block-class}__illustration {
+  &.#{$empty-block-class}__illustration--lg {
+    min-width: $spacing-11;
+    max-width: $spacing-11;
+  }
+  &.#{$empty-block-class}__illustration--sm {
+    min-width: $spacing-10;
+    max-width: $spacing-10;
+  }
+}
+
+.#{$empty-block-class}__action-button,
+.#{$empty-block-class}__link.#{c4p-settings.$carbon-prefix}--link {
+  margin-top: $spacing-06;
+}
+.#{$empty-block-class} .#{$empty-block-class}__action-button {
+  display: block;
+}
+.#{$empty-block-class} .#{$empty-block-class}__link {
+  display: block;
+}

@@ -1,6 +1,6 @@
 {
   "name": "carbon-ailinkedlaw-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "Apache-2.0",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -15,19 +15,15 @@
   },
   "bugs": "https://github.com/Ailinkedlaw/carbon-ailinkedlaw-react/issues",
   "sideEffects": [
-    "es/index.js",
-    "lib/index.js",
-    "src/index.js",
-    "index.scss",
     "**/global/js/utils/props-helper.js",
     "**/*.css",
     "**/*.scss"
   ],
   "files": [
+    "css",
     "es",
     "lib",
-    "scss",
-    "index.scss"
+    "scss"
   ],
   "keywords": [
     "carbon",
@@ -58,8 +54,12 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "npm run clean && node tasks/build.js",
-    "clean": "rimraf es lib storybook-static",
+    "build-first": "copyfiles 'src/**/*.scss' scss -u 1",
+    "build:css-dev": "sass --style=expanded --load-path node_modules scss:css",
+    "build:css-min": "sass --style=compressed --load-path node_modules scss/index.scss:css/index.min.css scss/index-full-carbon.scss:css/index-full-carbon.min.css scss/index-without-carbon.scss:css/index-without-carbon.min.css scss/index-without-carbon-released-only.scss:css/index-without-carbon-released-only.min.css",
+    "build": "npm run clean && node tasks/build.js && npm run build:style",
+    "build:style": "npm run build-first && npm run build:css-dev && npm run build:css-min",
+    "clean": "rimraf es lib storybook-static scss css",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -112,6 +112,7 @@
     "babel-plugin-named-exports-order": "^0.0.2",
     "browserslist-config-carbon": "^11.0.0",
     "classnames": "^2.3.1",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
     "eslint": "^8.19.0",
