@@ -1,9 +1,11 @@
 {
   "name": "carbon-ailinkedlaw-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "Apache-2.0",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "description": "Based on IBM Carbon Design System for React extension",
+  "author": "Ailinkedlaw",
   "installConfig": {
     "hoistingLimits": "none"
   },
@@ -56,7 +58,8 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "node tasks/build.js",
+    "build": "npm run clean && node tasks/build.js",
+    "clean": "rimraf es lib storybook-static",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -117,9 +120,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "fs-extra": "^10.1.0",
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
     "redux-devtools-extension": "^2.13.9",
+    "rimraf": "^3.0.2",
     "rollup": "^2.46.0",
     "rollup-plugin-strip-banner": "^2.0.0",
     "webpack": "^5.73.0",
