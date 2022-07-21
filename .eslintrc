@@ -42,7 +42,6 @@
   "rules": {
     // "react/display-name": 0,
     // "react/prop-types": 0,
-    "semi":[ 2, "never"],
     "react-hooks/exhaustive-deps": 0,
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 0,

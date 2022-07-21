@@ -21,8 +21,8 @@ import {
   Time,
 } from '@carbon/icons-react'
 
-import { getDevtoolsProps } from '../../global/js/utils/devtools'
-import { pkg } from '../../settings'
+import { getDevtoolsProps } from '@/global/js/utils/devtools'
+import { pkg } from '@/settings'
 
 const icons = {
   fatal: {
