@@ -13,8 +13,8 @@ import PropTypes from 'prop-types';
 import { Button, Link } from '@carbon/react';
 import cx from 'classnames';
 
-import { getDevtoolsProps } from '../../../global/js/utils/devtools';
-import { pkg } from '../../../settings';
+import { getDevtoolsProps } from '@/global/js/utils/devtools';
+import { pkg } from '@/settings';
 
 import { EmptyStateContent } from '../EmptyStateContent';
 import { ErrorIllustration } from '../assets/ErrorIllustration';
