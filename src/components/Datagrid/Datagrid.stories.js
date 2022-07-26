@@ -574,7 +574,7 @@ const DatagridActions = (datagridState) => {
             placeholder={searchForAColumn}
             onChange={(e) => setGlobalFilter(e.target.value)}
           />
-          <RowSizeDropdown {...rowSizeDropdownProps} />
+          <RowSizeDropdown {...rowSizeDropdownProps} buttonLabel="设置" />
           <div style={style}>
             <Button
               kind="ghost"

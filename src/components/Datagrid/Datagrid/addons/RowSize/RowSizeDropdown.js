@@ -25,7 +25,7 @@ const RowSizeDropdown = ({ buttonLabel = 'Row height', ...props }) => {
       <IconButton
         ref={buttonRef}
         kind="ghost"
-        align="left"
+        align="bottom"
         onClick={() => setIsOpen(!isOpen)}
         label={buttonLabel}
         className={cx(`${blockClass}__row-size-button`, {
