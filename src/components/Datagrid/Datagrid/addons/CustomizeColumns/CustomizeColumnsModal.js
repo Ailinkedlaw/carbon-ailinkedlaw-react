@@ -25,6 +25,8 @@ const CustomizeColumnsModal = ({
   primaryButtonTextLabel = 'Save',
   secondaryButtonTextLabel = 'Cancel',
   instructionsLabel = 'Deselect columns to hide them. Click and drag the white box to reorder the columns. These specifications will be saved and persist if you leave and return to the data table.',
+  findColumnPlaceholderLabel = 'Find column',
+  resetToDefaultLabel = 'Reset to default',
 }) => {
   const [searchText, setSearchText] = useState('');
   const [columnObjects, setColumnsObject] = useState(
@@ -54,6 +56,8 @@ const CustomizeColumnsModal = ({
     const updatedColumns = columnObjects.map((colDef) => ({
       id: colDef.id,
       isVisible: colDef.isVisible,
+      sticky: colDef?.sticky ?? null,
+      Header: colDef.Header.props.title
     }));
     onSaveColumnPrefs(updatedColumns);
   };
@@ -68,6 +72,22 @@ const CustomizeColumnsModal = ({
     setColumnsObject(changedDefinitions);
     setDirty();
   };
+  
+  /**
+   * @name 设置固定位置
+   * @param col
+   * @param value {String}
+   */
+  const onSticky = (col, value) => {
+    const changedDefinitions = columnObjects.map((definition) => {
+      if (definition.id === col.id) {
+        return { ...definition, sticky: value };
+      }
+      return definition;
+    });
+    setColumnsObject(changedDefinitions);
+    setDirty();
+  }
 
   const setDirty = () => {
     if (!isDirty) {
@@ -94,6 +114,8 @@ const CustomizeColumnsModal = ({
         {instructionsLabel}
       </div>
       <Actions
+        findColumnPlaceholderLabel={findColumnPlaceholderLabel}
+        resetToDefaultLabel={resetToDefaultLabel}
         columns={columnObjects}
         originalColumnDefinitions={originalColumnDefinitions}
         searchText={searchText}
@@ -108,6 +130,7 @@ const CustomizeColumnsModal = ({
           columns={columnObjects}
           filterString={string}
           onSelectColumn={onCheckboxCheck}
+          onSticky={onSticky}
           setColumnsObject={(cols) => {
             setColumnsObject(cols);
             setDirty();

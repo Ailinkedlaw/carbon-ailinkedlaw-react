@@ -83,13 +83,13 @@ const defaultHeader = [
   {
     Header: 'Row Index',
     accessor: (row, i) => i,
-    sticky: 'left',
+    // sticky: 'right',
     id: 'rowIndex', // id is required when accessor is a function.
   },
   {
     Header: 'First Name',
     accessor: 'firstName',
-    sticky: 'left',
+    // sticky: 'left',
   },
   {
     Header: 'Last Name',
@@ -665,18 +665,35 @@ export const SelectItemsInAllPages = () => {
 // SelectItemsInAllPages.story = SelectAllWithToggle;
 
 export const CustomizingColumns = () => {
-  const columns = React.useMemo(() => defaultHeader, []);
+  // const columns = React.useMemo(() => defaultHeader, []);
+  const [hiddenColumns, setHiddenColumns] = useState([])
+  const [columns, setColumns] = useState(defaultHeader);
   const [data] = useState(makeData(10));
   const datagridState = useDatagrid(
     {
       columns,
       data,
       initialState: {
-        hiddenColumns: ['age'],
-        columnOrder: [],
+        hiddenColumns,
+        // columnOrder: [],
       },
       customizeColumnsProps: {
         onSaveColumnPrefs: (newColDefs) => {
+          const columnss = columns.map(v => {
+            const itme = newColDefs.find(i => i.Header === v.Header)
+            if (itme) {
+              return {
+                ...v,
+                sticky: itme.sticky,
+                isVisible: itme.isVisible
+              }
+            }
+            return v
+          })
+          
+          setColumns(columnss)
+          setHiddenColumns(newColDefs.filter((colDef) => !colDef.isVisible)
+            .map((colDef) => colDef.id))
           console.log(newColDefs);
         },
       },
@@ -686,8 +703,10 @@ export const CustomizingColumns = () => {
       emptyStateDescription,
       emptyStateSize,
     },
-    useCustomizeColumns,
-    useColumnOrder
+    useStickyColumn, // 列固定
+    useActionsColumn, // 操作
+    useCustomizeColumns, // 自定义列
+    useColumnOrder, // 使用顺序
   );
 
   return (
