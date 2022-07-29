@@ -13,14 +13,23 @@
   /* stylelint-disable-next-line declaration-no-important */
   position: sticky !important;
   right: 0;
-  box-shadow: -2px 1px 3px $overlay;
+  // box-shadow: -2px 1px 3px $overlay;
 }
 
 .#{variables.$block-class}__right-sticky-column-header {
   /* stylelint-disable-next-line declaration-no-important */
   position: sticky !important;
   right: 0;
+  z-index: 1;
+  // box-shadow: -2px 1px 3px $overlay;
+}
+
+//c4p--datagrid__right-sticky-column
+.#{variables.$block-class}__right-sticky-column__shadow {
   box-shadow: -2px 1px 3px $overlay;
+}
+.#{variables.$block-class}__left-sticky-column__shadow {
+  box-shadow: 3px 1px 3px $overlay;
 }
 
 .#{variables.$block-class}__sticky-noShadow {

@@ -12,7 +12,10 @@ const useFlexResize = (hooks) => {
     disableSortBy: true,
     disableResizing: true,
   };
-  hooks.visibleColumns.push((columns) => [...columns, spacerColumn]);
+  // hooks.visibleColumns.push((columns) => {
+  //   // console.log('columns', columns)
+  //   return [...columns, spacerColumn]
+  // });
   const changeProps = (props, data) => {
     let { column } = data;
     if (!column && data.cell) {

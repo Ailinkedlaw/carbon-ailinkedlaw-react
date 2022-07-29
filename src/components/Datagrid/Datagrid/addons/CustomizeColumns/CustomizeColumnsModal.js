@@ -12,6 +12,7 @@ import { isColumnVisible } from './common';
 import Columns from './Columns';
 import Actions from './Actions';
 import { pkg } from '@/settings';
+import { concat } from 'lodash'
 
 const blockClass = `${pkg.prefix}--datagrid`;
 
@@ -85,9 +86,17 @@ const CustomizeColumnsModal = ({
       }
       return definition;
     });
-    setColumnsObject(changedDefinitions);
+    handleStickyPos(changedDefinitions)
     setDirty();
   }
+  
+  const handleStickyPos = (columnObjects) => {
+    const dDefinitions = columnObjects.filter(i => !i.sticky)
+    const stickyRight = columnObjects.filter(i => i.sticky === 'right')
+    const stickyLeft = columnObjects.filter(i => i.sticky === 'left')
+    setColumnsObject(concat(stickyLeft, dDefinitions, stickyRight));
+  }
+  
 
   const setDirty = () => {
     if (!isDirty) {

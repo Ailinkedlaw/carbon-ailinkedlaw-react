@@ -682,15 +682,11 @@ export const CustomizingColumns = () => {
           const columnss = columns.map(v => {
             const itme = newColDefs.find(i => i.Header === v.Header)
             if (itme) {
-              return {
-                ...v,
-                sticky: itme.sticky,
-                isVisible: itme.isVisible
-              }
+              return { ...v, sticky: itme.sticky, isVisible: itme.isVisible }
             }
             return v
           })
-          
+
           setColumns(columnss)
           setHiddenColumns(newColDefs.filter((colDef) => !colDef.isVisible)
             .map((colDef) => colDef.id))

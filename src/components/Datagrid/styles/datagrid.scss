@@ -351,6 +351,11 @@
   width: 100% !important;
 }
 
+.#{$block-class}__sticky.#{$block-class}__table-simple thead {
+  display: table;
+  width: 100%;
+}
+
 .#{$block-class}__displayFlex {
   position: relative;
   display: flex;

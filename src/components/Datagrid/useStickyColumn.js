@@ -10,6 +10,7 @@ import { useEffect, useRef } from 'react';
 import debounce from 'lodash/debounce';
 import cx from 'classnames';
 import { pkg } from '@/settings';
+import _ ,{ findIndex, slice } from 'lodash'
 
 const blockClass = `${pkg.prefix}--datagrid`;
 
@@ -81,28 +82,98 @@ const useStickyColumn = (hooks) => {
       withStickyColumn: true,
     });
   });
+  
+  // TODO
+  const changePropsText = (props, data) => {
+    
+    const { visibleColumns } = data.instance
+    let { column } = data;
+    if (!column && data.cell) {
+      // eslint-disable-next-line prefer-destructuring
+      column = data.cell.column;
+    }
+    if (column.sticky === 'right') {
+      const allLength = visibleColumns.length
+      const index = findIndex(visibleColumns, ['id', column.id]) + 1
+      // const startRightIndex = findIndex(visibleColumns, ['sticky', 'right']);
+      const startRight = visibleColumns.find(i => i.sticky === 'right')
+      if (allLength === index) {
+        return [props, {
+          style: { flex: '1 1 0' },
+          className: cx({
+            [`${styleClassPrefix}__shadow`]: startRight.id === column.id
+          })
+        }];
+      }
+      const arr = _.takeRight(visibleColumns, allLength - index)
+      
+      let rightNum = 0
+      arr.map(i => { rightNum += i.width })
+      return [
+        props,
+        {
+          style: { right: `${rightNum}px` },
+          className: cx({
+            [`${styleClassPrefix}__shadow`]: startRight.id === column.id
+          })
+        }
+      ]
+    }
+    
+    // left
+    if (column.sticky === 'left') {
+      // const allLength = visibleColumns.length
+      const index = findIndex(visibleColumns, ['id', column.id]) + 1
+      const startRightIndex = _.findLastIndex(visibleColumns, {sticky: 'left'})
+      const startRight = visibleColumns[startRightIndex]
+      if (index === 1) {
+        return [props, {
+          style: { flex: '1 1 0', left: '0' },
+          className: cx({
+            [`${blockClass}__left-sticky-column__shadow`]: true
+          })
+        }];
+      }
+      
+      const arr = _.take(visibleColumns, index - 1)
+      let leftNum = 0
+      arr.map(i => { leftNum += i.width })
+      return [props, {
+        style: { left: `${leftNum}px` },
+        className: cx({
+          [`${blockClass}__left-sticky-column__shadow`]: startRight.id === column.id
+        })
+      }]
+    }
+    return [props]
+  };
+  hooks.getHeaderProps.push((props, data) => changePropsText(props, data));
+  hooks.getCellProps.push((props, data) => changePropsText(props, data));
+  
   hooks.useInstance.push((instance) => {
+    // debugger
     // sticky column is defined by consumer
     // it will always comes after the spacer which is defined by useFlexResize
     // swap them here to use the spacer to push
     // sticky column to the right when there are few
     // columns defined
-    const newColumns = instance.visibleColumns;
-    let spacerIdx = newColumns.findIndex((col) => col.id === 'spacer');
-    let stickyIdx = newColumns.findIndex((col) => col.sticky === 'right');
-    if (spacerIdx >= 0 && stickyIdx >= 0 && stickyIdx < spacerIdx) {
-      const temp = newColumns[spacerIdx];
-      newColumns[spacerIdx] = newColumns[stickyIdx];
-      newColumns[stickyIdx] = temp;
-    }
-    const newHeaders = instance.headers;
-    spacerIdx = newHeaders.findIndex((col) => col.id === 'spacer');
-    stickyIdx = newHeaders.findIndex((col) => col.sticky === 'right');
-    if (spacerIdx >= 0 && stickyIdx >= 0 && stickyIdx < spacerIdx) {
-      const temp = newHeaders[spacerIdx];
-      newHeaders[spacerIdx] = newHeaders[stickyIdx];
-      newHeaders[stickyIdx] = temp;
-    }
+    // const newColumns = instance.visibleColumns;
+    // let spacerIdx = newColumns.findIndex((col) => col.id === 'spacer');
+    // let stickyIdx = newColumns.findIndex((col) => col.sticky === 'right');
+    // if (spacerIdx >= 0 && stickyIdx >= 0 && stickyIdx < spacerIdx) {
+    //   const temp = newColumns[spacerIdx]; // spacer
+    //   newColumns[spacerIdx] = newColumns[stickyIdx];
+    //   // spacer
+    //   newColumns[stickyIdx] = temp;
+    // }
+    // const newHeaders = instance.headers;
+    // spacerIdx = newHeaders.findIndex((col) => col.id === 'spacer');
+    // stickyIdx = newHeaders.findIndex((col) => col.sticky === 'right');
+    // if (spacerIdx >= 0 && stickyIdx >= 0 && stickyIdx < spacerIdx) {
+    //   const temp = newHeaders[spacerIdx];
+    //   newHeaders[spacerIdx] = newHeaders[stickyIdx];
+    //   newHeaders[stickyIdx] = temp;
+    // }
   });
 };
 
@@ -120,6 +191,23 @@ const changeProps = (elementName, headerCellRef, props, data) => {
       props,
       {
         className: cx({
+          [`${blockClass}__cell`]: true,
+          [`${styleClassPrefix}-${elementName}`]: true, // apply sticky styles
+          [`${blockClass}__resizableColumn`]: false,
+          [`${blockClass}__sortableColumn`]: false,
+        }),
+        ...(headerCellRef && {
+          ref: headerCellRef,
+        }),
+      },
+    ];
+  }
+  if (column.sticky === 'left') {
+    return [
+      props,
+      {
+        className: cx({
+          [`${blockClass}__cell`]: true,
           [`${styleClassPrefix}-${elementName}`]: true, // apply sticky styles
           [`${blockClass}__resizableColumn`]: false,
           [`${blockClass}__sortableColumn`]: false,
@@ -147,14 +235,13 @@ const onBodyResize = (tableBodyEle, headerCellEle) => {
 const toggleStickyShadow = (tableBodyEle, headerCellEle) => {
   if (tableBodyEle && headerCellEle) {
     const isScrolledToRight =
-      tableBodyEle.scrollLeft + tableBodyEle.clientWidth ===
-      tableBodyEle.scrollWidth;
+      tableBodyEle.scrollLeft + tableBodyEle.clientWidth === tableBodyEle.scrollWidth;
     if (isScrolledToRight) {
-      headerCellEle.classList.add(`${blockClass}__sticky-noShadow`);
-      tableBodyEle.classList.add(`${blockClass}__sticky-column-noShadow`);
+      // headerCellEle.classList.add(`${blockClass}__sticky-noShadow`);
+      // tableBodyEle.classList.add(`${blockClass}__sticky-column-noShadow`);
     } else {
-      headerCellEle.classList.remove(`${blockClass}__sticky-noShadow`);
-      tableBodyEle.classList.remove(`${blockClass}__sticky-column-noShadow`);
+      // headerCellEle.classList.remove(`${blockClass}__sticky-noShadow`);
+      // tableBodyEle.classList.remove(`${blockClass}__sticky-column-noShadow`);
     }
   }
 };
