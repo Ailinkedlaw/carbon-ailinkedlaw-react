@@ -67,7 +67,7 @@ export let SidePanel = React.forwardRef(
       slideIn,
       subtitle,
       title,
-      
+      renderBottomAction,
       // Collect any other property values passed in.
       ...rest
     },
@@ -568,15 +568,11 @@ export let SidePanel = React.forwardRef(
         <div
           className={cx(`${blockClass}__title-container`, {
             [`${blockClass}__on-detail-step`]: currentStep > 0,
-            [`${blockClass}__on-detail-step-without-title`]:
-            currentStep > 0 && !title,
-            [`${blockClass}__title-container--no-title-animation`]:
-              !animateTitle,
-            [`${blockClass}__title-container-is-animating`]:
-            !animationComplete || !open,
+            [`${blockClass}__on-detail-step-without-title`]: currentStep > 0 && !title,
+            [`${blockClass}__title-container--no-title-animation`]: !animateTitle,
+            [`${blockClass}__title-container-is-animating`]: !animationComplete || !open,
             [`${blockClass}__title-container-without-title`]: !title,
-            [`${blockClass}__title-container--reduced-motion`]:
-            reducedMotion.matches
+            [`${blockClass}__title-container--reduced-motion`]: reducedMotion.matches
           })}
         >
           {currentStep > 0 && (
@@ -749,11 +745,18 @@ export let SidePanel = React.forwardRef(
             >
               {animateTitle && renderHeader()}
               <div className={`${blockClass}__body-content`}>{children}</div>
-              <ActionSet
-                actions={actions}
-                className={primaryActionContainerClassNames}
-                size={size === 'xs' ? 'sm' : size}
-              />
+              {
+                renderBottomAction ?
+                  <div className={cx([
+                    primaryActionContainerClassNames,
+                    `c4p--action-set--${size === 'xs' ? 'sm' : size}`
+                  ])}>{renderBottomAction}</div> :
+                  <ActionSet
+                    actions={actions}
+                    className={primaryActionContainerClassNames}
+                    size={size === 'xs' ? 'sm' : size}
+                  />
+              }
             </div>
             <span
               ref={endTrapRef}
@@ -789,6 +792,10 @@ export let SidePanel = React.forwardRef(
 SidePanel = pkg.checkComponentEnabled(SidePanel, componentName)
 
 SidePanel.propTypes = {
+  /**
+   * 渲染底部按钮组
+   */
+  renderBottomAction: PropTypes.node,
   /**
    * Sets the action toolbar buttons
    */

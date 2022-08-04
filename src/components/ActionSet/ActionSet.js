@@ -198,14 +198,12 @@ ActionSet.validateActions =
       const size = sizeFn ? sizeFn(props) : props.size || defaults.size
       const stacking = willStack(size, actions)
       
-      const countActions = (kind) =>
-        prop.filter((action) => (action.kind || defaultKind) === kind).length
+      const countActions = (kind) => prop.filter((action) => (action.kind || defaultKind) === kind).length
       
       const primaryActions = countActions('primary')
       const secondaryActions = countActions('secondary')
       const dangerActions = countActions('danger')
-      const ghostActions =
-        countActions('ghost') + countActions('danger--ghost')
+      const ghostActions = countActions('ghost') + countActions('danger--ghost')
       
       stacking &&
       actions > 3 &&

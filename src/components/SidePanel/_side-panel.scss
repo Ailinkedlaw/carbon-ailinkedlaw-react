@@ -27,8 +27,8 @@
 // Button
 @use '@carbon/react/scss/components/button';
 
-$block-class: #{c4p-settings.$pkg-prefix}--side-panel;
-$action-set-block-class: #{c4p-settings.$pkg-prefix}--action-set;
+$block-class: #{c4p-settings.$pkg-prefix}--side-panel; // $block-clas: c4p--side-panel
+$action-set-block-class: #{c4p-settings.$pkg-prefix}--action-set; // $action-set-block-class: c4p--action-set
 
 @mixin sidePanelEntranceRight($size: map-get($side-panel-sizes, md)) {
   @keyframes side-panel-entrance-right {

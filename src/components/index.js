@@ -26,7 +26,7 @@ export {
   NotificationsEmptyState,
   UnauthorizedEmptyState,
 } from './EmptyStates';
-
+export { NotificationsPanel } from './NotificationsPanel';
 export { PageHeader } from './PageHeader';
 export { ProductiveCard } from './ProductiveCard';
 export { RemoveModal } from './RemoveModal';
@@ -52,4 +52,5 @@ export {
   useActionsColumn,
   useCustomizeColumns,
   useSelectAllWithToggle,
+  useColumnCenterAlign
 } from './Datagrid';
