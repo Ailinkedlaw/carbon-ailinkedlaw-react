@@ -30,6 +30,7 @@ export { NotificationsPanel } from './NotificationsPanel';
 export { PageHeader } from './PageHeader';
 export { ProductiveCard } from './ProductiveCard';
 export { RemoveModal } from './RemoveModal';
+export { Saving } from './Saving';
 export { SidePanel } from './SidePanel';
 export { StatusIcon } from './StatusIcon';
 export { TagSet } from './TagSet';
