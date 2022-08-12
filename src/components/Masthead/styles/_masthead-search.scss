@@ -1,0 +1,346 @@
+/**
+ * Copyright IBM Corp. 2016, 2021
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@use '@carbon/themes/scss/themes' as themess;
+@use "@carbon/themes";
+@use "@carbon/layout";
+@use "@carbon/grid";
+@use "@carbon/type";
+@use '@carbon/styles/scss/motion';
+@use "@carbon/motion" as motionUtil;
+@use '../../../global/styles/project-settings' as c4p-settings;
+// @carbon/styles/scss/components/ui-shell/_functions.scss
+
+$dds-prefix: 'dds' !default;
+$prefix: themes.$prefix;
+
+
+$button-transition: background-color 110ms, border-color 110ms, color 110ms;
+$search-transition: cubic-bezier(0.2, 0, 0.38, 0.9);
+$search-transition-timing: 95ms;
+
+/// @access private
+@mixin masthead-top-nav-name {
+  @include type.type-style('heading-02', true);
+
+  color: themes.$text-primary;
+  padding-left: layout.$spacing-05;
+  padding-right: layout.$spacing-05;
+  border: solid 2px transparent;
+  transition: $button-transition;
+  position: relative;
+  white-space: nowrap;
+  z-index: 1;
+  background-color: themes.$background;
+
+  @include grid.breakpoint(lg) {
+    margin-left: layout.$spacing-05;
+  }
+
+  &:hover {
+    background-color: themes.$background-hover;
+    color: themes.$text-primary;
+  }
+
+  &:active,
+  &:focus {
+    border-color: themes.$focus;
+    background-color: themes.$layer-01;
+  }
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: calc(-1rem - 2px);
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1.5rem;
+    width: 0.0625rem;
+    background-color: #dcdcdc;
+  }
+
+  @include grid.breakpoint-down(800px) {
+    display: none;
+  }
+}
+
+@mixin masthead-search {
+  // main nav/search container excluding
+  // profile and logo icons - TODO rename this
+  :host(#{$dds-prefix}-top-nav),
+  .#{$prefix}--header__search {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    position: relative;
+    height: 100%;
+
+    &.#{$prefix}--masthead__platform {
+      .#{$prefix}--header__nav {
+        padding-left: 0;
+
+        &::before {
+          display: none;
+        }
+      }
+
+      .#{$prefix}--masthead__platform-name {
+        z-index: 1;
+        height: 100%;
+        background: themes.$background;
+      }
+    }
+
+    a.#{$prefix}--header__name {
+      @include masthead-top-nav-name;
+    }
+
+    &.#{$prefix}--masthead__header--search-active {
+      .#{$prefix}--header__nav-container {
+        display: none;
+      }
+
+      + .#{$prefix}--header__profile {
+        display: none;
+
+        @include grid.breakpoint(md) {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  .#{$prefix}--header__search:not(.#{$prefix}--masthead__header--search-active) {
+    @include grid.breakpoint(md) {
+      overflow-x: visible;
+    }
+  }
+
+  .#{$prefix}--header__search--actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    /* stylelint-disable-next-line comment-whitespace-inside */
+    /*!rtl:raw:
+    left: 0;
+    */
+
+    .#{$prefix}--header__search--search,
+    .#{$prefix}--header__search--close {
+      color: themes.$icon-secondary;
+
+      background-color: themes.$background;
+      // background-color: themes.$field-hover-01;
+      padding: 0;
+
+      &:hover {
+        // background-color: themes.$background-hover;
+        background-color: themes.$field-hover-01;
+        svg[focusable='false'][aria-hidden='true'] {
+          fill: themes.$icon-primary;
+        }
+      }
+      // prevent tooltip from showing on hover
+      &.#{$prefix}--btn--icon-only.#{$prefix}--tooltip--visible,
+      &.#{$prefix}--btn--icon-only.#{$prefix}--tooltip--a11y.#{$prefix}--tooltip__trigger {
+        &::before,
+        .#{$prefix}--assistive-text {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .#{$prefix}--header__profile .#{$prefix}--header__action:focus,
+  .#{$prefix}--header__search--actions
+    .#{$prefix}--btn.#{$prefix}--btn--icon-only.#{$prefix}--tooltip__trigger:focus {
+    border-color: themes.$focus;
+  }
+
+  // search container
+  .#{$prefix}--masthead__search,
+  :host(#{$dds-prefix}-masthead-search) {
+    height: layout.$spacing-09;
+    margin-left: layout.rem(48px);
+
+    &.#{$prefix}--masthead__search--active,
+    &[active] {
+      z-index: 999;
+      width: 100%;
+      margin-left: 0;
+
+      button.#{$prefix}--header__search--close.#{$prefix}--header__action[aria-label='Close'] {
+        display: inline-flex;
+        width: layout.$spacing-09;
+      }
+
+      .#{$prefix}--header__search--actions {
+        z-index: 10001;
+      }
+
+      .react-autosuggest__container {
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          display: block;
+          border-bottom: 2px solid themes.$background-brand;
+          width: 100%;
+          height: 2px;
+          z-index: 10002;
+        }
+      }
+
+      .#{$prefix}--header__search--input {
+        display: flex;
+        flex: 1;
+        padding: 0 layout.$spacing-05;
+        outline: 2px solid transparent;
+        outline-offset: -2px;
+        background-color: themes.$layer-01;
+        // height: carbon--mini-units(6);
+        height: layout.$spacing-09;
+        z-index: 10000;
+
+        &::placeholder {
+          left: 0;
+          opacity: 1;
+          transition-duration: 112ms;
+          transition-delay: 200ms;
+          color: themes.$text-placeholder;
+        }
+      }
+
+      .#{$prefix}--header__search--close,
+      .#{$prefix}--header__search--search {
+        border: 2px solid transparent;
+
+        &:focus,
+        &:active {
+          border: 2px solid themes.$focus;
+        }
+      }
+
+      .#{$prefix}--header__action {
+        background-color: themes.$layer-01;
+        transition-property: width;
+        transition-delay: 380ms;
+        transition-duration: 112ms;
+      }
+    }
+
+    &.#{$prefix}--masthead__search--active {
+      @include grid.breakpoint-down(md) {
+        position: absolute;
+        width: 100vw;
+      }
+    }
+
+    &[active] {
+      @include grid.breakpoint-down(md) {
+        width: 100vw;
+        right: 0;
+      }
+    }
+  }
+
+  .react-autosuggest__container {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    height: layout.$spacing-09;
+  }
+
+  .react-autosuggest__suggestions-container {
+    position: absolute;
+    top: layout.$spacing-09;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .react-autosuggest__suggestions-list {
+    background-color: themes.$background;
+  }
+
+  .react-autosuggest__section-title {
+    height: layout.$spacing-09;
+    display: flex;
+    align-items: center;
+    color: themes.$text-secondary;
+    padding: 0 layout.$spacing-05;
+    border-top: solid 1px themes.$border-strong-01;
+    border-bottom: solid 1px themes.$layer-01;
+    background-color: themes.$background;
+
+    @include type.type-style('body-compact-01');
+  }
+
+  .react-autosuggest__suggestion {
+    color: themes.$text-primary;
+    height: layout.$spacing-09;
+    display: flex;
+    span {
+      font-weight: 600;
+    }
+
+    .#{$prefix}--container-class {
+      display: flex;
+      border-bottom: 1px solid themes.$layer-01;
+      flex: 1;
+      padding: 0 layout.$spacing-05;
+      align-items: center;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: themes.$background-hover;
+      transition: $search-transition-timing;
+    }
+
+    .#{$prefix}--container-highlight-class:not(:hover),
+    &:focus,
+    &:active {
+      outline: 2px solid themes.$focus;
+    }
+
+    &:last-of-type {
+      .#{$prefix}--container-class {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .#{$prefix}--header__search--input {
+    font-size: layout.$spacing-05;
+    line-height: 1.375rem;
+    border: none;
+    width: 0;
+    transition: 120ms;
+    border-bottom: 1px solid themes.$layer-accent-01;
+    padding: 0;
+
+    &::placeholder {
+      position: relative;
+      left: 5rem;
+      opacity: 0;
+    }
+  }
+}
+
+@include masthead-search;
+
+//@include exports('masthead-search') {
+//  @include masthead-search;
+//}

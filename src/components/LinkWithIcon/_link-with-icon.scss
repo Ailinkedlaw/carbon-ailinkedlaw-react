@@ -1,0 +1,136 @@
+/**
+ * Copyright IBM Corp. 2016, 2022
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+@use '@carbon/themes/scss/themes' as themess;
+@use "@carbon/themes";
+@use "@carbon/layout";
+@use "@carbon/grid";
+@use "@carbon/type";
+@use '@carbon/styles/scss/motion';
+@use "@carbon/motion" as motionUtil;
+
+$dds-prefix: 'dds' !default;
+$prefix: themes.$prefix;
+
+@mixin link-with-icon {
+  .#{$prefix}--link-with-icon,
+  :host(#{$dds-prefix}-link-with-icon),
+  :host(#{$dds-prefix}-link-list-item),
+  :host(#{$dds-prefix}-link-list-item-cta),
+  :host(#{$dds-prefix}-text-cta) {
+    display: flex;
+
+    span {
+      vertical-align: middle;
+      align-self: center;
+      flex: 1;
+    }
+
+    svg,
+    ::slotted(svg[slot='icon']) {
+      display: block;
+      margin-left: layout.$spacing-03;
+      align-self: center;
+      fill: currentColor;
+    }
+
+    &.#{$prefix}--link--visited {
+      color: themes.$link-visited;
+    }
+
+    &.#{$prefix}--link--disabled {
+      &:hover {
+        @include type.type-style('body-compact-02');
+      }
+    }
+
+    &.#{$prefix}--link-with-icon__icon-left,
+    .#{$prefix}--link-with-icon.#{$prefix}--link-with-icon--inline-icon.#{$prefix}--link-with-icon__icon-left {
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: row-reverse;
+
+      svg,
+      ::slotted(svg[slot='icon']) {
+        align-self: start;
+        position: relative;
+        margin-left: 0;
+        margin-right: layout.$spacing-03;
+        top: 1px;
+      }
+    }
+  }
+
+  .#{$prefix}--link-with-icon__container,
+  :host(#{$dds-prefix}-callout-link-with-icon),
+  :host(#{$dds-prefix}-card-cta-footer),
+  :host(#{$dds-prefix}-card-footer),
+  :host(#{$dds-prefix}-link-with-icon),
+  :host(#{$dds-prefix}-link-list-item),
+  :host(#{$dds-prefix}-link-list-item-cta),
+  :host(#{$dds-prefix}-text-cta) {
+    .#{$prefix}--link-with-icon.#{$prefix}--link-with-icon--inline-icon {
+      display: inline-block;
+
+      svg,
+      ::slotted(svg[slot='icon']) {
+        display: inline;
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  :host(#{$dds-prefix}-card-cta-footer)[mode='link-list'][cta-type='video'] {
+    .#{$prefix}--link-with-icon.#{$prefix}--link-with-icon--inline-icon span {
+      display: none;
+
+      @include grid.breakpoint('lg') {
+        display: inline;
+      }
+    }
+  }
+
+  .#{$prefix}--link-with-icon,
+  :host(#{$dds-prefix}-link-with-icon),
+  :host(#{$dds-prefix}-text-cta) {
+    &:not(:first-of-type) {
+      margin-left: layout.$spacing-07;
+    }
+
+    .#{$prefix}--link-with-icon__icon-left::slotted(svg[slot='icon']) {
+      margin-right: layout.$spacing-03;
+      margin-left: 0;
+    }
+
+    .#{$prefix}--link-with-icon__icon-right::slotted(svg[slot='icon']) {
+      margin-left: layout.$spacing-03;
+      margin-right: 0;
+    }
+
+    &:focus {
+      outline: 2px solid themes.$focus;
+    }
+
+    &:active {
+      text-decoration: none;
+    }
+  }
+
+  :host(#{$dds-prefix}-link-with-icon),
+  :host(#{$dds-prefix}-text-cta) {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  :host(#{$dds-prefix}-link-with-icon),
+  .#{$prefix}--link-with-icon__container {
+    display: table;
+  }
+}
+
+@include link-with-icon;
