@@ -55,3 +55,11 @@ export {
   useSelectAllWithToggle,
   useColumnCenterAlign
 } from './Datagrid';
+
+export {
+  Masthead,
+  MastheadL1,
+  MastheadSearch,
+  MastheadLeftNav,
+  MastheadTopNav
+} from './Masthead'
