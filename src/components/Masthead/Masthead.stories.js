@@ -6,6 +6,10 @@ import mastheadNav from './data/usen.json'
 
 import styles from './_storybook-styles.scss'
 import { prepareStory } from '@/global/js/utils/story-helper'
+import LogoImg from '@/assets/images/logo.png'
+import { HeaderGlobalAction } from '@carbon/react'
+import { Notification, Switcher } from '@carbon/icons-react'
+import { action } from '@storybook/addon-actions'
 
 export default {
   title: 'Components/Masthead',
@@ -26,11 +30,29 @@ const customProfileLogin = text(
 
 export const Default = prepareStory(Template, {
   args: {
+    hasProfileProps: {
+      children: (
+        <>
+          <HeaderGlobalAction
+            aria-label="Notifications"
+            onClick={action('notification click')}>
+            <Notification size={20} />
+          </HeaderGlobalAction>
+          <HeaderGlobalAction
+            aria-label="App Switcher"
+            onClick={action('app-switcher click')}
+            tooltipAlignment="end">
+            <Switcher size={20} />
+          </HeaderGlobalAction>
+        </>
+      )
+    },
+    logoProps: {
+      target: '_blank',
+      href: 'https://www.ailinkedlaw.com/',
+      children: <img src={LogoImg} alt="logo" />
+    },
     navigation: mastheadNav.mastheadNav.links,
-    hasProfile: boolean(
-      'show the profile functionality (hasProfile)',
-      true,
-    ),
     customProfileLogin,
     hasSearch: boolean(
       'show the search functionality (hasSearch)',
@@ -54,11 +76,14 @@ export const Default = prepareStory(Template, {
 
 export const WithCustomNavigation = prepareStory(Template, {
   args: {
+    logoProps: {
+      target: '_blank',
+      href: 'https://www.ailinkedlaw.com/',
+      children: <img src={LogoImg} alt="logo" />,
+      // element: Link, // import { Link } from 'react-router-dom'
+      // to: '/dashboard'
+    },
     navigation: mastheadKnobs.navigation.custom,
-    hasProfile: boolean(
-      'show the profile functionality (hasProfile)',
-      true
-    ),
     customProfileLogin,
     hasSearch: boolean(
       'show the search functionality (hasSearch)',
@@ -78,11 +103,12 @@ export const WithCustomNavigation = prepareStory(Template, {
 
 export const WithL1 = prepareStory(Template, {
   args: {
+    logoProps: {
+      target: '_blank',
+      href: 'https://www.ailinkedlaw.com/',
+      children: <img src={LogoImg} alt="logo" />
+    },
     platform: mastheadKnobs.l1Platform,
-    hasProfile: boolean(
-      'show the profile functionality (hasProfile)',
-      true
-    ),
     hasSearch: boolean(
       'show the search functionality (hasSearch)',
       true
@@ -103,14 +129,15 @@ export const WithL1 = prepareStory(Template, {
 
 export const WithAlternateLogoAndTooltip = prepareStory(Template, {
   args: {
+    logoProps: {
+      target: '_blank',
+      href: 'https://www.ailinkedlaw.com/',
+      children: <img src={LogoImg} alt="logo" />
+    },
     navigation: select(
       'navigation data (navigation)',
       mastheadKnobs.navigation,
       mastheadKnobs.navigation.custom,
-    ),
-    hasProfile: boolean(
-      'show the profile functionality (hasProfile)',
-      true,
     ),
     hasSearch: boolean(
       'show the search functionality (hasSearch)',

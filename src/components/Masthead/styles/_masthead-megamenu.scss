@@ -142,10 +142,19 @@ $search-transition-timing: 95ms;
 
     .#{$prefix}--masthead__megamenu__container {
       width: 100vw;
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 99rem;
       // @include carbon--make-container;
-      // @include gridPrivate.-make-container();
-      padding-right: 2.5rem;
-      padding-left: 2.5rem;
+      @include grid.breakpoint(sm) {
+        padding-right: 2rem;
+        padding-left: 2rem;
+      }
+
+      @include grid.breakpoint(max) {
+        padding-right: 2.5rem;
+        padding-left: 2.5rem;
+      }
 
       .#{$prefix}--masthead__megamenu__container--row {
         // @include carbon--make-row;

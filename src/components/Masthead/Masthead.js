@@ -13,24 +13,23 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import {
   Header,
-  HeaderContainer,
+  HeaderContainer, HeaderGlobalAction,
   HeaderGlobalBar,
   HeaderMenuButton,
-  SkipToContent,
+  SkipToContent
 } from '@carbon/react'
 import PropTypes from 'prop-types';
 import root from 'window-or-global';
-import { pkg } from '@/settings'
+
 // 附带自定义组件
 import MastheadLeftNav from './MastheadLeftNav'
 import IbmLogo from './IbmLogo'
 import MastheadTopNav from './MastheadTopNav'
 import MastheadSearch from './MastheadSearch'
-import MastheadProfile from './MastheadProfile'
 import MastheadL1 from './MastheadL1'
 
 // 图标
-import { User, UserOnline } from '@carbon/icons-react'
+import { Notification } from '@carbon/icons-react'
 
 const stablePrefix = 'dds'
 const prefix = 'cds'
@@ -39,27 +38,46 @@ const gridBreakpoint = parseFloat(breakpoints.lg.width) * baseFontSize;
 
 const DDS_CUSTOM_PROFILE_LOGIN = true
 
+// /**
+//  * MastHead component
+//  *
+//  * @param {object} props React props object
+//  * @param {object} props.navigation Object containing navigation elements
+//  * //@param {boolean} props.hasProfile Determines whether to render Profile component
+//  * @param {boolean} props.hasSearch Determines whether to render Search Bar
+//  * @param {boolean} props.searchOpenOnload Determines if the search field is open on page load
+//  * @param {string} props.placeHolderText Placeholder value for search input
+//  * @param {string} props.initialSearchTerm Initial value for search input
+//  * @param {object} props.platform Platform name that appears on L0.
+//  * @param {string} props.title Title for the masthead L1
+//  * @param {string} props.eyebrowText Text for the eyebrow link in masthead L1
+//  * @param {string} props.eyebrowLink URL for the eyebrow link in masthead L1
+//  * @param {string} props.selectedMenuItem L0/L1 menu item to render with selected state
+//  * @returns {*} Masthead component
+//  */
+
 /**
  * MastHead component
  *
- * @param {object} props React props object
- * @param {object} props.navigation Object containing navigation elements
- * @param {boolean} props.hasProfile Determines whether to render Profile component
- * @param {boolean} props.hasSearch Determines whether to render Search Bar
- * @param {boolean} props.searchOpenOnload Determines if the search field is open on page load
- * @param {string} props.placeHolderText Placeholder value for search input
- * @param {string} props.initialSearchTerm Initial value for search input
- * @param {object} props.platform Platform name that appears on L0.
- * @param {string} props.title Title for the masthead L1
- * @param {string} props.eyebrowText Text for the eyebrow link in masthead L1
- * @param {string} props.eyebrowLink URL for the eyebrow link in masthead L1
- * @param {string} props.selectedMenuItem L0/L1 menu item to render with selected state
+ * @param navigation 包含导航元素的对象
+ * @param hasProfileProps 右上角操作元素
+ * @param hasSearch 确定是否呈现搜索栏
+ * @param searchOpenOnload 确定搜索字段是否在页面加载时打开
+ * @param placeHolderText 搜索输入的占位符值
+ * @param initialSearchTerm L0 上显示的平台名称。
+ * @param platform 标头 L1 的标题
+ * @param mastheadL1Data
+ * @param selectedMenuItem L0/L1 菜单项以选定状态呈现
+ * @param logoProps logo设置
+ * @param eyebrowText 标头 L1 中眉毛链接的文本
+ * @param eyebrowLink 标头 L1 中眉毛链接的 URL
+ * @param mastheadProps
+ * @returns {JSX.Element}
  * @returns {*} Masthead component
  */
-
 const Masthead = ({
   navigation,
-  hasProfile,
+  hasProfileProps = {},
   hasSearch,
   searchOpenOnload,
   placeHolderText,
@@ -67,6 +85,7 @@ const Masthead = ({
   platform,
   mastheadL1Data,
   selectedMenuItem,
+  logoProps = {},
   ...mastheadProps
 }) => {
   /**
@@ -242,8 +261,6 @@ const Masthead = ({
     };
   }, [scrollOffset, tableOfContents]);
   
-  console.log('navigation', navigation)
-  
   if (navigation) {
     switch (typeof navigation) {
     case 'default':
@@ -371,9 +388,9 @@ const Masthead = ({
                 )}
   
                 <IbmLogo
-                  logoData={mastheadProps.mastheadLogo}
                   autoid={`${stablePrefix}--masthead-${navType}__l0-logo`}
                   isSearchActive={isSearchActive}
+                  {...logoProps}
                 />
   
                 <div
@@ -406,30 +423,39 @@ const Masthead = ({
                   )}
                 </div>
   
-                {hasProfile && (
-                  <HeaderGlobalBar className={`${prefix}--header__profile`}>
-                    <MastheadProfile
-                      overflowMenuProps={{
-                        ariaLabel: 'User Profile',
-                        'data-autoid': `${stablePrefix}--masthead-${navType}__l0-account`,
-                        flipped: true,
-                        style: { width: '3rem' },
-                        onOpen: () => _setProfileListPosition(),
-                        renderIcon: () =>
-                          isAuthenticated ? <UserOnline size={20} /> : <User size={20} />,
-                      }}
-                      overflowMenuItemProps={{
-                        wrapperClassName: `${prefix}--masthead__profile-item`,
-                      }}
-                      profileMenu={
-                        isAuthenticated
-                          ? profileData.signedin
-                          : profileData.signedout
-                      }
-                      {...(mastheadProps.customProfileLogin &&
-                      DDS_CUSTOM_PROFILE_LOGIN ? { customProfileLogin: mastheadProps.customProfileLogin, } : {})}
-                      navType={navType}
-                    />
+                {hasProfileProps && (
+                  <HeaderGlobalBar
+                    className={`${prefix}--header__profile`}
+                    {...hasProfileProps}
+                  >
+                    {/* <HeaderGlobalAction */}
+                    {/*   aria-label="Notifications" */}
+                    {/*   onClick={console.log}> */}
+                    {/*   <Notification size={20} /> */}
+                    {/* </HeaderGlobalAction> */}
+                    
+                    {/* <MastheadProfile */}
+                    {/*   overflowMenuProps={{ */}
+                    {/*     ariaLabel: 'User Profile', */}
+                    {/*     'data-autoid': `${stablePrefix}--masthead-${navType}__l0-account`, */}
+                    {/*     flipped: true, */}
+                    {/*     style: { width: '3rem' }, */}
+                    {/*     onOpen: () => _setProfileListPosition(), */}
+                    {/*     renderIcon: () => */}
+                    {/*       isAuthenticated ? <UserOnline size={20} /> : <User size={20} />, */}
+                    {/*   }} */}
+                    {/*   overflowMenuItemProps={{ */}
+                    {/*     wrapperClassName: `${prefix}--masthead__profile-item`, */}
+                    {/*   }} */}
+                    {/*   profileMenu={ */}
+                    {/*     isAuthenticated */}
+                    {/*       ? profileData.signedin */}
+                    {/*       : profileData.signedout */}
+                    {/*   } */}
+                    {/*   {...(mastheadProps.customProfileLogin && */}
+                    {/*   DDS_CUSTOM_PROFILE_LOGIN ? { customProfileLogin: mastheadProps.customProfileLogin, } : {})} */}
+                    {/*   navType={navType} */}
+                    {/* /> */}
                   </HeaderGlobalBar>
                 )}
               </Header>
@@ -485,16 +511,10 @@ Masthead.propTypes = {
       })
     ),
   ]),
-  
   /**
-   * `true` to render IBM Profile Menu component.
+   * 顶部右侧
    */
-  hasProfile: PropTypes.bool,
-  
-  /**
-   * Custom login url in masthead profile menu (experimental)
-   */
-  customProfileLogin: PropTypes.string,
+  hasProfileProps: PropTypes.node,
   
   /**
    * `true` to render SearchBar component.
@@ -602,7 +622,16 @@ Masthead.propTypes = {
 };
 
 Masthead.defaultProps = {
-  hasProfile: true,
+  // hasProfile: true,
+  hasProfileProps: {
+    children: (
+      <HeaderGlobalAction
+        aria-label="Notifications"
+        onClick={e => console.log('notification click: ', e)}>
+        <Notification size={20} />
+      </HeaderGlobalAction>
+    )
+  },
   hasSearch: true,
   searchOpenOnload: false,
   selectedMenuItem: '',

@@ -133,8 +133,6 @@ const MastheadLeftNav = ({
       const menuItems = link.menuSections?.[0]?.menuItems;
       selectedItems = selectedUrlCheck({ menu: menuItems, key: i, parentItemUrl: link.url });
       
-      console.log('sideNav', link)
-      
       
       if (link.hasMenu || link.hasMegaPanel || link.menuSections?.length !== 0) {
         level1Items.push({
