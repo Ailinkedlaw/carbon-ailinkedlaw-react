@@ -403,7 +403,12 @@ $search-transition-timing: 95ms;
   }
 }
 
-@include masthead-megamenu;
+
+.#{$prefix}--masthead {
+  @include masthead-megamenu;
+}
+
+
 
 //@include exports('masthead-megamenu') {
 //  @include masthead-megamenu;

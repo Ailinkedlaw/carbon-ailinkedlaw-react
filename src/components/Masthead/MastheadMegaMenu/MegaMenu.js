@@ -13,7 +13,7 @@ import React from 'react';
 import RightNavigation from './RightNavigation';
 
 
-const prefix = 'cds'
+const prefix = 'c4p'
 
 /**
  * Masthead megamenu component.

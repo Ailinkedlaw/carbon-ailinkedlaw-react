@@ -30,7 +30,7 @@ $prefix: themes.$prefix;
     position: absolute;
   }
 
-  .#{$prefix}--masthead .#{$prefix}--side-nav__navigation {
+  .#{$prefix}--side-nav__navigation {
     height: calc(100% - #{layout.$spacing-09});
 
     > nav {
@@ -92,83 +92,81 @@ $prefix: themes.$prefix;
     margin-bottom: 0;
   }
 
-  .#{$prefix}--masthead {
-    .#{$prefix}--side-nav {
-      left: -100vw;
-      visibility: hidden;
-      transform: translateZ(0.0001px);
-      /* stylelint-disable-next-line  time-min-milliseconds */
-      transition: visibility 1ms motionUtil.motion(exit, productive) motionUtil.$duration-fast-02,
-        left motionUtil.$duration-fast-02 motionUtil.motion(exit, productive) 1ms;
+  .#{$prefix}--side-nav {
+    left: -100vw;
+    visibility: hidden;
+    transform: translateZ(0.0001px);
+    /* stylelint-disable-next-line  time-min-milliseconds */
+    transition: visibility 1ms motionUtil.motion(exit, productive) motionUtil.$duration-fast-02,
+    left motionUtil.$duration-fast-02 motionUtil.motion(exit, productive) 1ms;
 
-      &:not(.#{$prefix}--side-nav--fixed):hover {
-        @include grid.breakpoint-down(md) {
-          max-width: 100vw;
-          width: 100vw;
-        }
-      }
-
-      .#{$prefix}--header__logo {
-        height: 3rem;
-        padding-left: layout.$spacing-09;
-      }
-    }
-
-    // need to set width so transition works on tablet
-    .#{$prefix}--side-nav,
-    .#{$prefix}--side-nav--expanded {
-      max-width: 16rem;
-      width: 16rem;
-    }
-
-    .#{$prefix}--side-nav__items {
-      padding-top: 0;
-      height: 100%;
-    }
-
-    .#{$prefix}--side-nav__item {
-      height: auto;
-      min-height: layout.$spacing-09;
-
-      .#{$prefix}--side-nav__submenu {
-        height: 100%;
-      }
-    }
-
-    .#{$prefix}--side-nav__overlay {
-      top: 0;
-      z-index: 1000;
-      @include grid.breakpoint-down(md) {
-        background-color: themes.$background;
-      }
-    }
-
-    .#{$prefix}--side-nav__overlay-active {
-      display: none;
-      @include grid.breakpoint-down(800px) {
-        display: block;
-        background-color: themes.$overlay;
-      }
-    }
-
-    .#{$prefix}--side-nav--expanded {
-      overflow-y: auto;
-      left: 0;
-      visibility: visible;
-      transform: translateZ(0.0001px);
-      /* stylelint-disable-next-line time-min-milliseconds */
-      transition: visibility 1ms motionUtil.motion(exit, productive) 0ms,
-        left motionUtil.$duration-fast-02 motionUtil.motion(exit, productive) 1ms;
-    }
-
-    .#{$prefix}--side-nav--ux,
-    .#{$prefix}--side-nav,
-    .#{$prefix}--side-nav--expanded {
+    &:not(.#{$prefix}--side-nav--fixed):hover {
       @include grid.breakpoint-down(md) {
         max-width: 100vw;
         width: 100vw;
-        border-top: 1px solid themes.$border-subtle-01;
       }
+    }
+
+    .#{$prefix}--header__logo {
+      height: 3rem;
+      padding-left: layout.$spacing-09;
+    }
+  }
+
+  // need to set width so transition works on tablet
+  .#{$prefix}--side-nav,
+  .#{$prefix}--side-nav--expanded {
+    max-width: 16rem;
+    width: 16rem;
+  }
+
+  .#{$prefix}--side-nav__items {
+    padding-top: 0;
+    height: 100%;
+  }
+
+  .#{$prefix}--side-nav__item {
+    height: auto;
+    min-height: layout.$spacing-09;
+
+    .#{$prefix}--side-nav__submenu {
+      height: 100%;
+    }
+  }
+
+  .#{$prefix}--side-nav__overlay {
+    top: 0;
+    z-index: 1000;
+    @include grid.breakpoint-down(md) {
+      background-color: themes.$background;
+    }
+  }
+
+  .#{$prefix}--side-nav__overlay-active {
+    display: none;
+    @include grid.breakpoint-down(800px) {
+      display: block;
+      background-color: themes.$overlay;
+    }
+  }
+
+  .#{$prefix}--side-nav--expanded {
+    overflow-y: auto;
+    left: 0;
+    visibility: visible;
+    transform: translateZ(0.0001px);
+    /* stylelint-disable-next-line time-min-milliseconds */
+    transition: visibility 1ms motionUtil.motion(exit, productive) 0ms,
+    left motionUtil.$duration-fast-02 motionUtil.motion(exit, productive) 1ms;
+  }
+
+  .#{$prefix}--side-nav--ux,
+  .#{$prefix}--side-nav,
+  .#{$prefix}--side-nav--expanded {
+    @include grid.breakpoint-down(md) {
+      max-width: 100vw;
+      width: 100vw;
+      border-top: 1px solid themes.$border-subtle-01;
     }
   }
 
@@ -486,8 +484,9 @@ $prefix: themes.$prefix;
     }
   }
 }
-
-@include masthead-sidenav;
+.#{$prefix}--masthead {
+  @include masthead-sidenav;
+}
 
 //@include exports('masthead-sidenav') {
 //  @include masthead-sidenav;

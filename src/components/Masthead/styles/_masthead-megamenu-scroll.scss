@@ -14,7 +14,9 @@
 
 $prefix: themes.$prefix;
 
-.#{$prefix}--body__lock-scroll {
-  position: relative;
-  overflow: hidden;
+.#{$prefix}--masthead {
+  .#{$prefix}--body__lock-scroll {
+    position: relative;
+    overflow: hidden;
+  }
 }

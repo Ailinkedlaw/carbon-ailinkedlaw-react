@@ -187,7 +187,10 @@ $search-transition-timing: 95ms;
 }
 
 
-@include masthead-l1;
+.#{$prefix}--masthead {
+  @include masthead-l1;
+}
+
 
 //@include exports('masthead-l1') {
 //  @include masthead-l1;

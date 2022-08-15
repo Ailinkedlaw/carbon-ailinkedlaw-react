@@ -30,7 +30,7 @@ import MastheadSearch from './MastheadSearch'
 import MastheadL1 from './MastheadL1'
 
 // 图标
-import { Notification } from '@carbon/icons-react'
+import { Fade, Notification } from '@carbon/icons-react'
 
 const stablePrefix = 'dds'
 const prefix = 'cds'
