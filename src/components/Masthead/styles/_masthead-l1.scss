@@ -25,14 +25,15 @@ $prefix: themes.$prefix;
 $search-transition: cubic-bezier(0.2, 0, 0.38, 0.9);
 $search-transition-timing: 95ms;
 
+
 @mixin masthead-l1 {
+
   .#{$prefix}--masthead__l1,
   :host(#{$dds-prefix}-masthead-l1) {
-    @include themes.theme(themess.$white, true);
+    // @include themes.theme(themess.$white, true);
 
     display: flex;
     position: relative;
-    max-width: 98rem;
     margin-left: auto;
     margin-right: auto;
     height: layout.$spacing-09;
@@ -50,29 +51,35 @@ $search-transition-timing: 95ms;
       background-color: themes.$layer-accent-01;
     }
   }
+  .#{$prefix}--nav-align-center {
+    .#{$prefix}--masthead__l1 {
+      max-width: layout.rem(1584px);
+    }
+    .#{$prefix}--masthead__l1-inner-container {
+      &::before {
+        content: '';
+        position: absolute;
+        background-color: themes.$background;
+        height: 48px;
+        left: calc(-50vw + 50%);
+        right: 100%;
+        z-index: 1;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        background-color: themes.$background;
+        height: 48px;
+        left: 100%;
+        right: calc(-50vw + 50%);
+      }
+    }
+  }
 
   .#{$prefix}--masthead__l1-inner-container {
     width: 100%;
     display: flex;
-
-    &::before {
-      content: '';
-      position: absolute;
-      background-color: themes.$background;
-      height: 48px;
-      left: calc(-50vw + 50%);
-      right: 100%;
-      z-index: 1;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      background-color: themes.$background;
-      height: 48px;
-      left: 100%;
-      right: calc(-50vw + 50%);
-    }
   }
 
   .#{$prefix}--masthead__l1-name,

@@ -12,6 +12,7 @@
 @use "@carbon/type";
 @use '@carbon/styles/scss/motion';
 @use "@carbon/motion" as motionUtil;
+@use "@carbon/styles/scss/utilities/z-index";
 //@use "@carbon/styles/scss/utilities";
 //@use "@carbon/grid/scss/_inlined/mixins" as gridPrivate;
 // node_modules/@carbon/grid/scss/_inlined/_mixins.scss
@@ -76,6 +77,7 @@ $search-transition-timing: 95ms;
       left: 0;
       width: 100vw;
       transform: translateZ(0.0001px);
+      z-index: z-index.z('header');
       transition: visibility motion.$transition-expansion motion.$standard-easing;
     }
 

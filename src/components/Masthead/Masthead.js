@@ -8,12 +8,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { baseFontSize, breakpoints } from '@carbon/layout';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { baseFontSize, breakpoints } from '@carbon/layout';
 import cx from 'classnames';
 import {
   Header,
-  HeaderContainer, HeaderGlobalAction,
+  HeaderContainer,
+  HeaderGlobalAction,
   HeaderGlobalBar,
   HeaderMenuButton,
   SkipToContent
@@ -76,6 +77,7 @@ const DDS_CUSTOM_PROFILE_LOGIN = true
  * @returns {*} Masthead component
  */
 const Masthead = ({
+  navAlign,
   navigation,
   hasProfileProps = {},
   hasSearch,
@@ -206,11 +208,9 @@ const Masthead = ({
         )}px`;
         
         const regularMastheadTop =
-          window.scrollY < lastScrollPosition
-            ? 0
-            : -Math.min(
-              stickyRef.current.offsetHeight -
-              mastheadL1Ref.current.offsetHeight,
+          window.scrollY < lastScrollPosition ? 0 :
+            -Math.min(
+              stickyRef.current.offsetHeight - mastheadL1Ref.current.offsetHeight,
               Math.abs(mobileMastheadTop)
             );
         const mastheadTop = window.innerWidth < gridBreakpoint ? mobileMastheadTop : regularMastheadTop;
@@ -328,7 +328,7 @@ const Masthead = ({
         }
   
         return (
-          <div className={`${prefix}--masthead`} ref={stickyRef}>
+          <div className={`${prefix}--masthead ${prefix}--nav-align-${navAlign}`} ref={stickyRef}>
             <div className={`${prefix}--masthead__l0`}>
               <Header
                 aria-label="IBM"
@@ -514,7 +514,7 @@ Masthead.propTypes = {
   /**
    * 顶部右侧
    */
-  hasProfileProps: PropTypes.node,
+  hasProfileProps: PropTypes.object,
   
   /**
    * `true` to render SearchBar component.
@@ -619,10 +619,16 @@ Masthead.propTypes = {
    * Multiple search sections
    */
   multiSection: PropTypes.bool,
+  
+  /**
+   * 导航条对齐样式
+   */
+  navAlign: PropTypes.oneOf(['left', 'center']),
 };
 
 Masthead.defaultProps = {
   // hasProfile: true,
+  navAlign: 'center',
   hasProfileProps: {
     children: (
       <HeaderGlobalAction
@@ -636,7 +642,7 @@ Masthead.defaultProps = {
   searchOpenOnload: false,
   selectedMenuItem: '',
   platform: null,
-  placeHolderText: 'Search all of IBM',
+  placeHolderText: 'Search all of a linked law',
   initialSearchTerm: '',
   mastheadL1Data: null,
 };

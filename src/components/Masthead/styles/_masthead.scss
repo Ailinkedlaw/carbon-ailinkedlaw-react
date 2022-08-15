@@ -13,6 +13,7 @@
 @use '@carbon/styles/scss/motion';
 @use "@carbon/motion" as motionUtil;
 @use '../../../global/styles/project-settings' as c4p-settings;
+@use "@carbon/styles/scss/utilities/z-index";
 
 $dds-prefix: 'dds' !default;
 $prefix: themes.$prefix;
@@ -191,13 +192,13 @@ $search-transition-timing: 95ms;
   .#{$prefix}--masthead,
   :host(#{$dds-prefix}-masthead) {
     // @include carbon--theme($carbon--theme--white, true);
-    @include themes.theme(themess.$white);
+    // @include themes.theme(themess.$white);
 
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 99;
+    z-index: z-index.z('header');
     transition-delay: 200ms;
     transition-timing-function: $search-transition;
     transition-duration: 300ms;
@@ -264,7 +265,7 @@ $search-transition-timing: 95ms;
   }
 
   .#{$prefix}--masthead__l0 {
-    @include themes.theme(themess.$white);
+    // @include themes.theme(themess.$white);
 
     position: relative;
     background: themes.$background;
@@ -285,14 +286,23 @@ $search-transition-timing: 95ms;
     transition-timing-function: $search-transition;
     background: themes.$background;
     border: none;
-    max-width: layout.rem(1584px)!important;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1px;
     position: relative!important;
-    z-index: 5999;
+    z-index: z-index.z('header');
     border-bottom: none!important;
 
+    .#{$prefix}--header__menu-arrow {
+      fill: themes.$icon-secondary;
+      &:hover {
+        fill: themes.$icon-secondary;
+      }
+    }
+  }
+
+  .#{$prefix}--nav-align-center  .#{$prefix}--header{
+    max-width: layout.rem(1584px);
     &::before {
       content: '';
       position: absolute;
@@ -309,13 +319,6 @@ $search-transition-timing: 95ms;
       height: 48px;
       left: 100%;
       right: calc(-50vw + 50%);
-    }
-
-    .#{$prefix}--header__menu-arrow {
-      fill: themes.$icon-secondary;
-      &:hover {
-        fill: themes.$icon-secondary;
-      }
     }
   }
 
@@ -630,7 +633,7 @@ $search-transition-timing: 95ms;
 
   // masthead profile menu
   .#{$prefix}--overflow-menu-options {
-    @include themes.theme();
+    // @include themes.theme(themess.$white);
 
     background-color: themes.$background;
     position: fixed;

@@ -2,7 +2,6 @@ import { boolean, select, text } from '@storybook/addon-knobs';
 import Masthead from './Masthead'
 import mastheadKnobs from './data/Masthead.stories.knobs.js';
 
-import mastheadNav from './data/usen.json'
 
 import styles from './_storybook-styles.scss'
 import { prepareStory } from '@/global/js/utils/story-helper'
@@ -10,6 +9,10 @@ import LogoImg from '@/assets/images/logo.png'
 import { HeaderGlobalAction } from '@carbon/react'
 import { Notification, Switcher } from '@carbon/icons-react'
 import { action } from '@storybook/addon-actions'
+
+// demo
+import mastheadNav from './data/usen.json'
+import Nav2 from './data/demo-data.json'
 
 export default {
   title: 'Components/Masthead',
@@ -30,6 +33,53 @@ const customProfileLogin = text(
 
 export const Default = prepareStory(Template, {
   args: {
+    navAlign: 'center',
+    hasProfileProps: {
+      children: (
+        <>
+          <HeaderGlobalAction
+            aria-label="Notifications"
+            onClick={action('notification click')}>
+            <Notification size={20} />
+          </HeaderGlobalAction>
+          <HeaderGlobalAction
+            aria-label="App Switcher"
+            onClick={action('app-switcher click')}
+            tooltipAlignment="end">
+            <Switcher size={20} />
+          </HeaderGlobalAction>
+        </>
+      )
+    },
+    logoProps: {
+      target: '_blank',
+      href: 'https://www.ailinkedlaw.com/',
+      children: <img src={LogoImg} alt="logo" />
+    },
+    navigation: mastheadNav.mastheadNav.links,
+    customProfileLogin,
+    hasSearch: boolean(
+      'show the search functionality (hasSearch)',
+      true,
+    ),
+    placeHolderText: text(
+      'search placeholder (placeHolderText)',
+      'Search all of IBM',
+    ),
+    initialSearchTerm: text(
+      'initial search term (initialSearchTerm)',
+      '',
+    ),
+    selectedMenuItem: text(
+      'selected menu item (selectedMenuItem)',
+      'Consulting & Services',
+    ),
+  }
+})
+
+export const DefaultLft = prepareStory(Template, {
+  args: {
+    navAlign: 'left', // center left
     hasProfileProps: {
       children: (
         <>
@@ -127,6 +177,33 @@ export const WithL1 = prepareStory(Template, {
   }
 })
 
+export const WithL1Left = prepareStory(Template, {
+  args: {
+    navAlign: 'left',
+    logoProps: {
+      target: '_blank',
+      href: 'https://www.ailinkedlaw.com/',
+      children: <img src={LogoImg} alt="logo" />
+    },
+    platform: mastheadKnobs.l1Platform,
+    hasSearch: boolean(
+      'show the search functionality (hasSearch)',
+      true
+    ),
+    placeHolderText: text(
+      'search placeholder (placeHolderText)',
+      'Search all of IBM'
+    ),
+    mastheadL1Data: {
+      navigationL1: mastheadKnobs.navigation.custom,
+    },
+    selectedMenuItem: text(
+      'selected menu item (selectedMenuItem)',
+      'Lorem ipsum dolor sit amet'
+    ),
+  }
+})
+
 export const WithAlternateLogoAndTooltip = prepareStory(Template, {
   args: {
     logoProps: {
@@ -151,6 +228,31 @@ export const WithAlternateLogoAndTooltip = prepareStory(Template, {
       'selected menu item (selectedMenuItem)',
       'Consulting & Services',
     ),
+    mastheadLogo: select(
+      'masthead logo data (mastheadLogo)',
+      mastheadKnobs.mastheadLogo,
+      mastheadKnobs.mastheadLogo.alternateWithTooltip,
+    ),
+  }
+})
+
+export const Demo2 = prepareStory(Template, {
+  args: {
+    logoProps: {
+      target: '_blank',
+      href: 'https://www.ailinkedlaw.com/',
+      children: <img src={LogoImg} alt="logo" />
+    },
+    navigation: Nav2.mastheadNav.links,
+    hasSearch: boolean(
+      'show the search functionality (hasSearch)',
+      true,
+    ),
+    placeHolderText: text(
+      'search placeholder (placeHolderText)',
+      'Search all of IBM',
+    ),
+    selectedMenuItem: 'Products',
     mastheadLogo: select(
       'masthead logo data (mastheadLogo)',
       mastheadKnobs.mastheadLogo,
