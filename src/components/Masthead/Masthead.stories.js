@@ -6,7 +6,7 @@ import mastheadKnobs from './data/Masthead.stories.knobs.js';
 import styles from './_storybook-styles.scss'
 import { prepareStory } from '@/global/js/utils/story-helper'
 import LogoImg from '@/assets/images/logo.png'
-import { HeaderGlobalAction } from '@carbon/react'
+import { HeaderGlobalAction, HeaderMenuButton } from '@carbon/react'
 import { Notification, Switcher } from '@carbon/icons-react'
 import { action } from '@storybook/addon-actions'
 
@@ -33,6 +33,16 @@ const customProfileLogin = text(
 
 export const Default = prepareStory(Template, {
   args: {
+    // mastheadmenuButton: (isSideNavExpanded, onClickSideNavExpand) => (
+    //   <HeaderMenuButton
+    //     aria-label={isSideNavExpanded ? 'Close menu' : 'Open menu'}
+    //     onClick={onClickSideNavExpand}
+    //     isActive={isSideNavExpanded}
+    //   />
+    // ),
+    mastheadmenuButton:  (isSideNavExpanded, onClickSideNavExpand) => {
+      console.log({isSideNavExpanded, onClickSideNavExpand})
+    },
     navAlign: 'center',
     hasProfileProps: {
       children: (
@@ -153,6 +163,10 @@ export const WithCustomNavigation = prepareStory(Template, {
 
 export const WithL1 = prepareStory(Template, {
   args: {
+    mastheadmenuButton:  (isSideNavExpanded, onClickSideNavExpand) => {
+      console.log({isSideNavExpanded, onClickSideNavExpand})
+    },
+    hideMenuButton: false,
     logoProps: {
       target: '_blank',
       href: 'https://www.ailinkedlaw.com/',

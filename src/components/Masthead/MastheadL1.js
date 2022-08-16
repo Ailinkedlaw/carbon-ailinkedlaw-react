@@ -43,8 +43,7 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
   }, []);
   
   const mastheadL1Links = navigationL1.map((link, index) => {
-    const selectedUrlItem =
-      childLinkChecker && childLinkChecker(link, root.location?.href);
+    const selectedUrlItem = childLinkChecker && childLinkChecker(link, root.location?.href);
     const autoid = `${stablePrefix}--masthead-${rest.navType}__l1-nav${index}`;
     const selected = rest.selectedMenuItem
       ? link.titleEnglish === rest.selectedMenuItem
@@ -75,6 +74,12 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
       </HeaderMenuItem>
     );
   });
+  
+  try {
+    console.log(rest.platform.url)
+  } catch (e) {
+    debugger
+  }
   
   return (
     <>

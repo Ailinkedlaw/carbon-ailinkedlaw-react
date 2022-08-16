@@ -88,6 +88,8 @@ const Masthead = ({
   mastheadL1Data,
   selectedMenuItem,
   logoProps = {},
+  mastheadmenuButton,
+  hideMenuButton,
   ...mastheadProps
 }) => {
   /**
@@ -168,7 +170,7 @@ const Masthead = ({
   
   const headerSearchClasses = cx({
     [`${prefix}--masthead__platform`]: platform,
-    [`${prefix}--masthead__header--search-active`]: isSearchActive,
+    [`${prefix}--masthead__header--search-active`]: isSearchActive
   });
   
   const [scrollOffset] = useState(root.scrollY);
@@ -341,7 +343,7 @@ const Masthead = ({
                     data-autoid={`${stablePrefix}--masthead-${navType}-sidenav__l0-menu`}
                     onClick={onClickSideNavExpand}
                     isActive={isSideNavExpanded}
-                    className={headerSearchClasses}
+                    className={cx({ ['masthead__header--menu-button']: hideMenuButton }, headerSearchClasses)}
                     onBlur={e => {
                       const platform = e.target.parentElement.querySelector(
                         `nav .${prefix}--side-nav__submenu-platform`
@@ -372,6 +374,8 @@ const Masthead = ({
                     }}
                   />
                 )}
+  
+                { mastheadmenuButton && mastheadmenuButton(isSideNavExpanded, onClickSideNavExpand) }
   
                 {(navigation || mastheadL1Data) && (
                   <MastheadLeftNav
@@ -511,10 +515,6 @@ Masthead.propTypes = {
       })
     ),
   ]),
-  /**
-   * 顶部右侧
-   */
-  hasProfileProps: PropTypes.object,
   
   /**
    * `true` to render SearchBar component.
@@ -624,6 +624,15 @@ Masthead.propTypes = {
    * 导航条对齐样式
    */
   navAlign: PropTypes.oneOf(['left', 'center']),
+  
+  /**
+   * 显示左上展开工具
+   */
+  hideMenuButton: PropTypes.bool,
+  /**
+   * 顶部右侧
+   */
+  hasProfileProps: PropTypes.object,
 };
 
 Masthead.defaultProps = {
@@ -638,6 +647,7 @@ Masthead.defaultProps = {
       </HeaderGlobalAction>
     )
   },
+  hideMenuButton: true,
   hasSearch: true,
   searchOpenOnload: false,
   selectedMenuItem: '',

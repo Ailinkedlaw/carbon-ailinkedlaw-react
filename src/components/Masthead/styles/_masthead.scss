@@ -312,7 +312,7 @@ $search-transition-timing: 95ms;
 
   .#{$prefix}--header__action {
     border: 2px solid transparent;
-    background-color: themes.$background!important;
+    background-color: themes.$background;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -368,12 +368,12 @@ $search-transition-timing: 95ms;
   }
 
   @include grid.breakpoint-up(800px) {
-    .#{$prefix}--header__menu-toggle__hidden {
-      display: none!important;
+    .masthead__header--menu-button {
+      display: none;
     }
 
     .#{$prefix}--header__nav {
-      display: block!important;
+      display: block;
     }
   }
 
