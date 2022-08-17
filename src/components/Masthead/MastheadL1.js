@@ -75,12 +75,6 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
     );
   });
   
-  try {
-    console.log(rest.platform.url)
-  } catch (e) {
-    debugger
-  }
-  
   return (
     <>
       <div className={className}>
