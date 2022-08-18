@@ -7,16 +7,12 @@
 
 import React, { forwardRef } from 'react'
 import cx from 'classnames'
-import {
-  Button,
-  IconButton,
-  OverflowMenu,
-  OverflowMenuItem,
-} from '@carbon/react'
+import { Button, IconButton, OverflowMenu, OverflowMenuItem } from '@carbon/react'
 import PropTypes from 'prop-types'
 import { CardHeader } from './CardHeader'
 import { CardFooter } from './CardFooter'
 import { pkg } from '@/settings'
+
 const componentName = 'Card'
 
 // Default values for props
@@ -153,7 +149,7 @@ export let Card = forwardRef(
       const clickable =
         (hasClickEvent && !productive) ||
         (hasClickEvent && productive && clickZone === 'one')
-      const cardProps = {
+      return {
         ...rest,
         ref,
         className: cx(
@@ -167,21 +163,17 @@ export let Card = forwardRef(
         ),
         ...(clickable && clickableProps),
       }
-
-      return cardProps
     }
 
     // the only reason this is necessary is for click zone 2
     const getHeaderBodyProps = () => {
       const clickable = hasClickEvent && clickZone === 'two'
-      const headerBodyProps = {
+      return {
         className: cx(`${blockClass}__header-body-container`, {
           [`${blockClass}__clickable`]: clickable,
         }),
         ...(clickable && clickableProps),
       }
-
-      return headerBodyProps
     }
 
     const getHeaderProps = () => ({
@@ -196,14 +188,12 @@ export let Card = forwardRef(
 
     const getBodyProps = () => {
       const clickable = hasClickEvent && clickZone === 'three'
-      const bodyProps = {
+      return {
         className: cx(`${blockClass}__body`, {
           [`${blockClass}__clickable`]: clickable,
         }),
         ...(clickable && clickableProps),
       }
-
-      return bodyProps
     }
 
     const getFooterProps = () => ({
