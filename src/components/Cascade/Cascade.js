@@ -27,7 +27,7 @@ export let Cascade = forwardRef(
       children,
       className,
       grid = defaults.grid,
-
+      gridProps = {},
       // Collect any other property values passed in.
       ...rest
     },
@@ -63,7 +63,7 @@ export let Cascade = forwardRef(
       })
       return (
         <div {...props}>
-          <Grid>{gridElm}</Grid>
+          <Grid {...gridProps}>{gridElm}</Grid>
         </div>
       )
     }
@@ -91,4 +91,8 @@ Cascade.propTypes = {
    * Check the documentation for additional clarification.
    */
   grid: PropTypes.bool,
+  /**
+   * GridProps.
+   */
+  gridProps: Grid.propTypes
 }
