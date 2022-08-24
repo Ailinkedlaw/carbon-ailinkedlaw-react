@@ -99,7 +99,7 @@ const Masthead = ({
    * @returns {*} The user status
    */
   const [isAuthenticated, setStatus] = useState(false);
-  
+
   /**
    * Returns IBM.com authenticated status
    *
@@ -108,14 +108,14 @@ const Masthead = ({
    */
   const [isSearchActive, setIsSearchActive] = useState(searchOpenOnload);
   const searchIconButton = useRef(null);
-  
+
   const handleChangeSearchActive = useCallback((event, { isOpen }) => {
     setIsSearchActive(isOpen);
     setTimeout(() => {
       searchIconButton.current.focus();
     }, 0);
   }, []);
-  
+
   useEffect(() => {
     let unmounted = false;
     (async () => {
@@ -128,13 +128,13 @@ const Masthead = ({
       unmounted = true;
     };
   }, []);
-  
+
   let [mastheadData, setMastheadData] = useState([]);
   const [profileData, setProfileData] = useState({
     signedin: [],
     signedout: [],
   });
-  
+
   useEffect(() => {
     let unmounted = false;
     (async () => {
@@ -152,7 +152,7 @@ const Masthead = ({
       unmounted = true;
     };
   }, []);
-  
+
   /**
    * 强制配置文件菜单位置固定以防止滚动
    *
@@ -164,18 +164,18 @@ const Masthead = ({
     profileMenuList.closest('ul').style.position = 'fixed';
     profileMenuList.closest('ul').style.top = '48px';
   };
-  
+
   const stickyRef = useRef(null);
   const mastheadL1Ref = useRef(null);
-  
+
   const headerSearchClasses = cx({
     [`${prefix}--masthead__platform`]: platform,
     [`${prefix}--masthead__header--search-active`]: isSearchActive
   });
-  
+
   const [scrollOffset] = useState(root.scrollY);
   const [tableOfContents, setTableOfContents] = useState(null);
-  
+
   useEffect(() => {
     setTableOfContents(
       document.querySelector('.bx--tableofcontents__sidebar') ??
@@ -184,10 +184,10 @@ const Masthead = ({
         ?.shadowRoot.querySelector('.bx--tableofcontents__navbar')
     );
   }, [tableOfContents]);
-  
+
   useEffect(() => {
     let lastScrollPosition = 0;
-    
+
     /**
      * 设置粘性标头。如果 L0 和 L1 都存在，则 L1 将是粘性的.
      *
@@ -203,12 +203,12 @@ const Masthead = ({
           Math.min(0, tocBoundingClient.top - stickyRef.current.offsetHeight)
         );
         const tocPosition = tocBoundingClient.top + lastScrollPosition - window.scrollY;
-        
+
         tableOfContents.style.top = `${Math.max(
           Math.min(tocPosition, stickyRef.current.offsetHeight),
           0
         )}px`;
-        
+
         const regularMastheadTop =
           window.scrollY < lastScrollPosition ? 0 :
             -Math.min(
@@ -216,23 +216,23 @@ const Masthead = ({
               Math.abs(mobileMastheadTop)
             );
         const mastheadTop = window.innerWidth < gridBreakpoint ? mobileMastheadTop : regularMastheadTop;
-        
+
         stickyRef.current.style.top = `${mastheadTop}px`;
         stickyRef.current.style.transition = 'none';
-        
+
         /**
          * L0 将在向下滚动时隐藏，在移动 ToC 存在时在向上滚动时显示
          */
       } else if (tableOfContents != null && stickyRef.current !== null) {
         const tocBoundingClient = tableOfContents.getBoundingClientRect();
         stickyRef.current.style.transition = 'none';
-        
+
         const mastheadTop = Math.round(
           Math.min(0, tocBoundingClient.top - stickyRef.current.offsetHeight)
         );
         const tocPosition =
           tocBoundingClient.top + lastScrollPosition - window.scrollY;
-        
+
         if (
           tableOfContents?.getRootNode()?.host?.getAttribute('toc-layout') ===
           'horizontal'
@@ -243,7 +243,7 @@ const Masthead = ({
             Math.min(tocPosition, stickyRef.current.offsetHeight),
             0
           )}px`;
-          
+
           if (tableOfContents.style.top === '0px') {
             stickyRef.current.style.top = `-${stickyRef.current.offsetHeight}px`;
           } else if (
@@ -257,26 +257,26 @@ const Masthead = ({
       }
       lastScrollPosition = window.scrollY;
     });
-    
+
     return () => {
       root.removeEventListener('scroll', () => handleScroll);
     };
   }, [scrollOffset, tableOfContents]);
-  
+
   if (navigation) {
     switch (typeof navigation) {
-    case 'default':
-      // eslint-disable-next-line
-      mastheadData = mastheadData;
-      break;
-    case 'object':
-      mastheadData = navigation;
-      break;
-    default:
-      break;
+      case 'default':
+        // eslint-disable-next-line
+        mastheadData = mastheadData;
+        break;
+      case 'object':
+        mastheadData = navigation;
+        break;
+      default:
+        break;
     }
   }
-  
+
   // 为 autoids 设置导航类型（默认、备用或生态系统）
   let navType;
   if (!navigation && !platform) {
@@ -286,7 +286,7 @@ const Masthead = ({
   } else if (platform) {
     navType = 'eco';
   }
-  
+
   /**
    * 检查菜单部分中是否有与当前 url 匹配的子项，并为第一个有效结果返回 true
    *
@@ -295,20 +295,20 @@ const Masthead = ({
   // eslint-disable-next-line class-methods-use-this
   const _hasCurrentUrl = () => {
     let matchFound = false;
-    
+
     return (sections, currentUrlPath) => {
       if (!matchFound) {
         if (sections.url === currentUrlPath) {
           matchFound = true;
         } else if (sections?.menuSections?.[0]) {
           const { menuItems } = sections?.menuSections[0];
-          
-          for (let i = 0; i < menuItems.length; i ++) {
+
+          for (let i = 0; i < menuItems.length; i++) {
             if (
               menuItems[i]?.url === currentUrlPath ||
-                menuItems[i]?.megapanelContent?.quickLinks?.links?.filter(
-                  link => link.url === currentUrlPath
-                ).length
+              menuItems[i]?.megapanelContent?.quickLinks?.links?.filter(
+                link => link.url === currentUrlPath
+              ).length
             ) {
               matchFound = true;
             }
@@ -319,7 +319,7 @@ const Masthead = ({
       return false;
     };
   };
-  
+
   return (
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => {
@@ -328,7 +328,7 @@ const Masthead = ({
         } else {
           root.document?.body?.classList.remove(`${prefix}--body__lock-scroll`);
         }
-  
+
         return (
           <div className={`${prefix}--masthead ${prefix}--nav-align-${navAlign}`} ref={stickyRef}>
             <div className={`${prefix}--masthead__l0`}>
@@ -348,7 +348,7 @@ const Masthead = ({
                       const platform = e.target.parentElement.querySelector(
                         `nav .${prefix}--side-nav__submenu-platform`
                       );
-  
+
                       const firstMenuItem =
                         e.target.parentElement.querySelector(
                           `.${prefix}--side-nav__menu-section--expanded li:first-of-type button`
@@ -356,7 +356,7 @@ const Masthead = ({
                         e.target.parentElement.querySelector(
                           `.${prefix}--side-nav__menu-section--expanded li:first-of-type a`
                         );
-  
+
                       const lastMenuItem =
                         e.target.parentElement.querySelector(
                           `.${prefix}--side-nav__menu-section--expanded li:last-of-type button`
@@ -364,19 +364,19 @@ const Masthead = ({
                         e.target.parentElement.querySelector(
                           `.${prefix}--side-nav__menu-section--expanded li:last-of-type a`
                         );
-  
+
                       if (
                         e.relatedTarget &&
                         e.relatedTarget !== firstMenuItem &&
                         e.relatedTarget !== platform
                       ) { return lastMenuItem.focus(); }
-  
+
                     }}
                   />
                 )}
-  
-                { mastheadmenuButton && mastheadmenuButton(isSideNavExpanded, onClickSideNavExpand) }
-  
+
+                {/* { mastheadmenuButton && mastheadmenuButton(isSideNavExpanded, onClickSideNavExpand) } */}
+
                 {(navigation || mastheadL1Data) && (
                   <MastheadLeftNav
                     {...mastheadProps}
@@ -390,13 +390,13 @@ const Masthead = ({
                     onOverlayClick={onClickSideNavExpand}
                   />
                 )}
-  
+
                 <IbmLogo
                   autoid={`${stablePrefix}--masthead-${navType}__l0-logo`}
                   isSearchActive={isSearchActive}
                   {...logoProps}
                 />
-  
+
                 <div
                   className={`${prefix}--header__search ${headerSearchClasses}`}>
                   {
@@ -426,7 +426,7 @@ const Masthead = ({
                     />
                   )}
                 </div>
-  
+
                 {hasProfileProps && (
                   <HeaderGlobalBar
                     className={`${prefix}--header__profile`}
@@ -437,7 +437,7 @@ const Masthead = ({
                     {/*   onClick={console.log}> */}
                     {/*   <Notification size={20} /> */}
                     {/* </HeaderGlobalAction> */}
-                    
+
                     {/* <MastheadProfile */}
                     {/*   overflowMenuProps={{ */}
                     {/*     ariaLabel: 'User Profile', */}
@@ -515,17 +515,17 @@ Masthead.propTypes = {
       })
     ),
   ]),
-  
+
   /**
    * `true` to render SearchBar component.
    */
   hasSearch: PropTypes.bool,
-  
+
   /**
    * `true` to have search field open on page load. Does not close `onBlur`
    */
   searchOpenOnload: PropTypes.bool,
-  
+
   /**
    * Platform name that appears on L0.
    * Includes platform name (only available with `default` and `custom navigation`).
@@ -536,22 +536,22 @@ Masthead.propTypes = {
     name: PropTypes.string,
     url: PropTypes.string,
   }),
-  
+
   /**
    * L0 menu item to render with selected state. Needs to match `titleEnglish` field from nav data.
    */
   selectedMenuItem: PropTypes.string,
-  
+
   /**
    * Placeholder value for search input.
    */
   placeHolderText: PropTypes.string,
-  
+
   /**
    * Initial value for search input.
    */
   initialSearchTerm: PropTypes.string,
-  
+
   /**
    * All the data that goes to the L1 of the Masthead.
    */
@@ -566,12 +566,12 @@ Masthead.propTypes = {
       name: PropTypes.string,
       url: PropTypes.string,
     }),
-    
+
     /**
      * Text for the eyebrow link in masthead L1 (experimental).
      */
     eyebrowText: PropTypes.string,
-    
+
     /**
      * URL for the eyebrow link in masthead L1 (experimental).
      */
@@ -609,22 +609,22 @@ Masthead.propTypes = {
       ),
     ]),
   }),
-  
+
   /**
    * Custom typeahead API function
    */
   customTypeaheadApi: PropTypes.func,
-  
+
   /**
    * Multiple search sections
    */
   multiSection: PropTypes.bool,
-  
+
   /**
    * 导航条对齐样式
    */
   navAlign: PropTypes.oneOf(['left', 'center']),
-  
+
   /**
    * 显示左上展开工具
    */
