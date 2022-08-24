@@ -90,8 +90,14 @@ const Masthead = ({
   logoProps = {},
   mastheadmenuButton,
   hideMenuButton,
+  isSideNavExpand,
+  menuToogleClick,
   ...mastheadProps
 }) => {
+
+
+
+
   /**
    * Returns IBM.com authenticated status
    *
@@ -266,7 +272,6 @@ const Masthead = ({
   if (navigation) {
     switch (typeof navigation) {
       case 'default':
-        // eslint-disable-next-line
         mastheadData = mastheadData;
         break;
       case 'object':
@@ -323,7 +328,8 @@ const Masthead = ({
   return (
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => {
-        if (isSideNavExpanded) {
+
+        if (isSideNavExpand) {
           root.document?.body?.classList.add(`${prefix}--body__lock-scroll`);
         } else {
           root.document?.body?.classList.remove(`${prefix}--body__lock-scroll`);
@@ -339,11 +345,12 @@ const Masthead = ({
                 <SkipToContent />
                 {(mastheadL1Data || navigation) && (
                   <HeaderMenuButton
-                    aria-label={isSideNavExpanded ? 'Close menu' : 'Open menu'}
+                    aria-label={isSideNavExpand ? 'Close menu' : 'Open menu'}
                     data-autoid={`${stablePrefix}--masthead-${navType}-sidenav__l0-menu`}
-                    onClick={onClickSideNavExpand}
-                    isActive={isSideNavExpanded}
+                    onClick={() => { menuToogleClick(isSideNavExpand) }}
+                    isActive={isSideNavExpand}
                     className={cx({ ['masthead__header--menu-button']: hideMenuButton }, headerSearchClasses)}
+
                     onBlur={e => {
                       const platform = e.target.parentElement.querySelector(
                         `nav .${prefix}--side-nav__submenu-platform`
@@ -375,7 +382,7 @@ const Masthead = ({
                   />
                 )}
 
-                {/* { mastheadmenuButton && mastheadmenuButton(isSideNavExpanded, onClickSideNavExpand) } */}
+                {/* {mastheadmenuButton && mastheadmenuButton(isSideNavExpanded, onClickSideNavExpand)} */}
 
                 {(navigation || mastheadL1Data) && (
                   <MastheadLeftNav

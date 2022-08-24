@@ -8,9 +8,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "**/*.stories.*"
-      ],
+      "files": ["**/*.stories.*"],
       "rules": {
         "import/no-anonymous-default-export": "off"
       }
@@ -48,7 +46,7 @@
     "eqeqeq": [1, "allow-null"],
     "quotes": [2, "single"], // 单引号
     "jsx-quotes": [2, "prefer-double"], // jsx语法中使用双引号
-    "indent": [2, 2], // 缩进
+    // "indent": [2, 2], // 缩进
     "camelcase": 2, // 驼峰命名
     "react/jsx-tag-spacing": 2, // 自闭合标签前留一个空格
     "react/jsx-indent": [2, 2], // 语法缩进控制
@@ -72,18 +70,20 @@
     "curly": [2, "all"], //必须使用 if(){} 中的{}
     "spaced-comment": 1, // 注释风格不要有空格什么的
     // "space-unary-ops": [1, { "words": true, "nonwords": false }], // 一元运算符的前/后要不要加空格
-    "space-infix-ops": ["error", {"int32Hint": false}],
+    "space-infix-ops": ["error", { "int32Hint": false }],
     "space-before-function-paren": [1, "always"], //函数定义时括号前面要不要有空格
     "space-in-parens": [1, "never"], //小括号里面要不要有空格
-    "id-match": 0, // 命名检测
-    "space-unary-ops": [
-      2, {
-        "words": true,
-        "nonwords": false,
-        "overrides": {
-          "new": false,
-          "++": true
-        }
-    }]
+    "id-match": 0 // 命名检测
+    // "space-unary-ops": [
+    //   1,
+    //   {
+    //     "words": true,
+    //     "nonwords": false,
+    //     "overrides": {
+    //       "new": false,
+    //       "++": true
+    //     }
+    //   }
+    // ]
   }
 }

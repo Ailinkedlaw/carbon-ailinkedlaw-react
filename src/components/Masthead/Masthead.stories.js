@@ -13,6 +13,7 @@ import { action } from '@storybook/addon-actions'
 // demo
 import mastheadNav from './data/usen.json'
 import Nav2 from './data/demo-data.json'
+import { useState } from 'react';
 
 export default {
   title: 'Components/Masthead',
@@ -22,9 +23,13 @@ export default {
   argTypes: {},
 };
 
-const Template = (args) => (
-  <Masthead {...args} />
-)
+
+
+const Template = (args) => {
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  return <Masthead {...args} isSideNavExpand={isMenuOpen} menuToogleClick={(v) => { setIsMenuOpen(!v) }} />
+}
 
 const customProfileLogin = text(
   'custom profile login url (customProfileLogin)',
@@ -32,6 +37,7 @@ const customProfileLogin = text(
 )
 
 export const Default = prepareStory(Template, {
+
   args: {
     // mastheadmenuButton: (isSideNavExpanded, onClickSideNavExpand) => (
     //   <HeaderMenuButton
@@ -40,8 +46,12 @@ export const Default = prepareStory(Template, {
     //     isActive={isSideNavExpanded}
     //   />
     // ),
-    mastheadmenuButton:  (isSideNavExpanded, onClickSideNavExpand) => {
-      console.log({isSideNavExpanded, onClickSideNavExpand})
+    mastheadmenuButton: (isSideNavExpanded, onClickSideNavExpand) => {
+      // console.log({ isSideNavExpanded, onClickSideNavExpand })
+      // console.log(2222)
+    },
+    menuToogleClick: () => {
+      console.log(2222)
     },
     navAlign: 'center',
     hasProfileProps: {
@@ -163,8 +173,8 @@ export const WithCustomNavigation = prepareStory(Template, {
 
 export const WithL1 = prepareStory(Template, {
   args: {
-    mastheadmenuButton:  (isSideNavExpanded, onClickSideNavExpand) => {
-      console.log({isSideNavExpanded, onClickSideNavExpand})
+    mastheadmenuButton: (isSideNavExpanded, onClickSideNavExpand) => {
+      console.log({ isSideNavExpanded, onClickSideNavExpand })
     },
     hideMenuButton: false,
     logoProps: {
