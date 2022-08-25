@@ -1,4 +1,4 @@
-import { withCarbonTheme } from '@carbon/storybook-addon-theme/react';
+import { withCarbonTheme } from '@carbon/storybook-addon-theme'; // for React
 import { ArgsTable, Canvas, Story, Source } from '@storybook/addon-docs';
 import LinkTo from '@storybook/addon-links/react';
 import { themes } from '@storybook/theming';
