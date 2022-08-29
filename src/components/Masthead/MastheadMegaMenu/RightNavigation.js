@@ -23,15 +23,17 @@ const RightNavigation = ({
   hasHighlights,
   ...rest
 }) => (
-  <div className={`${prefix}--masthead__megamenu__categories-section`}>
+  <div className={`${prefix}--masthead__megamenu__categories-section`} >
+
     <div
       className={classnames(`${prefix}--masthead__megamenu__categories`, {
         [`${prefix}--masthead__megamenu--hasHighlights`]: hasHighlights,
         [`${prefix}--masthead__megamenu--hasViewAllLink`]: viewAllLinkHref,
       })}>
       {children}
+
     </div>
-    
+
     {/* {viewAllLinkHref && ( */}
     {/*   <LinkWithIcon */}
     {/*     className={`${prefix}--masthead__megamenu__view-all-cta`} */}
@@ -42,7 +44,7 @@ const RightNavigation = ({
     {/*     <ArrowRight /> */}
     {/*   </LinkWithIcon> */}
     {/* )} */}
-    
+
   </div>
 );
 

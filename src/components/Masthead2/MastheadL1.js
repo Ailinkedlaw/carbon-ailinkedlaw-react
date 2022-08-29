@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import cx from 'classnames';
-import classnames from 'classnames';
 import {
   // HeaderMenu,
   HeaderMenuItem,
@@ -15,7 +14,7 @@ import PropTypes from 'prop-types';
 import root from 'window-or-global';
 
 import { pkg } from '@/settings'
-import './styles/selectmenu.scss'
+
 
 // 内部组件
 import HeaderNavContainer from './HeaderNavContainer';
@@ -32,81 +31,50 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
     [`${prefix}--masthead__l1`]: true,
   });
   const childLinkChecker = rest.hasCurrentUrl();
-
-  const [overlay, setOverlay] = useState(false);
-
-
-
-  // useEffect(() => {
-  //   document
-  //     .querySelector(`.${prefix}--header__menu-bar`)
-  //     ?.setAttribute('role', 'menu');
-  //   document.querySelectorAll(`.${prefix}--header__menu-bar li`).forEach(e => {
-  //     e.setAttribute('role', 'menuitem');
-  //     // e.querySelector('a').removeAttribute('role');
-  //   });
-  // }, []);
-
+  
   useEffect(() => {
     document
       .querySelector(`.${prefix}--header__menu-bar`)
       ?.setAttribute('role', 'menu');
     document.querySelectorAll(`.${prefix}--header__menu-bar li`).forEach(e => {
       e.setAttribute('role', 'menuitem');
-      // e.querySelector('a').removeAttribute('role');
+      e.querySelector('a').removeAttribute('role');
     });
   }, []);
-
+  
   const mastheadL1Links = navigationL1.map((link, index) => {
     const selectedUrlItem = childLinkChecker && childLinkChecker(link, root.location?.href);
     const autoid = `${stablePrefix}--masthead-${rest.navType}__l1-nav${index}`;
     const selected = rest.selectedMenuItem
       ? link.titleEnglish === rest.selectedMenuItem
       : selectedUrlItem;
-
-    if (link.children) {
-      if (!link.children[0].children) {
-        return (
-          <HeaderMenu aria-label={link.title} menuLinkName={link.title}>
-            <div>
-              <SelectMenu data={link.children} />
-            </div >
-          </HeaderMenu >
-
-        )
-      }
+    if (link.hasMenu || link.hasMegapanel) {
       return (
         <HeaderMenu
           aria-label={link.title}
           menuLinkName={link.title}
-          className={classnames({
-            [`${prefix}--masthead__megamenu__l1-nav`]: true,
+          className={cx({
+            [`${prefix}--masthead__megamenu__l1-nav`]: link.hasMegapanel,
           })}
           selected={selected}
           autoId={autoid}
-          key={'i'}
-          disableScroll={true}
-          setOverlay={setOverlay}
-          dataTitle={'dataTitle'}
-        >
-          {/* <div style={{ width: '100px', height: '200px', background: 'red' }}> </div> */}
-          {renderNav(link, autoid)}
+          key={index}>
+          {renderNav(link, rest.navType, autoid)}
         </HeaderMenu>
       );
     }
-
+    
     return (
       <HeaderMenuItem
         data-selected={`${!!selected}`}
         href={link.url}
         data-autoid={autoid}
-        key={'i'}>
+        key={index}>
         {link.title}
       </HeaderMenuItem>
-    )
-
+    );
   });
-
+  
   return (
     <>
       <div className={className}>
@@ -131,48 +99,6 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
   );
 }
 
-const deepClone = (data) => {
-  return JSON.parse(JSON.stringify(data))
-}
-const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction }) => {
-  // const layoutSettings = useSelector(
-  //   (state) => state.globalSetting
-  // ).layoutBuilder
-  // const navitage = useNavigate()
-  // const { fontSizeMode } = layoutSettings.basic
-  const arr = deepClone(data)
-  const liArr = arr.sort((a, b) => {
-    return a.title.length - b.title.length;
-  });
-  const liLenth = liArr[liArr.length - 1].title.length;
-
-  return (
-    <div className="select-menu-box2">
-      <ul
-        className="menu-ul"
-        style={{}}
-      >
-        {/* <div style={{ height: '20px', background: 'var(--cds-background)', width: `${(liLenth * 18) + 20}px` }}></div> */}
-        {/* style={{ top: (!isHide) ? `-${topVal}px` : '3.125rem', width: `${(liLenth * 18) + 20}px`, minWidth: '100%' }}  */}
-        {data.map((item, index) => {
-          return (
-            <li
-              key={index}
-              className="menu-li"
-              onClick={() => {
-                navitage(item.url);
-                closeAction()
-              }}
-            >
-              {' '}
-              {item.title}{' '}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
 /**
  * 循环并呈现标头导航的链接列表
  *
@@ -181,13 +107,23 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction }) => {
  * @param {string} autoid megamenu items/menu items data-autoids的autoid前身
  * @returns {object} JSX object
  */
-
-
-function renderNav (link, autoid) {
-
+function renderNav (link, navType, autoid) {
   const navItems = [];
-  if (link.children && link.children[0].children) {
-    navItems.push(<MegaMenu key={link.title} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} />);
+  if (link.hasMegapanel) {
+    navItems.push(<MegaMenu key={link.title} data={link} autoid={autoid} />);
+  } else {
+    link.menuSections.forEach((section, i) => {
+      section.menuItems.forEach((item, j) => {
+        navItems.push(
+          <HeaderMenuItem
+            href={item.url}
+            data-autoid={`${stablePrefix}--masthead-${navType}__l1-nav${i}-item${j}`}
+            key={item.title}>
+            {item.title}
+          </HeaderMenuItem>
+        );
+      });
+    });
   }
   return navItems;
 }
@@ -197,12 +133,12 @@ MastheadL1.propTypes = {
    * 标题（实验性）。
    */
   title: PropTypes.string,
-
+  
   /**
    * 可选标题链接（实验性）
    */
   titleLink: PropTypes.string,
-
+  
   /**
    * 包含标头 l1 导航元素的对象。
    */

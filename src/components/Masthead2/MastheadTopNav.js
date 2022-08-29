@@ -7,8 +7,6 @@
 
 import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
-import { useNavigate } from 'react-router-dom';
-import { Router } from 'node_modules/react-router-dom/index';
 
 import {
   // HeaderMenu,
@@ -17,8 +15,10 @@ import {
   HeaderNavigation
 } from '@carbon/react'
 
-import { HeaderMenu } from '../carbon-components-react/UIShell'
-import Link from './Link';
+import {
+  HeaderMenu,
+} from '../carbon-components-react/UIShell'
+
 
 import HeaderNavContainer from './HeaderNavContainer';
 import MegaMenu from './MastheadMegaMenu/MegaMenu';
@@ -28,15 +28,12 @@ import root from 'window-or-global';
 const stablePrefix = 'dds'
 const prefix = 'cds'
 
-
-import './styles/selectmenu.scss'
-import { ConsoleWireless } from 'node_modules/@carbon/pictograms-react/lib/index';
 /**
  * Masthead top nav component.
  */
-const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
+const MastheadTopNav = ({ navigation, ...topNavProps }) => {
   const [overlay, setOverlay] = useState(false);
-  const [openIndex, setOpenIndex] = useState(-1)
+
   const childLinkChecker = topNavProps.hasCurrentUrl();
 
   useEffect(() => {
@@ -45,7 +42,7 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
       ?.setAttribute('role', 'menu');
     document.querySelectorAll(`.${prefix}--header__menu-bar li`).forEach(e => {
       e.setAttribute('role', 'menuitem');
-      // e.querySelector('a').removeAttribute('role');
+      e.querySelector('a').removeAttribute('role');
     });
   }, []);
 
@@ -54,7 +51,6 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
    *
    * @returns {*} Top masthead navigation
    */
-  // const navigation = menuData
   const mastheadLinks = navigation.map((link, i) => {
     const selectedUrlItem =
       childLinkChecker && childLinkChecker(link, root.location?.href);
@@ -69,58 +65,22 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
         .toLowerCase()
       : null;
 
-
-
-    if (link.children) {
-
-      if (!link.children[0].children) {
-        return (
-          <HeaderMenu
-            aria-label={link.title}
-            menuLinkName={link.title} exStatus={i === openIndex}
-            handleClick={() => { i === openIndex || setOpenIndex(i) }}
-            handleMouseLeave={() => { setOpenIndex(-1) }}
-          >
-            <div>
-              <SelectMenu data={link.children}
-                gotourl={gotourl}
-                closeAction={() => {
-                  setOpenIndex(-1)
-                }} />
-            </div >
-          </HeaderMenu >
-
-        )
-      }
-
+    if (link.hasMenu || link.hasMegapanel) {
       return (
         <HeaderMenu
           aria-label={link.title}
           menuLinkName={link.title}
-          exStatus={i === openIndex}
-          handleClick={() => {
-            if (!(i === openIndex)) {
-              setOpenIndex(i)
-              setOverlay(true)
-            }
-          }}
-          handleMouseLeave={() => {
-            setOpenIndex(-1)
-            setOverlay(false)
-          }}
-
           className={classnames({
             [`${prefix}--masthead__megamenu__l0-nav`]: link.hasMegapanel,
-            [`${prefix}--masthead__megamenu__l0-nav`]: true,
           })}
           selected={selected}
           autoId={autoid}
           key={i}
-          disableScroll={true}
+          disableScroll={link.hasMegapanel}
           setOverlay={setOverlay}
-          dataTitle={dataTitle} >
-          {renderNav(link, autoid, () => { setOpenIndex(-1); setOverlay(false); }, gotourl)}
-        </HeaderMenu >
+          dataTitle={dataTitle}>
+          {renderNav(link, autoid)}
+        </HeaderMenu>
       );
     }
 
@@ -162,51 +122,6 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
   );
 };
 
-
-const deepClone = (data) => {
-  return JSON.parse(JSON.stringify(data))
-}
-const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl }) => {
-  // const layoutSettings = useSelector(
-  //   (state) => state.globalSetting
-  // ).layoutBuilder
-  // const navitage = useNavigate()
-  // const { fontSizeMode } = layoutSettings.basic
-  const arr = deepClone(data)
-  const liArr = arr.sort((a, b) => {
-    return a.title.length - b.title.length;
-  });
-  const liLenth = liArr[liArr.length - 1].title.length;
-
-  return (
-    <div className="select-menu-box2">
-      <ul
-        className="menu-ul"
-        style={{}}
-      >
-        {/* <div style={{ height: '20px', background: 'var(--cds-background)', width: `${(liLenth * 18) + 20}px` }}></div> */}
-        {/* style={{ top: (!isHide) ? `-${topVal}px` : '3.125rem', width: `${(liLenth * 18) + 20}px`, minWidth: '100%' }}  */}
-        {data.map((item, index) => {
-          return (
-            <li
-              key={index}
-              className="menu-li"
-              onClick={() => {
-                // navitage(item.url);
-                gotourl(item.url)
-                closeAction()
-              }}
-            >
-              {item.title}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
-
-
 /**
  * Loops through and renders a list of links for the masthead nav
  *
@@ -214,11 +129,23 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
  * @param {string} autoid autoid predecessor for megamenu items/menu items data-autoids
  * @returns {object} JSX object
  */
-function renderNav (link, autoid, closeAction, gotourl) {
-
+function renderNav (link, autoid) {
   const navItems = [];
-  if (link.children && link.children[0].children) {
-    navItems.push(<MegaMenu key={link.title} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} closeAction={closeAction} gotourl={gotourl} />);
+  if (link.hasMegapanel) {
+    navItems.push(<MegaMenu key={link.title} data={link} autoid={autoid} />);
+  } else {
+    link.menuSections.forEach((section, i) => {
+      section.menuItems.forEach((item, j) => {
+        navItems.push(
+          <HeaderMenuItem
+            href={item.url}
+            data-autoid={`${autoid}--subnav-col${i}-item${j}`}
+            key={item.title}>
+            {item.title}
+          </HeaderMenuItem>
+        );
+      });
+    });
   }
   return navItems;
 }

@@ -49,7 +49,7 @@ const MastheadLeftNav = ({
   const _selectedLeftNavItems = () => {
     let matchFound = false;
     const selectedItems = { level0: '', level1: '', level2: '' };
-
+    
     return ({
       menu = [
         { url: '', megapanelContent: { quickLinks: { links: [{ url: '' }] } } },
@@ -65,7 +65,7 @@ const MastheadLeftNav = ({
         }
         // check if child url matches current url path
         else {
-          for (let i = 0; i < menu?.length; i++) {
+          for (let i = 0; i < menu?.length; i ++) {
             if (menu[i]?.url === currentUrlPath) {
               selectedItems.level0 = `${key}`;
               selectedItems.level1 = `${key}-${i}`;
@@ -73,7 +73,7 @@ const MastheadLeftNav = ({
               break;
             } else {
               const links = menu[i]?.megapanelContent?.quickLinks?.links;
-              for (let k = 0; k < links?.length; k++) {
+              for (let k = 0; k < links?.length; k ++) {
                 if (links[k]?.url === currentUrlPath) {
                   selectedItems.level0 = `${key}`;
                   selectedItems.level1 = `${key}-${i}`;
@@ -90,9 +90,9 @@ const MastheadLeftNav = ({
       return selectedItems;
     }
   }
-
+  
   const selectedUrlCheck = _selectedLeftNavItems();
-
+  
   /**
    * 跟踪哪个菜单部分可见/展开，并将当前可见面板与其父菜单面板联系起来
    *
@@ -104,22 +104,22 @@ const MastheadLeftNav = ({
    * 5. User then clicks back button again, going back to first panel --> {level0: -1, level1: -1}
    */
   const [menuState, setMenuState] = useState({ level0: -1, level1: -1 });
-
+  
   // reset the left nav to default menu section when closed
   useEffect(() => {
     if (!isSideNavExpanded) {
       setMenuState({ level0: -1, level1: -1 });
     }
   }, [isSideNavExpanded]);
-
+  
   const sideNavRef = useRef();
-
+  
   const level0Items = [];
   const level1Items = [];
-
+  
   const sideNav = () => {
     let selectedItems;
-
+    
     navigation.map((link, i) => {
       const dataTitle = link.titleEnglish
         ? link.titleEnglish
@@ -127,13 +127,13 @@ const MastheadLeftNav = ({
           .replace(/ +/g, '-')
           .toLowerCase()
         : null;
-
+      
       const autoid = `${stablePrefix}--masthead-${rest.navType}-sidenav__${rest.hasL1Data ? 'l1' : 'l0'}-nav${i}`;
-
+      
       const menuItems = link.menuSections?.[0]?.menuItems;
       selectedItems = selectedUrlCheck({ menu: menuItems, key: i, parentItemUrl: link.url });
-
-
+      
+      
       if (link.hasMenu || link.hasMegaPanel || link.menuSections?.length !== 0) {
         level1Items.push({
           title: link.title,
@@ -172,7 +172,7 @@ const MastheadLeftNav = ({
         );
       }
     });
-
+    
     const level1 = _renderLevel1Submenus(
       level1Items,
       backButtonText,
@@ -182,7 +182,7 @@ const MastheadLeftNav = ({
       rest.selectedMenuItem,
       selectedItems
     );
-
+    
     const level2Submenus = _renderLevel2Submenus(
       level1.submenus,
       backButtonText,
@@ -192,7 +192,7 @@ const MastheadLeftNav = ({
       rest.selectedMenuItem,
       selectedItems
     );
-
+    
     return (
       <div>
         <SideNavMenuSection
@@ -206,8 +206,8 @@ const MastheadLeftNav = ({
       </div>
     )
   }
-
-
+  
+  
   return (
     <SideNav
       aria-label="Side navigation"
@@ -261,29 +261,29 @@ function _renderLevel1Submenus (
 ) {
   // gather submenu items for next level
   const submenus = [];
-
+  
   const sideNavMenuSections = menuItems.map((menu, i) => {
     // get array of highlighted menu items to render first
     let highlightedItems = [];
     const items = [];
-
+    
     menu.sections?.[0].menuItems.forEach(item => {
       if (item.highlighted) {
         return highlightedItems.push(item);
       }
       return items.push(item);
     });
-
+    
     const sortedMenu = highlightedItems.concat(items);
     const highlightedCount = highlightedItems.length;
-
+    
     return (
       <SideNavMenuSection
         isSubmenu
         className={cx({
           [`${prefix}--side-nav__menu-section-submenu`]: true,
           [`${prefix}--side-nav__menu-section-submenu--expanded`]:
-            menuState.level0 === menu.parentKey && menuState.level1 >= 0,
+          menuState.level0 === menu.parentKey && menuState.level1 >= 0,
         })}
         id={`panel__(${menu.parentKey},-1)`}
         heading={menu.sections?.[0]?.heading}
@@ -302,13 +302,13 @@ function _renderLevel1Submenus (
             parentKey: menu.parentKey,
             index,
           });
-
+          
           const highlightedClass =
             (highlightedCount !== 0 &&
               index + 1 === highlightedCount &&
               `${prefix}--masthead__side-nav__last-highlighted`) ||
             null;
-
+          
           // console.log('_renderLevel1Submenus', item)
           if (item.megapanelContent) {
             return (
@@ -326,10 +326,11 @@ function _renderLevel1Submenus (
               />
             );
           }
-
+          
           return (
             <SideNavMenuItem
               href={item.url}
+              className={highlightedClass}
               data-autoid={`${menu.autoid}-list${index}`}
               key={item.title}
               className={
@@ -346,7 +347,7 @@ function _renderLevel1Submenus (
       </SideNavMenuSection>
     );
   });
-
+  
   return { menuSections: sideNavMenuSections, submenus };
 }
 
@@ -408,7 +409,7 @@ function _renderLevel2Submenus (
       </SideNavMenuSection>
     );
   });
-
+  
   return sideNavMenuSections;
 }
 
@@ -417,7 +418,7 @@ MastheadLeftNav.propTypes = {
    * Back button text
    */
   backButtonText: PropTypes.string,
-
+  
   /**
    * Object containing left navigation elements.
    */
@@ -442,7 +443,7 @@ MastheadLeftNav.propTypes = {
    * `true` to make the sidenav expanded.
    */
   isSideNavExpanded: PropTypes.bool,
-
+  
   /**
    * Platform object with name and url
    */

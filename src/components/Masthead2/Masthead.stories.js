@@ -16,18 +16,19 @@ import Nav2 from './data/demo-data.json'
 import { useState } from 'react';
 
 export default {
-  title: 'Components/MastheadBitz',
+  title: 'Components/Masthead',
   parameters: {
     styles
   },
   argTypes: {},
 };
-import menuData from './menu-data';
+
 
 
 const Template = (args) => {
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  return <Masthead {...args} isSideNavExpand={isMenuOpen} menuToogleClick={(v) => { setIsMenuOpen(!v) }} menudata={menuData} gotourl={(res) => { console.log(res) }} />
+  return <Masthead {...args} isSideNavExpand={isMenuOpen} menuToogleClick={(v) => { setIsMenuOpen(!v) }} />
 }
 
 const customProfileLogin = text(

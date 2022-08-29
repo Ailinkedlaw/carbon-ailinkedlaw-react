@@ -92,8 +92,6 @@ const Masthead = ({
   hideMenuButton,
   isSideNavExpand,
   menuToogleClick,
-  menudata,
-  gotourl,
   ...mastheadProps
 }) => {
 
@@ -413,11 +411,10 @@ const Masthead = ({
                       <MastheadTopNav
                         {...mastheadProps}
                         platform={platform}
-                        navigation={menudata}
+                        navigation={mastheadData}
                         navType={navType}
                         hasCurrentUrl={_hasCurrentUrl}
                         selectedMenuItem={selectedMenuItem}
-                        gotourl={gotourl}
                       />
                     )
                   }
@@ -442,6 +439,34 @@ const Masthead = ({
                     className={`${prefix}--header__profile`}
                     {...hasProfileProps}
                   >
+                    {/* <HeaderGlobalAction */}
+                    {/*   aria-label="Notifications" */}
+                    {/*   onClick={console.log}> */}
+                    {/*   <Notification size={20} /> */}
+                    {/* </HeaderGlobalAction> */}
+
+                    {/* <MastheadProfile */}
+                    {/*   overflowMenuProps={{ */}
+                    {/*     ariaLabel: 'User Profile', */}
+                    {/*     'data-autoid': `${stablePrefix}--masthead-${navType}__l0-account`, */}
+                    {/*     flipped: true, */}
+                    {/*     style: { width: '3rem' }, */}
+                    {/*     onOpen: () => _setProfileListPosition(), */}
+                    {/*     renderIcon: () => */}
+                    {/*       isAuthenticated ? <UserOnline size={20} /> : <User size={20} />, */}
+                    {/*   }} */}
+                    {/*   overflowMenuItemProps={{ */}
+                    {/*     wrapperClassName: `${prefix}--masthead__profile-item`, */}
+                    {/*   }} */}
+                    {/*   profileMenu={ */}
+                    {/*     isAuthenticated */}
+                    {/*       ? profileData.signedin */}
+                    {/*       : profileData.signedout */}
+                    {/*   } */}
+                    {/*   {...(mastheadProps.customProfileLogin && */}
+                    {/*   DDS_CUSTOM_PROFILE_LOGIN ? { customProfileLogin: mastheadProps.customProfileLogin, } : {})} */}
+                    {/*   navType={navType} */}
+                    {/* /> */}
                   </HeaderGlobalBar>
                 )}
               </Header>
@@ -450,7 +475,6 @@ const Masthead = ({
               <div ref={mastheadL1Ref}>
                 <MastheadL1
                   {...mastheadL1Data}
-                  navigationL1={menudata}
                   platform={platform}
                   navType={navType}
                   hasCurrentUrl={_hasCurrentUrl}
