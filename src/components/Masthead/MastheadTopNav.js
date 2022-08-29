@@ -27,7 +27,7 @@ import root from 'window-or-global';
 
 const stablePrefix = 'dds'
 const prefix = 'cds'
-import './styles/_selectmenu.scss'
+// import './styles/_selectmenu.scss'
 /**
  * Masthead top nav component.
  */
