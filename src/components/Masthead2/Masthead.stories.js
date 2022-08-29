@@ -16,7 +16,7 @@ import Nav2 from './data/demo-data.json'
 import { useState } from 'react';
 
 export default {
-  title: 'Components/Masthead',
+  title: 'Components/Masthead2',
   parameters: {
     styles
   },

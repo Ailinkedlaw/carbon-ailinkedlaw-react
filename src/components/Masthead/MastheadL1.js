@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import root from 'window-or-global';
 
 import { pkg } from '@/settings'
-import './styles/selectmenu.scss'
+import './styles/_selectmenu.scss'
 
 // 内部组件
 import HeaderNavContainer from './HeaderNavContainer';
