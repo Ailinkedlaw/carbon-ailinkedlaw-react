@@ -75,10 +75,10 @@ class HeaderMenu extends React.Component {
 
   static defaultProps = {
     renderMenuContent: defaultRenderMenuContent,
-    setOverlay: () => {},
+    setOverlay: () => { },
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       // Used to manage the expansion state of the menu
@@ -95,7 +95,8 @@ class HeaderMenu extends React.Component {
    * Toggle the expanded state of the menu on click.
    */
   handleOnClick = event => {
-    event.preventDefault();
+
+    // event.preventDefault();
     this.menuLinkRef.current.focus();
 
     // set the margin for masthead and body to adjust for scrollbar disappearing on scroll lock
@@ -104,6 +105,7 @@ class HeaderMenu extends React.Component {
     );
 
     this.setState(prevState => {
+
       if (this.props.disableScroll) {
         if (prevState.expanded) {
           this.props.setOverlay(false);
@@ -118,10 +120,12 @@ class HeaderMenu extends React.Component {
         }
       }
 
+
       const onMegaMenuToggle = new CustomEvent('onMegaMenuToggle', {
         bubbles: true,
         detail: { isExpanded: !prevState.expanded },
       });
+
       this.menuLinkRef.current.dispatchEvent(onMegaMenuToggle);
 
       return {
@@ -145,6 +149,23 @@ class HeaderMenu extends React.Component {
     }
   };
 
+
+  closeMenu = (event) => {
+    // const elems = root.document?.querySelectorAll(
+    // `.${prefix}--masthead__l0, body`
+    // );
+    // if (!event.currentTarget.contains(event.relatedTarget)) {
+    // this.setState({ expanded: false, selectedIndex: null });
+    // if (this.props.disableScroll) {
+    //   root.document?.body?.classList.remove(`${prefix}--body__lock-scroll`);
+    //   elems.forEach(elem => (elem.style.marginRight = '0px'));
+    // }
+    // }
+
+    // if (!event.relatedTarget || !this.checkMenuItems(event).length) {
+    // this.props.setOverlay(false);
+    // }
+  }
   /**
    * Checks if user has tabbed to menu items within the megamenu,
    * if so do not set overlay to false
@@ -174,15 +195,15 @@ class HeaderMenu extends React.Component {
       `.${prefix}--masthead__l0, body`
     );
     if (!event.currentTarget.contains(event.relatedTarget)) {
-      this.setState({ expanded: false, selectedIndex: null });
-      if (this.props.disableScroll) {
-        root.document?.body?.classList.remove(`${prefix}--body__lock-scroll`);
-        elems.forEach(elem => (elem.style.marginRight = '0px'));
-      }
+      // this.setState({ expanded: false, selectedIndex: null });
+      // if (this.props.disableScroll) {
+      //   root.document?.body?.classList.remove(`${prefix}--body__lock-scroll`);
+      //   elems.forEach(elem => (elem.style.marginRight = '0px'));
+      // }
     }
 
     if (!event.relatedTarget || !this.checkMenuItems(event).length) {
-      this.props.setOverlay(false);
+      // this.props.setOverlay(false);
     }
   };
 
@@ -230,6 +251,9 @@ class HeaderMenu extends React.Component {
     }
   };
 
+
+
+
   // eslint-disable-next-line react/sort-comp
   render () {
     const {
@@ -256,16 +280,23 @@ class HeaderMenu extends React.Component {
       <li
         className={className}
         data-autoid={autoId}
-        onKeyDown={this.handleMenuClose}
-        onBlur={this.handleOnBlur}>
+        onClick={this.props.handleClick}
+        onMouseLeave={(e) => {
+          this.props.handleMouseLeave()
+        }}
+      //  onKeyDown={this.handleMenuClose}
+      // onBlur={this.handleOnBlur}
+      // onClick={this.handleMenuClose}
+      >
         <a
           aria-haspopup="menu"
-          aria-expanded={this.state.expanded}
+          // aria-expanded={this.state.expanded}
+          aria-expanded={this.props.exStatus}
           className={`${prefix}--header__menu-item ${prefix}--header__menu-title`}
           data-title={dataTitle}
           href="#"
-          onClick={this.handleOnClick}
-          onKeyDown={this.handleOnKeyDown}
+          // onClick={this.handleOnClick}
+          //  onKeyDown={this.handleOnKeyDown}
           role="menuitem"
           data-selected={`${!!selected}`}
           tabIndex={0}

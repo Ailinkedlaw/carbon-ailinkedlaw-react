@@ -1,0 +1,59 @@
+/**
+ * Copyright IBM Corp. 2016, 2021
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@use '@carbon/themes/scss/themes' as themess;
+@use "@carbon/themes";
+@use "@carbon/layout";
+@use "@carbon/grid";
+@use "@carbon/type";
+@use '@carbon/styles/scss/motion';
+@use "@carbon/motion" as motionUtil;
+@use '../../../global/styles/project-settings' as c4p-settings;
+
+$dds-prefix: 'dds' !default;
+$prefix: themes.$prefix;
+
+$button-transition: background-color 110ms, border-color 110ms, color 110ms;
+$search-transition: cubic-bezier(0.2, 0, 0.38, 0.9);
+$search-transition-timing: 95ms;
+
+/// @access private
+@mixin masthead-top-nav-name {
+  @include type.type-style('heading-02', true);
+
+  color: themes.$text-primary	;
+  padding-left: layout.$spacing-05;
+  padding-right: layout.$spacing-05;
+  border: solid 2px transparent;
+  transition: $button-transition;
+  position: relative;
+  white-space: nowrap;
+  z-index: 1;
+  background-color: themes.$background;
+
+  @include grid.breakpoint(lg) {
+    margin-left: layout.$spacing-05;
+  }
+
+  &:hover {
+    background-color: themes.$background-hover;
+    color: themes.$text-primary;
+  }
+
+  &:active,
+  &:focus {
+    border-color: themes.$focus;
+    background-color: themes.$layer-01;
+  }
+
+  @include grid.breakpoint-down(800px) {
+    display: none;
+  }
+}
+
+
+

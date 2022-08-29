@@ -1,0 +1,415 @@
+/**
+ * Copyright IBM Corp. 2016, 2022
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+//@use '@carbon/themes/scss/themes' as themess;
+@use "@carbon/themes";
+@use "@carbon/layout";
+@use "@carbon/grid";
+@use "@carbon/type";
+@use '@carbon/styles/scss/motion';
+@use "@carbon/motion" as motionUtil;
+@use "@carbon/styles/scss/utilities/z-index";
+//@use "@carbon/styles/scss/utilities";
+//@use "@carbon/grid/scss/_inlined/mixins" as gridPrivate;
+// node_modules/@carbon/grid/scss/_inlined/_mixins.scss
+
+$dds-prefix: 'dds';
+$prefix: themes.$prefix;
+
+$button-transition: background-color 110ms, border-color 110ms, color 110ms;
+$search-transition: cubic-bezier(0.2, 0, 0.38, 0.9);
+$search-transition-timing: 95ms;
+
+@mixin masthead-megamenu {
+
+  $l0-nav-height: layout.$spacing-09;
+  $l1-nav-height: layout.rem(98px);
+
+  @keyframes expand {
+    0% {
+      overflow-y: hidden;
+      max-height: 0;
+    }
+
+    100% {
+      max-height: 100%;
+    }
+  }
+
+  @keyframes collapse {
+    0% {
+      max-height: 100vh;
+    }
+
+    100% {
+      max-height: 0;
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-top-nav-menu)
+    .#{$prefix}--header__menu-title[aria-expanded='true']
+    + .#{$prefix}--header__menu,
+  .#{$prefix}--header__nav
+    .#{$prefix}--masthead__megamenu__l0-nav
+    .#{$prefix}--header__menu-title[aria-expanded='true']
+    + .#{$prefix}--header__menu,
+  .#{$prefix}--header__nav
+    .#{$prefix}--masthead__megamenu__l1-nav
+    .#{$prefix}--header__menu-title[aria-expanded='true']
+    + .#{$prefix}--header__menu {
+    background-color: transparent;
+    bottom: 0;
+    box-shadow: none;
+  }
+
+  :host(#{$dds-prefix}-megamenu-top-nav-menu),
+  .#{$prefix}--masthead__megamenu__l0-nav,
+  .#{$prefix}--masthead__megamenu__l1-nav {
+    .#{$prefix}--header__menu {
+      position: fixed;
+      display: block;
+      visibility: hidden;
+      margin-bottom: layout.$spacing-10;
+      left: 0;
+      width: 100vw;
+      transform: translateZ(0.0001px);
+      z-index: z-index.z('header');
+      transition: visibility motion.$transition-expansion motion.$standard-easing;
+    }
+
+    .#{$prefix}--header__menu-title[aria-expanded='false']
+      + .#{$prefix}--header__menu {
+      ::slotted(#{$dds-prefix}-megamenu),
+      ::slotted(#{$dds-prefix}-cloud-megamenu),
+      .#{$prefix}--masthead__megamenu {
+        animation: motion.$transition-expansion motionUtil.motion(standard, expressive) collapse;
+      }
+    }
+
+    .#{$prefix}--header__menu-title[aria-expanded='true']
+      + .#{$prefix}--header__menu {
+      position: fixed;
+      left: 0;
+      // TODO: come up with solution to fix height for cloud drupal without hardcoding
+      height: calc(100vh - #{layout.$spacing-10} - #{layout.$spacing-09});
+      transform: translateZ(0);
+      visibility: visible;
+      margin-bottom: layout.$spacing-10;
+      // `100vw` in Shadow DOM causes delayed rendering bug in Safari
+      // https://github.com/carbon-design-system/carbon-for-ibm-dotcom/issues/4493
+      width: var(--#{$dds-prefix}-ce--viewport-width, 100vw);
+      min-height: layout.$spacing-11;
+
+      ::slotted(#{$dds-prefix}-megamenu),
+      ::slotted(#{$dds-prefix}-cloud-megamenu),
+      .#{$prefix}--masthead__megamenu {
+        animation: motion.$transition-expansion motionUtil.motion(standard, expressive) expand;
+      }
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-top-nav-menu),
+  .#{$prefix}--masthead__megamenu__l0-nav {
+    .#{$prefix}--header__menu-title[aria-expanded='true']
+      + .#{$prefix}--header__menu {
+      top: $l0-nav-height;
+    }
+  }
+
+  .#{$prefix}--masthead__megamenu__l1-nav
+    .#{$prefix}--header__menu-title[aria-expanded='true']
+    + .#{$prefix}--header__menu {
+    top: $l1-nav-height;
+  }
+
+  :host(#{$dds-prefix}-megamenu),
+  :host(#{$dds-prefix}-cloud-megamenu),
+  .#{$prefix}--masthead__megamenu {
+    display: block;
+    //noinspection CssInvalidPropertyValue
+    overflow-y: overlay;
+    overflow-x: hidden;
+    background-color: themes.$background;
+
+    &:focus {
+      outline: none;
+    }
+
+    box-shadow: 0 2px 6px themes.$shadow;
+    // @include utilities.box-shadow;
+
+    .#{$prefix}--masthead__megamenu__container {
+      width: 100vw;
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 99rem;
+      // @include carbon--make-container;
+      @include grid.breakpoint(sm) {
+        padding-right: 2rem;
+        padding-left: 2rem;
+      }
+
+      @include grid.breakpoint(max) {
+        padding-right: 2.5rem;
+        padding-left: 2.5rem;
+      }
+
+      .#{$prefix}--masthead__megamenu__container--row {
+        // @include carbon--make-row;
+        // @include gridPrivate.make-row();
+        display: flex;
+        margin-right: -1rem;
+        margin-left: -1rem;
+
+        flex-wrap: nowrap;
+      }
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-right-navigation),
+  .#{$prefix}--masthead__megamenu__categories-section {
+    display: flex;
+    flex-direction: column;
+    padding-top: layout.rem(18px);
+    width: 100%;
+
+    .#{$prefix}--masthead__megamenu__categories {
+      padding: 0 0 layout.$spacing-07 0;
+      column-count: 4;
+      column-gap: 0;
+    }
+
+    .#{$prefix}--masthead__megamenu--hasViewAllLink {
+      padding-bottom: 0;
+    }
+
+    .#{$prefix}--masthead__megamenu--hasHighlights {
+      column-count: 3;
+    }
+  }
+
+  .#{$prefix}--masthead__megamenu__copy,
+  :host(#{$dds-prefix}-megamenu-category-group-copy) {
+    display: block;
+    @include type.type-style('body-01');
+
+    color: themes.$text-secondary;
+    padding: layout.rem(6px) layout.$spacing-05 layout.rem(10px);
+  }
+
+  :host(#{$dds-prefix}-megamenu-category-group),
+  .#{$prefix}--masthead__megamenu__category-group {
+    display: block;
+
+    .#{$prefix}--masthead__megamenu__category-group-content {
+      width: 100%;
+      display: inline-block;
+      padding-bottom: layout.$spacing-07;
+    }
+
+    .#{$prefix}--masthead__megamenu__copy,
+    ::slotted(#{$dds-prefix}-megamenu-category-group-copy) {
+      @include type.type-style('body-01');
+
+      color: themes.$text-primary;
+      margin-top: layout.rem(-6px);
+      padding: 0 layout.$spacing-05 layout.$spacing-03 layout.$spacing-05;
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-link-with-icon) {
+    span {
+      flex: inherit;
+    }
+
+    ::slotted([slot='icon']) {
+      transform: none;
+      /* stylelint-disable-next-line comment-whitespace-inside */
+      /*!rtl:raw:
+      transform: scaleX(-1);
+      */
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-link-with-icon)[style-scheme='category-headline'],
+  .#{$prefix}--masthead__megamenu__category-headline {
+    width: 100%;
+
+    p, a, .#{$prefix}--link-with-icon {
+      padding: 6px layout.$spacing-05;
+      text-decoration: none;
+      width: 100%;
+
+      @include type.type-style('heading-01');
+    }
+
+    ::slotted(span),
+    span {
+      color: themes.$text-primary;
+
+      flex: inherit;
+    }
+
+    svg {
+      color: themes.$link-primary;
+      min-width: layout.$spacing-05;
+    }
+
+    &:visited,
+    &:hover {
+      color: themes.$text-primary;
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-category-link) a,
+  .#{$prefix}--masthead__megamenu__category-sublink {
+    @include type.type-style('body-01');
+
+    color: themes.$text-secondary;
+    text-decoration: none;
+    padding: 6px layout.$spacing-05;
+    display: block;
+
+    &:hover,
+    &:active {
+      color: themes.$text-primary;
+    }
+  }
+
+  .#{$prefix}--masthead__megamenu__category-sublink--highlighted,
+  :host(#{$dds-prefix}-megamenu-link-with-icon)[style-scheme='category-sublink'] {
+    @include type.type-style('body-compact-01');
+
+    width: 100%;
+
+    span {
+      flex: inherit;
+    }
+  }
+
+  .#{$prefix}--masthead__megamenu__category-sublink--highlighted,
+  :host(#{$dds-prefix}-megamenu-link-with-icon)[style-scheme='category-sublink']
+    a {
+    width: 100%;
+    padding: 7px layout.$spacing-05;
+  }
+
+  :host(#{$dds-prefix}-megamenu-link-with-icon)[style-scheme='view-all'],
+  .#{$prefix}--masthead__megamenu__view-all-cta {
+    margin-top: auto;
+    display: flex;
+    z-index: 1;
+
+    a,
+    .#{$prefix}--link-with-icon {
+      text-decoration: none;
+      width: 100%;
+      margin: 0 layout.$spacing-05;
+      border-top: layout.rem(1px) solid themes.$border-subtle-01;
+      height: layout.$spacing-09;
+
+      &:hover,
+      &:focus {
+        margin: 0;
+        padding: 0 layout.$spacing-05;
+      }
+
+      &:hover {
+        border-top: layout.rem(1px) solid transparent;
+        color: themes.$link-primary-hover;
+      }
+    }
+
+    ::slotted(span) {
+      vertical-align: middle;
+      align-self: center;
+    }
+
+    span {
+      @include type.type-style('body-compact-01');
+
+      flex: inherit;
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-category-link) a,
+  :host(#{$dds-prefix}-megamenu-link-with-icon) a,
+  .#{$prefix}--masthead__megamenu__category-headline
+    .#{$prefix}--link-with-icon,
+  .#{$prefix}--masthead__megamenu__category-sublink--highlighted,
+  .#{$prefix}--masthead__megamenu__view-all-cta .#{$prefix}--link-with-icon,
+  .#{$prefix}--masthead__megamenu__category-sublink {
+    &:focus,
+    &:active {
+      outline: 2px solid themes.$focus;
+      // @include utilities.focus-outline();
+
+      // outline-width: 2px;
+      outline-offset: -2px;
+    }
+
+    &:active,
+    &:hover {
+      background-color: themes.$background-hover;
+      text-decoration: none;
+    }
+
+    svg {
+      transform: none;
+      /* stylelint-disable-next-line comment-whitespace-inside */
+      /*!rtl:raw:
+      transform: scaleX(-1);
+      */
+    }
+  }
+
+  :host(#{$dds-prefix}-megamenu-left-navigation),
+  .#{$prefix}--masthead__megamenu__highlight-section {
+    min-height: 100%;
+    padding-top: layout.rem(18px);
+    border-right: layout.rem(1px) solid themes.$layer-accent-01;
+    // @include carbon--make-col(4, 16);
+    // @include gridPrivate.-make-col(4, 16);
+    display: block;
+    max-width: 25%;
+    flex: 0 0 25%;
+  }
+
+  @include grid.breakpoint-between(800px, 1055px) {
+    .#{$prefix}--masthead__megamenu__container--row {
+      flex-direction: column;
+    }
+
+    :host(#{$dds-prefix}-megamenu-left-navigation),
+    .#{$prefix}--masthead__megamenu__highlight-section {
+      border-right: none;
+      border-bottom: layout.rem(1px) solid themes.$border-subtle-01;
+      column-count: 2;
+      column-gap: 0;
+      // @include carbon--make-col(8, 8);
+      // @include gridPrivate.-make-col(8, 8);
+    }
+
+    :host(#{$dds-prefix}-megamenu-right-navigation),
+    .#{$prefix}--masthead__megamenu__categories-section {
+      .#{$prefix}--masthead__megamenu__categories {
+        column-count: 2;
+      }
+    }
+  }
+}
+
+
+.#{$prefix}--masthead {
+  @include masthead-megamenu;
+}
+
+
+
+//@include exports('masthead-megamenu') {
+//  @include masthead-megamenu;
+//}
