@@ -10,10 +10,10 @@ import LeftNavigation from './LeftNavigation';
 import NavigationGroup from './NavigationGroup';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import RightNavigation from './RightNavigation';
 import { ConsoleWireless } from 'node_modules/@carbon/pictograms-react/lib/index';
-import './_MegaMenu.scss'
+// import './_MegaMenu.scss'
 
 const prefix = 'c4p'
 
@@ -21,7 +21,6 @@ const prefix = 'c4p'
  * Masthead megamenu component.
  */
 const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
-  console.log(props)
   const { data, Menuicon, ...rest } = props;
   let highlightedItems = [];
   let viewAllLink;
