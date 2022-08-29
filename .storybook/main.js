@@ -13,7 +13,8 @@ module.exports = {
     "@storybook/addon-storysource",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "@storybook/preset-create-react-app"
+    "@storybook/preset-create-react-app",
+    "@carbon/storybook-addon-theme/register"
   ],
   "framework": "@storybook/react",
   "core": {
