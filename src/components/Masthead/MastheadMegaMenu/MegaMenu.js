@@ -12,8 +12,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
 // import RightNavigation from './RightNavigation';
-// import { ConsoleWireless } from 'node_modules/@carbon/pictograms-react/lib/index';
-// import './_MegaMenu.scss'
+
 
 const prefix = 'c4p'
 
