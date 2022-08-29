@@ -66,7 +66,7 @@ const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
     color: 'rgb(50,50,50)'
   }
   return (
-    <NavigationGroup ref={ref} style={{ background: '#f4f4f4', paddind: 0 }}>
+    <NavigationGroup ref={ref} style={{ background: '#f4f4f4', paddind: 0, height: '100%' }}>
       <div style={{ width: '100%', display: 'flex', background: '#f4f4f4', cursor: 'pointer', minHeight: '480px' }}>
         <div style={{ width: '40%', display: 'flex', justifyContent: 'end', marginTop: '15px', paddingBottom: '50px' }}>
           <div style={{ minWidth: '480px' }}>
