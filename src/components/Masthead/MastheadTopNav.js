@@ -18,7 +18,7 @@ import {
 } from '@carbon/react'
 
 import { HeaderMenu } from '../carbon-components-react/UIShell'
-import Link from './Link';
+
 
 import HeaderNavContainer from './HeaderNavContainer';
 import MegaMenu from './MastheadMegaMenu/MegaMenu';
@@ -27,10 +27,7 @@ import root from 'window-or-global';
 
 const stablePrefix = 'dds'
 const prefix = 'cds'
-
-
-import './styles/selectmenu.scss'
-import { ConsoleWireless } from 'node_modules/@carbon/pictograms-react/lib/index';
+import './styles/_selectmenu.scss'
 /**
  * Masthead top nav component.
  */
