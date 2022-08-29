@@ -26,7 +26,6 @@ import menuData from './menu-data';
 
 
 const Template = (args) => {
-
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   return <Masthead {...args} isSideNavExpand={isMenuOpen} menuToogleClick={(v) => { setIsMenuOpen(!v) }} menudata={menuData} gotourl={(res) => { console.log(res) }} />
 }
