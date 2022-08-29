@@ -16,7 +16,6 @@ import root from 'window-or-global';
 
 import { pkg } from '@/settings'
 // import './styles/_selectmenu.scss'
-
 // 内部组件
 import HeaderNavContainer from './HeaderNavContainer';
 import MegaMenu from './MastheadMegaMenu/MegaMenu';
