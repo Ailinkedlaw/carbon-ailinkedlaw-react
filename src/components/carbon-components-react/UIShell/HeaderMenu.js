@@ -294,7 +294,6 @@ class HeaderMenu extends React.Component {
           aria-expanded={this.props.exStatus}
           className={`${prefix}--header__menu-item ${prefix}--header__menu-title`}
           data-title={dataTitle}
-          href="#"
           // onClick={this.handleOnClick}
           //  onKeyDown={this.handleOnKeyDown}
           role="menuitem"

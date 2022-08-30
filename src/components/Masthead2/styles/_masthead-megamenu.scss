@@ -62,8 +62,13 @@ $search-transition-timing: 95ms;
     .#{$prefix}--header__menu-title[aria-expanded='true']
     + .#{$prefix}--header__menu {
     background-color: transparent;
-    bottom: 0;
+    // bottom: 0;
+    background-color: red;
+    // height:0;
     box-shadow: none;
+    padding-bottom: 0;
+    // max-height: 450px;
+    bottom: auto;
   }
 
   :host(#{$dds-prefix}-megamenu-top-nav-menu),

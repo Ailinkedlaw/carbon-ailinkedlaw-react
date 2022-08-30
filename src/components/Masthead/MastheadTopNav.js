@@ -103,7 +103,6 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
             setOpenIndex(-1)
             setOverlay(false)
           }}
-          style={{ background: 'red' }}
           className={classnames({
             [`${prefix}--masthead__megamenu__l0-nav`]: link.hasMegapanel,
             [`${prefix}--masthead__megamenu__l0-nav`]: true,
