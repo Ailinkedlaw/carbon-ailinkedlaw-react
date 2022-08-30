@@ -3,6 +3,9 @@
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
+
+
+ 3.0
  */
 
 //@use '@carbon/themes/scss/themes' as themess;
@@ -63,12 +66,12 @@ $search-transition-timing: 95ms;
     + .#{$prefix}--header__menu {
     background-color: transparent;
     // bottom: 0;
-    background-color: red;
     // height:0;
     box-shadow: none;
     padding-bottom: 0;
     // max-height: 450px;
     bottom: auto;
+    border: none;
   }
 
   :host(#{$dds-prefix}-megamenu-top-nav-menu),
