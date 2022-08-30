@@ -281,6 +281,7 @@ class HeaderMenu extends React.Component {
         className={className}
         data-autoid={autoId}
         onClick={this.props.handleClick}
+        onMouseOver={this.props.handleMouseOver}
         onMouseLeave={(e) => {
           this.props.handleMouseLeave()
         }}

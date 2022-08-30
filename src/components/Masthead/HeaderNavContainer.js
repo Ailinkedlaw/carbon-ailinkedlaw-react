@@ -7,7 +7,7 @@ import root from 'window-or-global';
 
 const prefix = 'cds'
 
-const HeaderNavContainer = ({ children }) => {
+const HeaderNavContainer = ({ children, location }) => {
   const containerRef = useRef(null);
   const contentRef = useRef(null);
   const contentLeftRef = useRef(null);
@@ -18,11 +18,11 @@ const HeaderNavContainer = ({ children }) => {
   const [position, setPosition] = useState(0);
   const buttonSize = 48; // 40px(width) + 8px(gradient)
   const pageIsRTL = root.document?.dir === 'rtl';
-  
+
   const paginateLeft = useCallback(() => {
     let menuItems = contentRef.current.querySelectorAll('.cds--header__menu-bar > li');
     if (pageIsRTL) {
-      for (let i = 0; i < menuItems.length; i ++) {
+      for (let i = 0; i < menuItems.length; i++) {
         if (
           contentRef.current.offsetWidth -
           menuItems[i].offsetLeft -
@@ -52,7 +52,7 @@ const HeaderNavContainer = ({ children }) => {
         }
       }
     } else {
-      for (let i = 0; i < menuItems.length; i ++) {
+      for (let i = 0; i < menuItems.length; i++) {
         // checks if first visible item is partially hidden
         if (
           menuItems[i].offsetLeft + menuItems[i].offsetWidth + position >=
@@ -85,11 +85,11 @@ const HeaderNavContainer = ({ children }) => {
       }
     }
   }, [position, pageIsRTL]);
-  
+
   const paginateRight = useCallback(() => {
     let menuItems = contentRef.current.querySelectorAll('.cds--header__menu-bar > li');
     if (pageIsRTL) {
-      for (let i = 0; i < menuItems.length; i ++) {
+      for (let i = 0; i < menuItems.length; i++) {
         // checks if the right most visible element is partially hidden
         if (
           contentRef.current.offsetWidth - menuItems[i].offsetLeft >
@@ -119,7 +119,7 @@ const HeaderNavContainer = ({ children }) => {
         }
       }
     } else {
-      for (let i = 0; i < menuItems.length; i ++) {
+      for (let i = 0; i < menuItems.length; i++) {
         if (
           menuItems[i].offsetLeft + menuItems[i].offsetWidth + position >
           containerRef.current.offsetWidth - buttonSize
@@ -147,7 +147,7 @@ const HeaderNavContainer = ({ children }) => {
       }
     }
   }, [position, pageIsRTL]);
-  
+
   useEffect(() => {
     if (window.IntersectionObserver) {
       setIO(
@@ -180,10 +180,10 @@ const HeaderNavContainer = ({ children }) => {
       );
     }
   }, [setIO]);
-  
+
   useEffect(() => {
     const navContent = contentRef.current;
-    
+
     if (io) {
       navContent.addEventListener('keydown', handleOnKeyDown);
       io.observe(contentLeftRef.current);
@@ -197,7 +197,7 @@ const HeaderNavContainer = ({ children }) => {
       };
     }
   });
-  
+
   /**
    * 菜单项的键盘事件处理程序.
    */
@@ -251,11 +251,19 @@ const HeaderNavContainer = ({ children }) => {
       }
     }
   };
-  
+
+  const leftStyle = {
+    left: 0
+  }
+  const centerStyle = {
+    left: '50%',
+    transform: 'translateX(-50%)'
+  }
+  // style={location === 'center' ? centerStyle : leftStyle}
   return (
     <>
-      <div className={`${prefix}--header__nav-container`} ref={containerRef}>
-        <div className={`${prefix}--header__nav-content`} ref={contentRef}>
+      <div className={`${prefix}--header__nav-container`} ref={containerRef} >
+        <div className={`${prefix}--header__nav-content`} ref={contentRef}  >
           <div className={`${prefix}--sub-content-left`} ref={contentLeftRef} />
           <div
             className={`${prefix}--sub-content-right`}

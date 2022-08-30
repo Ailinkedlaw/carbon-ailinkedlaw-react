@@ -26,8 +26,8 @@ const mastheadKnobs = {
     },
   },
   l1Platform: {
-    name: '首页',
-    url: 'https://www.ailinkedlaw.com',
+    // name: '首页',
+    // url: 'https://www.ailinkedlaw.com',
   },
   mastheadLogo: {
     defaultNoTooltip: {

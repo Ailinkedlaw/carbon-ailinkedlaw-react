@@ -20,7 +20,7 @@ const prefix = 'c4p'
  * Masthead megamenu component.
  */
 const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
-  const { data, Menuicon, ...rest } = props;
+  const { data, Menuicon, openWay = 'click', ...rest } = props;
   let highlightedItems = [];
   let viewAllLink;
   const [activeIndex, setActiveIndex] = useState(0)
@@ -65,28 +65,45 @@ const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
     color: 'rgb(50,50,50)'
   }
   return (
-    <NavigationGroup ref={ref} style={{ background: '#f4f4f4', paddind: 0 }}>
-      <div style={{ width: '100%', display: 'flex', background: '#f4f4f4', cursor: 'pointer', minHeight: '480px' }}>
-        <div style={{ width: '40%', display: 'flex', justifyContent: 'end', marginTop: '15px', paddingBottom: '50px' }}>
-          <div style={{ minWidth: '480px' }}>
+    <NavigationGroup ref={ref}>
+      <div className="mageMenu-box" >
+        <div className="mageMenu-box-left">
+          <div className="mageMenu-left-container" >
             {data.map((item, index) => {
-              return (<div key={index} style={index === activeIndex ? activeCls : normalCls} onClick={() => { setActiveIndex(index) }} >
-                {item.title}
-              </div>)
+              return (
+                <div
+                  key={index}
+                  style={index === activeIndex ? activeCls : normalCls}
+                >
+                  <span
+                    onClick={() => {
+                      if (openWay === 'click') {
+                        setActiveIndex(index)
+                      }
+                    }}
+                    onMouseOver={() => {
+                      if (openWay === 'mouseOver') {
+                        setActiveIndex(index)
+                      }
+                    }}>
+                    {item.title}
+                  </span>
+                </div>
+              )
             })}
           </div>
         </div>
-        <div style={{ width: '60%', background: '#fff', paddingLeft: '20px', display: 'flex', paddingBottom: '50px' }}>
+
+        <div className="mageMenu-box-right" >
           <div>
-            <h1 style={{ color: '#0062ff', fontSize: '3.125rem', marginTop: '15px' }}> {props.menutitle} </h1>
-            <div style={{ color: '#0062ff', marginTop: '40px', fontSize: '20px', fontWeight: '300' }}>
+            <h1 className="right-title" > {props.menutitle} </h1>
+            <div className="right-menus" >
               {
                 data[activeIndex].children.map((item, index) => {
                   return <div
                     key={index}
                     style={{ height: '34px', width: '460px', lineHeight: '34px' }}
                     onClick={() => {
-                      // navitage()
                       props.gotourl(item.url)
                       props.closeAction()
                     }}>

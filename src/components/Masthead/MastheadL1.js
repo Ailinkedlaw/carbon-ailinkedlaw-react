@@ -26,14 +26,14 @@ const prefix = 'cds'
 /**
  * 标头 L1 组件.
  */
-const MastheadL1 = ({ navigationL1, ...rest }) => {
+const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
   const className = cx({
     [`${prefix}--masthead__l1`]: true,
   });
   const childLinkChecker = rest.hasCurrentUrl();
 
   const [overlay, setOverlay] = useState(false);
-
+  const [openIndex, setOpenIndex] = useState(-1)
 
 
   // useEffect(() => {
@@ -59,6 +59,7 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
   const mastheadL1Links = navigationL1.map((link, index) => {
     const selectedUrlItem = childLinkChecker && childLinkChecker(link, root.location?.href);
     const autoid = `${stablePrefix}--masthead-${rest.navType}__l1-nav${index}`;
+
     const selected = rest.selectedMenuItem
       ? link.titleEnglish === rest.selectedMenuItem
       : selectedUrlItem;
@@ -66,12 +67,26 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
     if (link.children) {
       if (!link.children[0].children) {
         return (
-          <HeaderMenu aria-label={link.title} menuLinkName={link.title}>
+          <HeaderMenu
+            aria-label={link.title}
+            menuLinkName={link.title}
+            exStatus={index === openIndex}
+            handleClick={() => {
+              if (openWay === 'click') {
+                index === openIndex || setOpenIndex(index)
+              }
+            }}
+            handleMouseOver={() => {
+              if (openWay === 'mouseOver') {
+                index === openIndex || setOpenIndex(index)
+              }
+            }}
+            handleMouseLeave={() => { setOpenIndex(-1) }}
+          >
             <div>
-              <SelectMenu data={link.children} />
+              <SelectMenu data={link.children} gotourl={gotourl} closeAction={() => { setOpenIndex(-1) }} />
             </div >
           </HeaderMenu >
-
         )
       }
       return (
@@ -81,15 +96,32 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
           className={classnames({
             [`${prefix}--masthead__megamenu__l1-nav`]: true,
           })}
+
+          exStatus={index === openIndex}
+          handleClick={() => {
+            if (openWay === 'click') {
+              index === openIndex || setOpenIndex(index)
+            }
+          }}
+          handleMouseOver={() => {
+            if (openWay === 'mouseOver') {
+              index === openIndex || setOpenIndex(index)
+            }
+          }}
+          handleMouseLeave={() => {
+            setOpenIndex(-1)
+            setOverlay(false)
+          }}
+
           selected={selected}
           autoId={autoid}
-          key={'i'}
+          key={index}
           disableScroll={true}
           setOverlay={setOverlay}
           dataTitle={'dataTitle'}
         >
-          {/* <div style={{ width: '100px', height: '200px', background: 'red' }}> </div> */}
-          {renderNav(link, autoid)}
+          {/* {renderNav(link, autoid, gotourl)} */}
+          {renderNav(link, autoid, () => { setOpenIndex(-1); setOverlay(false); }, gotourl)}
         </HeaderMenu>
       );
     }
@@ -99,7 +131,7 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
         data-selected={`${!!selected}`}
         href={link.url}
         data-autoid={autoid}
-        key={'i'}>
+        key={index}>
         {link.title}
       </HeaderMenuItem>
     )
@@ -117,9 +149,10 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
               <a href={rest.platform.url}>{rest.platform.name}</a>
             </span>
           </div>
-          <HeaderNavContainer>
+          <HeaderNavContainer location="center">
             <HeaderNavigation
               className={`${prefix}--masthead__l1-nav`}
+
               aria-label="">
               {mastheadL1Links}
             </HeaderNavigation>
@@ -133,7 +166,7 @@ const MastheadL1 = ({ navigationL1, ...rest }) => {
 const deepClone = (data) => {
   return JSON.parse(JSON.stringify(data))
 }
-const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction }) => {
+const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl }) => {
   // const layoutSettings = useSelector(
   //   (state) => state.globalSetting
   // ).layoutBuilder
@@ -151,17 +184,12 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction }) => {
         className="menu-ul"
         style={{}}
       >
-        {/* <div style={{ height: '20px', background: 'var(--cds-background)', width: `${(liLenth * 18) + 20}px` }}></div> */}
-        {/* style={{ top: (!isHide) ? `-${topVal}px` : '3.125rem', width: `${(liLenth * 18) + 20}px`, minWidth: '100%' }}  */}
         {data.map((item, index) => {
           return (
             <li
               key={index}
               className="menu-li"
-              onClick={() => {
-                navitage(item.url);
-                closeAction()
-              }}
+              onClick={() => { closeAction(); gotourl(item.url) }}
             >
               {' '}
               {item.title}{' '}
@@ -181,15 +209,15 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction }) => {
  * @returns {object} JSX object
  */
 
-
-function renderNav (link, autoid) {
+function renderNav (link, autoid, closeAction, gotourl) {
 
   const navItems = [];
   if (link.children && link.children[0].children) {
-    navItems.push(<MegaMenu key={link.title} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} />);
+    navItems.push(<MegaMenu key={link.title} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} closeAction={closeAction} gotourl={gotourl} />);
   }
   return navItems;
 }
+
 
 MastheadL1.propTypes = {
   /**

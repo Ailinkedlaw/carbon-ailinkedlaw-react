@@ -94,6 +94,7 @@ const Masthead = ({
   menuToogleClick,
   menudata,
   gotourl,
+  openWay,
   ...mastheadProps
 }) => {
 
@@ -418,6 +419,7 @@ const Masthead = ({
                         hasCurrentUrl={_hasCurrentUrl}
                         selectedMenuItem={selectedMenuItem}
                         gotourl={gotourl}
+                        openWay={openWay}
                       />
                     )
                   }
@@ -455,6 +457,8 @@ const Masthead = ({
                   navType={navType}
                   hasCurrentUrl={_hasCurrentUrl}
                   selectedMenuItem={selectedMenuItem}
+                  gotourl={gotourl}
+                  openWay={openWay}
                 />
               </div>
             )}

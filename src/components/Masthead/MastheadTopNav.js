@@ -29,7 +29,7 @@ const prefix = 'cds'
 /**
  * Masthead top nav component.
  */
-const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
+const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', ...topNavProps }) => {
   const [overlay, setOverlay] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1)
   const childLinkChecker = topNavProps.hasCurrentUrl();
@@ -72,16 +72,26 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
         return (
           <HeaderMenu
             aria-label={link.title}
-            menuLinkName={link.title} exStatus={i === openIndex}
-            handleClick={() => { i === openIndex || setOpenIndex(i) }}
-            handleMouseLeave={() => { setOpenIndex(-1) }}
+            menuLinkName={link.title}
+            exStatus={i === openIndex}
+            handleClick={() => {
+              if (openWay === 'click') {
+                i === openIndex || setOpenIndex(i)
+              }
+            }}
+            handleMouseOver={() => {
+              if (openWay === 'mouseOver') {
+                i === openIndex || setOpenIndex(i)
+              }
+            }}
+            handleMouseLeave={() => {
+              // setOpenIndex(-1)
+            }}
           >
             <div>
               <SelectMenu data={link.children}
                 gotourl={gotourl}
-                closeAction={() => {
-                  setOpenIndex(-1)
-                }} />
+                closeAction={() => { setOpenIndex(-1) }} />
             </div >
           </HeaderMenu >
 
@@ -95,8 +105,18 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
           exStatus={i === openIndex}
           handleClick={() => {
             if (!(i === openIndex)) {
-              setOpenIndex(i)
-              setOverlay(true)
+              if (openWay === 'click') {
+                setOpenIndex(i)
+                setOverlay(true)
+              }
+            }
+          }}
+          handleMouseOver={() => {
+            if (!(i === openIndex)) {
+              if (openWay === 'mouseOver') {
+                setOpenIndex(i)
+                setOverlay(true)
+              }
             }
           }}
           handleMouseLeave={() => {
@@ -113,7 +133,7 @@ const MastheadTopNav = ({ navigation, gotourl, ...topNavProps }) => {
           disableScroll={true}
           setOverlay={setOverlay}
           dataTitle={dataTitle} >
-          {renderNav(link, autoid, () => { setOpenIndex(-1); setOverlay(false); }, gotourl)}
+          {renderNav(link, autoid, () => { setOpenIndex(-1); setOverlay(false); }, gotourl, openWay)}
         </HeaderMenu >
       );
     }
@@ -208,11 +228,11 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
  * @param {string} autoid autoid predecessor for megamenu items/menu items data-autoids
  * @returns {object} JSX object
  */
-function renderNav (link, autoid, closeAction, gotourl) {
+function renderNav (link, autoid, closeAction, gotourl, openWay) {
 
   const navItems = [];
   if (link.children && link.children[0].children) {
-    navItems.push(<MegaMenu key={link.title} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} closeAction={closeAction} gotourl={gotourl} />);
+    navItems.push(<MegaMenu key={link.title} openWay={openWay} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} closeAction={closeAction} gotourl={gotourl} />);
   }
   return navItems;
 }
