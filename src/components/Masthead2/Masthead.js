@@ -350,7 +350,6 @@ const Masthead = ({
                     onClick={() => { menuToogleClick(isSideNavExpand) }}
                     isActive={isSideNavExpand}
                     className={cx({ ['masthead__header--menu-button']: hideMenuButton }, headerSearchClasses)}
-
                     onBlur={e => {
                       const platform = e.target.parentElement.querySelector(
                         `nav .${prefix}--side-nav__submenu-platform`

@@ -385,24 +385,25 @@ $search-transition-timing: 95ms;
   }
 
   &.#{$prefix}--nav-align-center  .#{$prefix}--header{
-    max-width: layout.rem(1584px);
-    &::before {
-      content: '';
-      position: absolute;
-      background-color: themes.$background;
-      height: 48px;
-      left: calc(-50vw + 50%);
-      right: 100%;
-      z-index: 1;
-    }
-    &::after {
-      content: '';
-      position: absolute;
-      background-color: themes.$background;
-      height: 48px;
-      left: 100%;
-      right: calc(-50vw + 50%);
-    }
+    // max-width: layout.rem(1584px);
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   background-color: themes.$background;
+    //   height: 48px;
+    //   left: calc(-50vw + 50%);
+    //   right: 100%;
+    //   z-index: 1;
+    // }
+    
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   background-color: themes.$background;
+    //   height: 48px;
+    //   left: 100%;
+    //   right: calc(-50vw + 50%);
+    // }
   }
 
   .#{$prefix}--skip-to-content:focus {
