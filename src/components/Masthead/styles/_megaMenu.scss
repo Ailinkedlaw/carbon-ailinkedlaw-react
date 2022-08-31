@@ -15,6 +15,7 @@
   min-height: 30rem;
 
   .mageMenu-box-left{
+    // background: var(--cds-background, #ffffff);
     width: 40%; 
     display: flex; 
     justify-content: end;
@@ -23,6 +24,27 @@
     color: var(--cds-text-secondary, #525252);
     .mageMenu-left-container{
       min-width: 480px;
+
+      .mageMenu-left-items-active{
+        // widht: 450px;
+        height: 40px;
+        background: #0062ff;
+        color: #fff;
+        font-weight: 600;
+        padding: 8px 20px 8px 40px;
+        font-size: 20px;
+      }
+      .mageMenu-left-items{
+        // widht: '450px',
+          height: 40px;
+          font-size: 20px;
+          // lineHeight: '40px',
+          font-weight: 300;
+          padding: 8px 20px 8px 40px;
+          color: rgb(50,50,50);
+      }
+      
+
     }
   }
   

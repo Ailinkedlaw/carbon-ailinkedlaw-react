@@ -42,28 +42,7 @@ const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
   const hasHighlights = highlightedItems.length !== 0;
 
   // const heading = data.menuSections[0]?.heading;
-  const activeCls = {
 
-    widht: '450px',
-    height: '40px',
-    background: '#0062ff',
-    color: '#fff',
-    fontWeight: 600,
-    padding: '8px 20px 8px 40px',
-    fontSize: '20px',
-    // lineHeight: '40px'
-
-  }
-  const normalCls = {
-    widht: '450px',
-    height: '40px',
-    fontSize: '20px',
-    // lineHeight: '40px',
-    // background: '#0062ff',
-    fontWeight: 300,
-    padding: '8px 20px 8px 40px',
-    color: 'rgb(50,50,50)'
-  }
   return (
     <NavigationGroup ref={ref}>
       <div className="mageMenu-box" >
@@ -73,7 +52,7 @@ const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
               return (
                 <div
                   key={index}
-                  style={index === activeIndex ? activeCls : normalCls}
+                  className={index === activeIndex ? 'mageMenu-left-items-active' : 'mageMenu-left-items'}
                 >
                   <span
                     onClick={() => {

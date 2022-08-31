@@ -85,7 +85,7 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', ...topNavProps
               }
             }}
             handleMouseLeave={() => {
-              // setOpenIndex(-1)
+              setOpenIndex(-1)
             }}
           >
             <div>
