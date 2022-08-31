@@ -193,7 +193,6 @@ $search-transition-timing: 95ms;
   :host(#{$dds-prefix}-masthead) {
     // @include carbon--theme($carbon--theme--white, true);
     // @include themes.theme(themess.$white);
-
     position: fixed;
     top: 0;
     left: 0;
@@ -395,7 +394,7 @@ $search-transition-timing: 95ms;
     //   right: 100%;
     //   z-index: 1;
     // }
-    
+
     // &::after {
     //   content: '';
     //   position: absolute;
