@@ -119,7 +119,6 @@ const MastheadLeftNav = ({
 
   const sideNav = () => {
     let selectedItems;
-
     navigation.map((link, i) => {
       const dataTitle = link.titleEnglish
         ? link.titleEnglish
@@ -131,15 +130,17 @@ const MastheadLeftNav = ({
       const autoid = `${stablePrefix}--masthead-${rest.navType}-sidenav__${rest.hasL1Data ? 'l1' : 'l0'}-nav${i}`;
 
       const menuItems = link.menuSections?.[0]?.menuItems;
+      // const menuItems = link.children || [];
       selectedItems = selectedUrlCheck({ menu: menuItems, key: i, parentItemUrl: link.url });
 
 
-      if (link.hasMenu || link.hasMegaPanel || link.menuSections?.length !== 0) {
+      if (link.children) {
+
         level1Items.push({
           title: link.title,
           autoid,
           parentKey: i,
-          sections: link.menuSections,
+          sections: link.children ? link.children : []// link.menuSections,
         });
 
         level0Items.push(
@@ -182,7 +183,7 @@ const MastheadLeftNav = ({
       rest.selectedMenuItem,
       selectedItems
     );
-
+    console.log(level1)
     const level2Submenus = _renderLevel2Submenus(
       level1.submenus,
       backButtonText,
@@ -267,7 +268,8 @@ function _renderLevel1Submenus (
     let highlightedItems = [];
     const items = [];
 
-    menu.sections?.[0].menuItems.forEach(item => {
+
+    menu.sections.forEach(item => {
       if (item.highlighted) {
         return highlightedItems.push(item);
       }
@@ -286,7 +288,7 @@ function _renderLevel1Submenus (
             menuState.level0 === menu.parentKey && menuState.level1 >= 0,
         })}
         id={`panel__(${menu.parentKey},-1)`}
-        heading={menu.sections?.[0]?.heading}
+        // heading={menu.sections?.[0]?.heading}
         key={menu.title}
         title={menu.title}
         navType={navType}
@@ -298,7 +300,7 @@ function _renderLevel1Submenus (
             title: item.title,
             titleUrl: item.url,
             autoid: `${menu.autoid}-list${index}`,
-            sections: item.megapanelContent?.quickLinks?.links,
+            sections: item.children,   // item.megapanelContent?.quickLinks?.links,
             parentKey: menu.parentKey,
             index,
           });
@@ -310,7 +312,9 @@ function _renderLevel1Submenus (
             null;
 
           // console.log('_renderLevel1Submenus', item)
-          if (item.megapanelContent) {
+          // item.megapanelContent
+
+          if (item.children) {
             return (
               <SideNavMenu
                 autoid={`${menu.autoid}-list${index}`}
@@ -372,6 +376,8 @@ function _renderLevel2Submenus (
   selectedMenuItem,
   selectedItems
 ) {
+
+  console.log(menuItems)
   const sideNavMenuSections = menuItems.map(menu => {
     return (
       <SideNavMenuSection
@@ -387,7 +393,7 @@ function _renderLevel2Submenus (
         show={
           menuState.level0 === menu.parentKey && menuState.level1 === menu.index
         }>
-        {menu.sections?.map((item, k) => {
+        {menu.sections && menu.sections.map((item, k) => {
           return (
             <SideNavMenuItem
               href={item.url}
