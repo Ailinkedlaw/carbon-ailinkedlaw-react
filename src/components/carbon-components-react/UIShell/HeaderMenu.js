@@ -283,7 +283,7 @@ class HeaderMenu extends React.Component {
         onClick={this.props.handleClick}
         onMouseOver={this.props.handleMouseOver}
         onMouseLeave={(e) => {
-          this.props.handleMouseLeave()
+          this.props.handleMouseLeave && this.props.handleMouseLeave()
         }}
       //  onKeyDown={this.handleMenuClose}
       // onBlur={this.handleOnBlur}

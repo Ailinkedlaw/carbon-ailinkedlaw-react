@@ -393,8 +393,10 @@ const Masthead = ({
                     backButtonText="Back"
                     platform={platform}
                     hasL1Data={!!mastheadL1Data}
-                    navigation={mastheadL1Data?.navigationL1 ?? mastheadData}
-                    isSideNavExpanded={isSideNavExpanded}
+                    // navigation={mastheadL1Data?.navigationL1 ?? mastheadData}
+                    navigation={menudata}
+
+                    isSideNavExpanded={isSideNavExpand}
                     navType={navType}
                     selectedMenuItem={selectedMenuItem}
                     onOverlayClick={onClickSideNavExpand}
