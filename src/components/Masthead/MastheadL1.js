@@ -150,7 +150,6 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
         {link.title}
       </HeaderMenuItem>
     )
-
   });
 
 
