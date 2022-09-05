@@ -461,6 +461,7 @@ const Masthead = ({
                   selectedMenuItem={selectedMenuItem}
                   gotourl={gotourl}
                   openWay={openWay}
+                  menuLocation={navAlign}
                 />
               </div>
             )}

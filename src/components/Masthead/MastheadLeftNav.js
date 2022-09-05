@@ -183,7 +183,7 @@ const MastheadLeftNav = ({
       rest.selectedMenuItem,
       selectedItems
     );
-    console.log(level1)
+
     const level2Submenus = _renderLevel2Submenus(
       level1.submenus,
       backButtonText,
@@ -377,7 +377,7 @@ function _renderLevel2Submenus (
   selectedItems
 ) {
 
-  console.log(menuItems)
+
   const sideNavMenuSections = menuItems.map(menu => {
     return (
       <SideNavMenuSection

@@ -26,7 +26,7 @@ const prefix = 'cds'
 /**
  * 标头 L1 组件.
  */
-const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
+const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = 'left', ...rest }) => {
   const className = cx({
     [`${prefix}--masthead__l1`]: true,
   });
@@ -34,6 +34,7 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
 
   const [overlay, setOverlay] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1)
+  const [paddingVal, setPaddingVal] = useState(0)
 
 
   // useEffect(() => {
@@ -54,6 +55,10 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
       e.setAttribute('role', 'menuitem');
       // e.querySelector('a').removeAttribute('role');
     });
+
+    const paddingVal = (document.body.scrollWidth - document.getElementById('masthead__l1-nav').clientWidth) / 2
+
+    menuLocation === 'center' && setPaddingVal(paddingVal)
   }, []);
 
   const mastheadL1Links = navigationL1.map((link, index) => {
@@ -71,9 +76,14 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
             aria-label={link.title}
             menuLinkName={link.title}
             exStatus={index === openIndex}
-            handleClick={() => {
+            handleClick={(e) => {
               if (openWay === 'click') {
                 index === openIndex || setOpenIndex(index)
+              }
+              if (index === openIndex) {
+                if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
+                  setOpenIndex(-1)
+                }
               }
             }}
             handleMouseOver={() => {
@@ -98,9 +108,14 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
           })}
 
           exStatus={index === openIndex}
-          handleClick={() => {
+          handleClick={(e) => {
             if (openWay === 'click') {
               index === openIndex || setOpenIndex(index)
+            }
+            if (index === openIndex) {
+              if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
+                setOpenIndex(-1)
+              }
             }
           }}
           handleMouseOver={() => {
@@ -112,7 +127,7 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
             setOpenIndex(-1)
             setOverlay(false)
           }}
-
+          itemhandleClick={() => { }}
           selected={selected}
           autoId={autoid}
           key={index}
@@ -138,21 +153,25 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
 
   });
 
+
+
   return (
     <>
       <div className={className}>
         <div className={`${prefix}--masthead__l1-inner-container`}>
-          <div
+          {/* <div
             className={`${prefix}--masthead__l1-name`}
             data-selected={!rest.selectedMenuItem}>
             <span className={`${prefix}--masthead__l1-name-title`}>
               <a href={rest.platform.url}>{rest.platform.name}</a>
             </span>
-          </div>
+          </div> */}
           <HeaderNavContainer location="center">
             <HeaderNavigation
+              id="masthead__l1-nav"
               className={`${prefix}--masthead__l1-nav`}
-
+              style={{ paddingLeft: paddingVal + 'px' }}
+              // style={{ paddingLeft: 'calc(1920px - 100%)' }}
               aria-label="">
               {mastheadL1Links}
             </HeaderNavigation>
