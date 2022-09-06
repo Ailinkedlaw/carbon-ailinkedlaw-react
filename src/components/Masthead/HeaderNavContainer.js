@@ -266,7 +266,7 @@ const HeaderNavContainer = ({ children, location }) => {
   useEffect(() => {
 
     const p1 = (containerRef.current.clientWidth - contentRef.current.clientWidth) / 2
-    const p2 = (containerRef.current.clientWidth - contentRef.current.clientWidth) - 5
+    const p2 = (containerRef.current.clientWidth - contentRef.current.clientWidth) - 90
     location === 'center' && setPaddingVal(p1)
     location === 'right' && setPaddingVal(p2)
   }, [])
