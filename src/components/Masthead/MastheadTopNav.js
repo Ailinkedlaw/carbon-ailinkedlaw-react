@@ -208,7 +208,7 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
   const liLenth = liArr[liArr.length - 1].title.length;
 
   return (
-    <div className="select-menu-box2">
+    <div className="select-menu-box2" onMouseLeave={() => { closeAction() }} >
       <ul
         className="menu-ul"
         style={{}}
