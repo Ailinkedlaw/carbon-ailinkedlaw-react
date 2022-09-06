@@ -56,9 +56,9 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
       // e.querySelector('a').removeAttribute('role');
     });
 
-    const paddingVal = (document.body.scrollWidth - document.getElementById('masthead__l1-nav').clientWidth) / 2
+    // const paddingVal = (document.body.scrollWidth - document.getElementById('masthead__l1-nav').clientWidth) / 2
 
-    menuLocation === 'center' && setPaddingVal(paddingVal)
+    // menuLocation === 'center' && setPaddingVal(paddingVal)
   }, []);
 
   const mastheadL1Links = navigationL1.map((link, index) => {
@@ -91,7 +91,7 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
                 index === openIndex || setOpenIndex(index)
               }
             }}
-            handleMouseLeave={() => { setOpenIndex(-1) }}
+          // handleMouseLeave={() => { setOpenIndex(-1) }}
           >
             <div>
               <SelectMenu data={link.children} gotourl={gotourl} closeAction={() => { setOpenIndex(-1) }} />
@@ -124,8 +124,8 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
             }
           }}
           handleMouseLeave={() => {
-            setOpenIndex(-1)
-            setOverlay(false)
+            // setOpenIndex(-1)
+            // setOverlay(false)
           }}
           itemhandleClick={() => { }}
           selected={selected}
@@ -165,11 +165,11 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
               <a href={rest.platform.url}>{rest.platform.name}</a>
             </span>
           </div> */}
-          <HeaderNavContainer location="center">
+          <HeaderNavContainer location={menuLocation}>
             <HeaderNavigation
               id="masthead__l1-nav"
               className={`${prefix}--masthead__l1-nav`}
-              style={{ paddingLeft: paddingVal + 'px' }}
+              // style={{ paddingLeft: paddingVal + 'px' }}
               // style={{ paddingLeft: 'calc(1920px - 100%)' }}
               aria-label="">
               {mastheadL1Links}
@@ -231,7 +231,12 @@ function renderNav (link, autoid, closeAction, gotourl) {
 
   const navItems = [];
   if (link.children && link.children[0].children) {
-    navItems.push(<MegaMenu key={link.title} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} closeAction={closeAction} gotourl={gotourl} />);
+    navItems.push(<MegaMenu
+      key={link.title}
+      data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title}
+      closeAction={closeAction}
+      gotourl={gotourl} />
+    );
   }
   return navItems;
 }

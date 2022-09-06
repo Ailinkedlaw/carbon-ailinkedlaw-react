@@ -16,6 +16,7 @@ const HeaderNavContainer = ({ children, location }) => {
   const caretRightRef = useRef(null);
   const [io, setIO] = useState(null);
   const [position, setPosition] = useState(0);
+  const [paddingVal, setPaddingVal] = useState(0)
   const buttonSize = 48; // 40px(width) + 8px(gradient)
   const pageIsRTL = root.document?.dir === 'rtl';
 
@@ -198,6 +199,7 @@ const HeaderNavContainer = ({ children, location }) => {
     }
   });
 
+
   /**
    * 菜单项的键盘事件处理程序.
    */
@@ -260,10 +262,18 @@ const HeaderNavContainer = ({ children, location }) => {
     transform: 'translateX(-50%)'
   }
   // style={location === 'center' ? centerStyle : leftStyle}
+
+  useEffect(() => {
+
+    const p1 = (containerRef.current.clientWidth - contentRef.current.clientWidth) / 2
+    const p2 = (containerRef.current.clientWidth - contentRef.current.clientWidth) - 5
+    location === 'center' && setPaddingVal(p1)
+    location === 'right' && setPaddingVal(p2)
+  }, [])
   return (
     <>
       <div className={`${prefix}--header__nav-container`} ref={containerRef} >
-        <div className={`${prefix}--header__nav-content`} ref={contentRef}  >
+        <div className={`${prefix}--header__nav-content`} ref={contentRef} style={{ paddingLeft: paddingVal + 'px' }} >
           <div className={`${prefix}--sub-content-left`} ref={contentLeftRef} />
           <div
             className={`${prefix}--sub-content-right`}

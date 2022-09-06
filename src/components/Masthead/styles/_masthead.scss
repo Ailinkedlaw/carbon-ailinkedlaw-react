@@ -383,7 +383,7 @@ $search-transition-timing: 95ms;
   }
 
   &.#{$prefix}--nav-align-center  .#{$prefix}--header{
-    max-width: layout.rem(1584px);
+   //  max-width: layout.rem(1584px);
     &::before {
       content: '';
       position: absolute;
