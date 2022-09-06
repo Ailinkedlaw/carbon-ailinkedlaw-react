@@ -76,7 +76,10 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, 
             exStatus={i === openIndex}
             handleClick={(e) => {
               if (openWay === 'click') {
-                i === openIndex || setOpenIndex(i)
+                if (!(i === openIndex)) {
+                  setOpenIndex(i)
+                  setOverlay(true)
+                }
               }
 
               if (i === openIndex) {
@@ -88,7 +91,10 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, 
             }}
             handleMouseOver={() => {
               if (openWay === 'mouseOver') {
-                i === openIndex || setOpenIndex(i)
+                if (!(i === openIndex)) {
+                  setOpenIndex(i)
+                  setOverlay(true)
+                }
               }
             }}
             handleMouseLeave={() => {
@@ -98,7 +104,7 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, 
             <div>
               <SelectMenu data={link.children}
                 gotourl={gotourl}
-                closeAction={() => { setOpenIndex(-1) }} />
+                closeAction={() => { setOpenIndex(-1); setOverlay(false) }} />
             </div >
           </HeaderMenu >
 
@@ -183,10 +189,9 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, 
           {mastheadLinks}
         </HeaderNavigation>
       </HeaderNavContainer>
-      <div
-        className={classnames(`${prefix}--masthead__overlay`, {
-          [`${prefix}--masthead__overlay-show`]: overlay,
-        })}></div>
+      <div className={classnames(`${prefix}--masthead__overlay`, {
+        [`${prefix}--masthead__overlay-show`]: overlay,
+      })}></div>
     </>
   );
 };

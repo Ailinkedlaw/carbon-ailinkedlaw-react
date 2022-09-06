@@ -78,23 +78,30 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
             exStatus={index === openIndex}
             handleClick={(e) => {
               if (openWay === 'click') {
-                index === openIndex || setOpenIndex(index)
+                if (!(index === openIndex)) {
+                  setOpenIndex(index)
+                  setOverlay(true)
+                }
               }
               if (index === openIndex) {
                 if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
                   setOpenIndex(-1)
+                  setOverlay(false)
                 }
               }
             }}
             handleMouseOver={() => {
               if (openWay === 'mouseOver') {
-                index === openIndex || setOpenIndex(index)
+                if (!(index === openIndex)) {
+                  setOpenIndex(index)
+                  setOverlay(true)
+                }
               }
             }}
           // handleMouseLeave={() => { setOpenIndex(-1) }}
           >
             <div>
-              <SelectMenu data={link.children} gotourl={gotourl} closeAction={() => { setOpenIndex(-1) }} />
+              <SelectMenu data={link.children} gotourl={gotourl} closeAction={() => { setOpenIndex(-1); setOverlay(false) }} />
             </div >
           </HeaderMenu >
         )
@@ -110,17 +117,25 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
           exStatus={index === openIndex}
           handleClick={(e) => {
             if (openWay === 'click') {
-              index === openIndex || setOpenIndex(index)
+              if (!(index === openIndex)) {
+                setOpenIndex(index)
+                setOverlay(true)
+              }
             }
             if (index === openIndex) {
               if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
                 setOpenIndex(-1)
+                setOverlay(false)
               }
             }
           }}
           handleMouseOver={() => {
             if (openWay === 'mouseOver') {
-              index === openIndex || setOpenIndex(index)
+              if (!(index === openIndex)) {
+                setOpenIndex(index)
+                setOverlay(true)
+              }
+
             }
           }}
           handleMouseLeave={() => {
@@ -177,9 +192,16 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
           </HeaderNavContainer>
         </div>
       </div>
+
+      <div className={classnames(`${prefix}--masthead__overlay`, {
+        [`${prefix}--masthead__overlay-show`]: overlay,
+      })}></div>
+
     </>
   );
 }
+
+
 
 const deepClone = (data) => {
   return JSON.parse(JSON.stringify(data))
