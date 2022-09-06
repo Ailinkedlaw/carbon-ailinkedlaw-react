@@ -189,7 +189,7 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
   //   (state) => state.globalSetting
   // ).layoutBuilder
   // const navitage = useNavigate()
-  // const { fontSizeMode } = layoutSettings.basic
+  //  const { fontSizeMode } = layoutSettings.basic
   const arr = deepClone(data)
   const liArr = arr.sort((a, b) => {
     return a.title.length - b.title.length;
