@@ -6,7 +6,7 @@
 //
 
 import React, { forwardRef } from 'react'
-import { Grid } from '@carbon/react'
+import { Button, Grid } from '@carbon/react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import { pkg } from '@/settings'
@@ -94,5 +94,5 @@ Cascade.propTypes = {
   /**
    * GridProps.
    */
-  gridProps: Grid.propTypes
+  gridProps: PropTypes.shape({ ...Button.propTypes }),
 }
