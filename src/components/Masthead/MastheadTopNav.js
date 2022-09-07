@@ -29,7 +29,7 @@ const prefix = 'cds'
 /**
  * Masthead top nav component.
  */
-const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', ...topNavProps }) => {
+const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, ...topNavProps }) => {
   const [overlay, setOverlay] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1)
   const childLinkChecker = topNavProps.hasCurrentUrl();
@@ -74,24 +74,37 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', ...topNavProps
             aria-label={link.title}
             menuLinkName={link.title}
             exStatus={i === openIndex}
-            handleClick={() => {
+            handleClick={(e) => {
               if (openWay === 'click') {
-                i === openIndex || setOpenIndex(i)
+                if (!(i === openIndex)) {
+                  setOpenIndex(i)
+                  setOverlay(true)
+                }
               }
+
+              if (i === openIndex) {
+                if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
+                  setOpenIndex(-1)
+                }
+              }
+
             }}
             handleMouseOver={() => {
               if (openWay === 'mouseOver') {
-                i === openIndex || setOpenIndex(i)
+                if (!(i === openIndex)) {
+                  setOpenIndex(i)
+                  setOverlay(true)
+                }
               }
             }}
             handleMouseLeave={() => {
-              setOpenIndex(-1)
+              // setOpenIndex(-1)
             }}
           >
             <div>
               <SelectMenu data={link.children}
                 gotourl={gotourl}
-                closeAction={() => { setOpenIndex(-1) }} />
+                closeAction={() => { setOpenIndex(-1); setOverlay(false) }} />
             </div >
           </HeaderMenu >
 
@@ -103,13 +116,21 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', ...topNavProps
           aria-label={link.title}
           menuLinkName={link.title}
           exStatus={i === openIndex}
-          handleClick={() => {
+          handleClick={(e) => {
             if (!(i === openIndex)) {
               if (openWay === 'click') {
                 setOpenIndex(i)
                 setOverlay(true)
               }
             }
+
+            if (i === openIndex) {
+              if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
+                setOpenIndex(-1)
+                setOverlay(false)
+              }
+            }
+
           }}
           handleMouseOver={() => {
             if (!(i === openIndex)) {
@@ -120,8 +141,8 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', ...topNavProps
             }
           }}
           handleMouseLeave={() => {
-            setOpenIndex(-1)
-            setOverlay(false)
+            // setOpenIndex(-1)
+            // setOverlay(false)
           }}
           className={classnames({
             [`${prefix}--masthead__megamenu__l0-nav`]: link.hasMegapanel,
@@ -161,17 +182,16 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', ...topNavProps
           </HeaderName>
         </div>
       )}
-      <HeaderNavContainer>
+      <HeaderNavContainer location={menuLocation}>
         <HeaderNavigation
           aria-label="IBM"
           data-autoid={`${stablePrefix}--masthead__l0-nav`}>
           {mastheadLinks}
         </HeaderNavigation>
       </HeaderNavContainer>
-      <div
-        className={classnames(`${prefix}--masthead__overlay`, {
-          [`${prefix}--masthead__overlay-show`]: overlay,
-        })}></div>
+      <div className={classnames(`${prefix}--masthead__overlay`, {
+        [`${prefix}--masthead__overlay-show`]: overlay,
+      })}></div>
     </>
   );
 };
@@ -193,7 +213,7 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
   const liLenth = liArr[liArr.length - 1].title.length;
 
   return (
-    <div className="select-menu-box2">
+    <div className="select-menu-box2" onMouseLeave={() => { closeAction() }} >
       <ul
         className="menu-ul"
         style={{}}

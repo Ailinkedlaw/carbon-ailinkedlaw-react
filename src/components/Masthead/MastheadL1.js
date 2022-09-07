@@ -26,7 +26,7 @@ const prefix = 'cds'
 /**
  * 标头 L1 组件.
  */
-const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
+const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = 'left', ...rest }) => {
   const className = cx({
     [`${prefix}--masthead__l1`]: true,
   });
@@ -34,6 +34,7 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
 
   const [overlay, setOverlay] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1)
+  const [paddingVal, setPaddingVal] = useState(0)
 
 
   // useEffect(() => {
@@ -54,6 +55,10 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
       e.setAttribute('role', 'menuitem');
       // e.querySelector('a').removeAttribute('role');
     });
+
+    // const paddingVal = (document.body.scrollWidth - document.getElementById('masthead__l1-nav').clientWidth) / 2
+
+    // menuLocation === 'center' && setPaddingVal(paddingVal)
   }, []);
 
   const mastheadL1Links = navigationL1.map((link, index) => {
@@ -71,20 +76,32 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
             aria-label={link.title}
             menuLinkName={link.title}
             exStatus={index === openIndex}
-            handleClick={() => {
+            handleClick={(e) => {
               if (openWay === 'click') {
-                index === openIndex || setOpenIndex(index)
+                if (!(index === openIndex)) {
+                  setOpenIndex(index)
+                  setOverlay(true)
+                }
+              }
+              if (index === openIndex) {
+                if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
+                  setOpenIndex(-1)
+                  setOverlay(false)
+                }
               }
             }}
             handleMouseOver={() => {
               if (openWay === 'mouseOver') {
-                index === openIndex || setOpenIndex(index)
+                if (!(index === openIndex)) {
+                  setOpenIndex(index)
+                  setOverlay(true)
+                }
               }
             }}
-            handleMouseLeave={() => { setOpenIndex(-1) }}
+          // handleMouseLeave={() => { setOpenIndex(-1) }}
           >
             <div>
-              <SelectMenu data={link.children} gotourl={gotourl} closeAction={() => { setOpenIndex(-1) }} />
+              <SelectMenu data={link.children} gotourl={gotourl} closeAction={() => { setOpenIndex(-1); setOverlay(false) }} />
             </div >
           </HeaderMenu >
         )
@@ -98,21 +115,34 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
           })}
 
           exStatus={index === openIndex}
-          handleClick={() => {
+          handleClick={(e) => {
             if (openWay === 'click') {
-              index === openIndex || setOpenIndex(index)
+              if (!(index === openIndex)) {
+                setOpenIndex(index)
+                setOverlay(true)
+              }
+            }
+            if (index === openIndex) {
+              if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
+                setOpenIndex(-1)
+                setOverlay(false)
+              }
             }
           }}
           handleMouseOver={() => {
             if (openWay === 'mouseOver') {
-              index === openIndex || setOpenIndex(index)
+              if (!(index === openIndex)) {
+                setOpenIndex(index)
+                setOverlay(true)
+              }
+
             }
           }}
           handleMouseLeave={() => {
-            setOpenIndex(-1)
-            setOverlay(false)
+            // setOpenIndex(-1)
+            // setOverlay(false)
           }}
-
+          itemhandleClick={() => { }}
           selected={selected}
           autoId={autoid}
           key={index}
@@ -135,33 +165,43 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', ...rest }) => {
         {link.title}
       </HeaderMenuItem>
     )
-
   });
+
+
 
   return (
     <>
       <div className={className}>
         <div className={`${prefix}--masthead__l1-inner-container`}>
-          <div
+          {/* <div
             className={`${prefix}--masthead__l1-name`}
             data-selected={!rest.selectedMenuItem}>
             <span className={`${prefix}--masthead__l1-name-title`}>
               <a href={rest.platform.url}>{rest.platform.name}</a>
             </span>
-          </div>
-          <HeaderNavContainer location="center">
+          </div> */}
+          <HeaderNavContainer location={menuLocation}>
             <HeaderNavigation
+              id="masthead__l1-nav"
               className={`${prefix}--masthead__l1-nav`}
-
+              // style={{ paddingLeft: paddingVal + 'px' }}
+              // style={{ paddingLeft: 'calc(1920px - 100%)' }}
               aria-label="">
               {mastheadL1Links}
             </HeaderNavigation>
           </HeaderNavContainer>
         </div>
       </div>
+
+      <div className={classnames(`${prefix}--masthead__overlay`, {
+        [`${prefix}--masthead__overlay-show`]: overlay,
+      })}></div>
+
     </>
   );
 }
+
+
 
 const deepClone = (data) => {
   return JSON.parse(JSON.stringify(data))
@@ -171,7 +211,7 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
   //   (state) => state.globalSetting
   // ).layoutBuilder
   // const navitage = useNavigate()
-  // const { fontSizeMode } = layoutSettings.basic
+  //  const { fontSizeMode } = layoutSettings.basic
   const arr = deepClone(data)
   const liArr = arr.sort((a, b) => {
     return a.title.length - b.title.length;
@@ -179,7 +219,7 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
   const liLenth = liArr[liArr.length - 1].title.length;
 
   return (
-    <div className="select-menu-box2">
+    <div className="select-menu-box2" onMouseLeave={() => { closeAction() }}>
       <ul
         className="menu-ul"
         style={{}}
@@ -213,7 +253,12 @@ function renderNav (link, autoid, closeAction, gotourl) {
 
   const navItems = [];
   if (link.children && link.children[0].children) {
-    navItems.push(<MegaMenu key={link.title} data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title} closeAction={closeAction} gotourl={gotourl} />);
+    navItems.push(<MegaMenu
+      key={link.title}
+      data={link.children} autoid={autoid} Menuicon={link.icon} menutitle={link.title}
+      closeAction={closeAction}
+      gotourl={gotourl} />
+    );
   }
   return navItems;
 }

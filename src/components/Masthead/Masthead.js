@@ -393,8 +393,10 @@ const Masthead = ({
                     backButtonText="Back"
                     platform={platform}
                     hasL1Data={!!mastheadL1Data}
-                    navigation={mastheadL1Data?.navigationL1 ?? mastheadData}
-                    isSideNavExpanded={isSideNavExpanded}
+                    // navigation={mastheadL1Data?.navigationL1 ?? mastheadData}
+                    navigation={menudata}
+
+                    isSideNavExpanded={isSideNavExpand}
                     navType={navType}
                     selectedMenuItem={selectedMenuItem}
                     onOverlayClick={onClickSideNavExpand}
@@ -420,6 +422,7 @@ const Masthead = ({
                         selectedMenuItem={selectedMenuItem}
                         gotourl={gotourl}
                         openWay={openWay}
+                        menuLocation={navAlign}
                       />
                     )
                   }
@@ -459,6 +462,7 @@ const Masthead = ({
                   selectedMenuItem={selectedMenuItem}
                   gotourl={gotourl}
                   openWay={openWay}
+                  menuLocation={navAlign}
                 />
               </div>
             )}

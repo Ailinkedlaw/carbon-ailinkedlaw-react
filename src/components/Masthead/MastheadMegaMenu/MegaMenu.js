@@ -20,7 +20,7 @@ const prefix = 'c4p'
  * Masthead megamenu component.
  */
 const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
-  const { data, Menuicon, openWay = 'click', ...rest } = props;
+  const { data, Menuicon, closeAction, openWay = 'click', ...rest } = props;
   let highlightedItems = [];
   let viewAllLink;
   const [activeIndex, setActiveIndex] = useState(0)
@@ -44,7 +44,9 @@ const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
   // const heading = data.menuSections[0]?.heading;
 
   return (
-    <NavigationGroup ref={ref}>
+    <NavigationGroup ref={ref}
+      onMouseLeave={() => { closeAction() }}
+    >
       <div className="mageMenu-box" >
         <div className="mageMenu-box-left">
           <div className="mageMenu-left-container" >
