@@ -98,7 +98,9 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
                 }
               }
             }}
-          // handleMouseLeave={() => { setOpenIndex(-1) }}
+
+            // handleMouseLeave={() => { setOpenIndex(-1) }}
+            onMouseLeave={() => { setOpenIndex(-1); setOverlay(false) }}
           >
             <div>
               <SelectMenu data={link.children} gotourl={gotourl} closeAction={() => { setOpenIndex(-1); setOverlay(false) }} />
@@ -184,6 +186,7 @@ const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = '
             <HeaderNavigation
               id="masthead__l1-nav"
               className={`${prefix}--masthead__l1-nav`}
+              onMouseLeave={() => { setOpenIndex(-1); setOverlay(false) }}
               // style={{ paddingLeft: paddingVal + 'px' }}
               // style={{ paddingLeft: 'calc(1920px - 100%)' }}
               aria-label="">
@@ -219,7 +222,7 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
   const liLenth = liArr[liArr.length - 1].title.length;
 
   return (
-    <div className="select-menu-box2" onMouseLeave={() => { closeAction() }}>
+    <div className="select-menu-box2" >
       <ul
         className="menu-ul"
         style={{}}

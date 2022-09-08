@@ -85,6 +85,7 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, 
               if (i === openIndex) {
                 if (e.target.tagName === 'A' || e.target.tagName === 'svg') {
                   setOpenIndex(-1)
+                  setOverlay(false)
                 }
               }
 
@@ -97,8 +98,10 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, 
                 }
               }
             }}
+            onMouseLeave={() => { setOpenIndex(-1); setOverlay(false) }}
             handleMouseLeave={() => {
               // setOpenIndex(-1)
+              // setOverlay(false)
             }}
           >
             <div>
@@ -185,7 +188,9 @@ const MastheadTopNav = ({ navigation, gotourl, openWay = 'click', menuLocation, 
       <HeaderNavContainer location={menuLocation}>
         <HeaderNavigation
           aria-label="IBM"
-          data-autoid={`${stablePrefix}--masthead__l0-nav`}>
+          data-autoid={`${stablePrefix}--masthead__l0-nav`}
+          onMouseLeave={() => { setOpenIndex(-1); setOverlay(false) }}
+        >
           {mastheadLinks}
         </HeaderNavigation>
       </HeaderNavContainer>
@@ -213,7 +218,7 @@ const SelectMenu = ({ data, clickAction, LabelIcon, isHide, closeAction, gotourl
   const liLenth = liArr[liArr.length - 1].title.length;
 
   return (
-    <div className="select-menu-box2" onMouseLeave={() => { closeAction() }} >
+    <div className="select-menu-box2"  >
       <ul
         className="menu-ul"
         style={{}}

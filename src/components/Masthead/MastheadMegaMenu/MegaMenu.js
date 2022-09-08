@@ -55,18 +55,20 @@ const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
                 <div
                   key={index}
                   className={index === activeIndex ? 'mageMenu-left-items-active' : 'mageMenu-left-items'}
+                  onMouseOver={() => {
+                    setActiveIndex(index)
+                    if (openWay === 'mouseOver') {
+
+                    }
+                  }}
                 >
                   <span
                     onClick={() => {
                       if (openWay === 'click') {
-                        setActiveIndex(index)
+                        //  setActiveIndex(index)
                       }
                     }}
-                    onMouseOver={() => {
-                      if (openWay === 'mouseOver') {
-                        setActiveIndex(index)
-                      }
-                    }}>
+                  >
                     {item.title}
                   </span>
                 </div>
@@ -83,12 +85,15 @@ const MegaMenu = React.forwardRef(function MegaMenu (props, ref) {
                 data[activeIndex].children.map((item, index) => {
                   return <div
                     key={index}
-                    style={{ height: '34px', width: '460px', lineHeight: '34px' }}
+                    style={{ height: '34px', width: '460px', lineHeight: '34px', position: 'relative' }}
                     onClick={() => {
                       props.gotourl(item.url)
                       props.closeAction()
                     }}>
-                    {item.title}
+                    <div style={{ display: 'inline-block', position: 'relative' }}>
+                      {item.title}
+                      <div className="text"> </div>
+                    </div>
                   </div>
                 })
               }

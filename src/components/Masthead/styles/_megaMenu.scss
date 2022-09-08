@@ -67,8 +67,22 @@
        font-size: 20px;
        font-weight: 300;
        div {
+        .text{
+          position: absolute;
+          bottom: 0;
+          width:0;
+          height: 1px;
+          background: var(--cds-link-primary, #161616);
+          transition: width 300ms linear;
+        }
         &:hover{
-          color: var(--cds-link-primary-hover, #161616);
+            color: var(--cds-link-primary-hover, #161616);
+            .text{
+              width: 100%;
+              // border-bottom:1px solid var(--cds-link-primary, #161616);
+              transition: width 300ms linear;
+              
+            }
           // font-size: var(--cds-body-compact-03-font-size, 1rem);
          }
        }
