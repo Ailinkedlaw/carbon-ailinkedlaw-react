@@ -24,7 +24,7 @@ const stablePrefix = 'dds'
 const prefix = 'cds'
 
 /**
- * 标头 L1 组件.
+ * 标头 L1 组件 .
  */
 const MastheadL1 = ({ navigationL1, gotourl, openWay = 'click', menuLocation = 'left', ...rest }) => {
   const className = cx({
