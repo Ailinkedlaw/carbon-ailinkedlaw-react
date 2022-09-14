@@ -30,7 +30,7 @@ import MastheadSearch from './MastheadSearch'
 import MastheadL1 from './MastheadL1'
 
 // 图标
-import { Fade, Notification } from '@carbon/icons-react'
+import { Fade, Notification, ArrowLeft } from '@carbon/icons-react'
 
 const stablePrefix = 'dds'
 const prefix = 'cds'
@@ -353,7 +353,7 @@ const Masthead = ({
                     onClick={() => { menuToogleClick(isSideNavExpand) }}
                     isActive={isSideNavExpand}
                     className={cx({ ['masthead__header--menu-button']: hideMenuButton }, headerSearchClasses)}
-
+                    renderCloseIcon={<ArrowLeft />}
                     onBlur={e => {
                       const platform = e.target.parentElement.querySelector(
                         `nav .${prefix}--side-nav__submenu-platform`
