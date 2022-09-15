@@ -27,7 +27,7 @@ import {
   HeaderContainer,
   HeaderName, ButtonSet
 } from '@carbon/react'
-import { Copy, TrashCan, Settings, Save } from '@carbon/icons-react'
+import { Copy, TrashCan, Settings, Save, FitToScreen } from '@carbon/icons-react'
 import {
   getStoryTitle,
   prepareStory,
@@ -259,7 +259,7 @@ const actionSets = [
 const ChildrenContent = () => {
   const [notesValue, setNotesValue] = useState('');
   return (
-    <div className={`${prefix}body-content`}>
+    <div className={`${prefix}body-content`} >
       <h5>Section</h5>
       <div className={`${prefix}text-inputs`}>
         <TextInput
@@ -289,10 +289,9 @@ const ChildrenContent = () => {
         <span
           className={[
             `${prefix}allowed-characters`,
-            `${
-              notesValue.length > 100
-                ? `${prefix}allowed-characters-invalid`
-                : null
+            `${notesValue.length > 100
+              ? `${prefix}allowed-characters-invalid`
+              : null
             }`,
           ].join(' ')}
         >
@@ -483,20 +482,30 @@ export const SlideIn = prepareStory(SlideInTemplate, {
   },
 });
 
+const fullscreen = (ref) => {
+  console.log(ref.current)
+  ref.current && ref.current.requestFullscreen()
+}
+
 export const WithActionToolbar = prepareStory(SlideOverTemplate, {
   args: {
     actionToolbarButtons: [
+      // {
+      //   leading: true,
+      //   label: 'Copy',
+      //   icon: (props) => <Copy size={16} {...props} />,
+      //   onClick: action('Toolbar button clicked: Copy'),
+      //   kind: 'primary',
+      // },
       {
-        leading: true,
-        label: 'Copy',
-        icon: (props) => <Copy size={16} {...props} />,
-        onClick: action('Toolbar button clicked: Copy'),
-        kind: 'primary',
+        label: 'FitToScreen',
+        icon: (props) => <FitToScreen size={16} {...props} />,
+        onClick: (e, ref) => { fullscreen(ref) }
       },
       {
         label: 'Settings',
         icon: (props) => <Settings size={16} {...props} />,
-        onClick: action('Toolbar button clicked: Settings'),
+        onClick: (e) => { console.log(e) },
       },
       {
         label: 'Delete',
@@ -545,9 +554,9 @@ export const WithStaticTitleAndActionToolbar = prepareStory(SlideOverTemplate, {
     includeOverlay: true,
     actionToolbarButtons: [
       {
-        label: 'Copy',
-        icon: (props) => <Copy size={16} {...props} />,
-        onClick: action('Action toolbar button clicked: Copy'),
+        label: 'FitToScreen',
+        icon: (props) => <FitToScreen size={16} {...props} />,
+        onClick: (e, ref) => { fullscreen(ref) }
       },
       {
         label: 'Settings',

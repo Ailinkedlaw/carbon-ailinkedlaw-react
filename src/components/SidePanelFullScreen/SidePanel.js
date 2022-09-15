@@ -43,7 +43,7 @@ export let SidePanel = React.forwardRef(
   (
     {
       // The component props, in alphabetical order (for consistency).
-      
+
       actionToolbarButtons,
       actions,
       animateTitle = defaults.animateTitle,
@@ -68,6 +68,7 @@ export let SidePanel = React.forwardRef(
       subtitle,
       title,
       renderBottomAction,
+      fullscreenbtn,
       // Collect any other property values passed in.
       ...rest
     },
@@ -83,12 +84,12 @@ export let SidePanel = React.forwardRef(
     const sidePanelInnerRef = useRef()
     const sidePanelCloseRef = useRef()
     const previousState = usePreviousValue({ size, open })
-    
+
     const reducedMotion =
       typeof window !== 'undefined' && window?.matchMedia
         ? window.matchMedia('(prefers-reduced-motion: reduce)')
         : { matches: true }
-    
+
     // scroll panel to top going between steps
     useEffect(() => {
       const panelRef = ref || sidePanelRef
@@ -113,7 +114,7 @@ export let SidePanel = React.forwardRef(
         }
       }
     }, [currentStep, ref, size, previousState?.size])
-    
+
     // set initial focus when side panel opens
     useEffect(() => {
       const initialFocus = (focusContainerElement) => {
@@ -121,14 +122,14 @@ export let SidePanel = React.forwardRef(
         const primaryFocusElement =
           containerElement &&
           containerElement.querySelector(selectorPrimaryFocus)
-        
+
         if (primaryFocusElement) {
           return primaryFocusElement
         } else {
           return sidePanelCloseRef && sidePanelCloseRef.current
         }
       }
-      
+
       const focusButton = (focusContainerElement) => {
         const target = initialFocus(focusContainerElement)
         target?.focus()
@@ -137,7 +138,7 @@ export let SidePanel = React.forwardRef(
         focusButton(sidePanelInnerRef.current)
       }
     }, [selectorPrimaryFocus, open, animationComplete])
-    
+
     useEffect(() => {
       if (open && actions && actions.length && animationComplete) {
         const sidePanelOuter = document.querySelector(`#${blockClass}-outer`)
@@ -150,7 +151,7 @@ export let SidePanel = React.forwardRef(
         )
       }
     }, [actions, condensedActions, open, animationComplete])
-    
+
     // Add console warning if labelText is provided without a title.
     // This combination is not allowed.
     useEffect(() => {
@@ -161,7 +162,7 @@ export let SidePanel = React.forwardRef(
         )
       }
     }, [labelText, title])
-    
+
     /* istanbul ignore next */
     const handleResize = (width, height) => {
       setPanelHeight(height)
@@ -174,7 +175,7 @@ export let SidePanel = React.forwardRef(
         actionsHeight
       )
     }
-    
+
     const getActionsContainerElement = () => {
       const sidePanelOuter = document.querySelector(`#${blockClass}-outer`)
       return (
@@ -182,7 +183,7 @@ export let SidePanel = React.forwardRef(
         sidePanelOuter.querySelector(`.${blockClass}__actions-container`)
       )
     }
-    
+
     // Title and subtitle scroll animation
     useEffect(() => {
       if (
@@ -208,7 +209,7 @@ export let SidePanel = React.forwardRef(
         )
         let sidePanelSubtitleElementHeight =
           sidePanelSubtitleElement?.offsetHeight || 0 // set default subtitle height if a subtitle is not provided to enable scrolling animation
-        
+
         const panelOuterHeight = panelHeight
         const scrollSectionHeight = document.querySelector(
           `.${blockClass}__body-content`
@@ -229,7 +230,7 @@ export let SidePanel = React.forwardRef(
         // because there is not enough scrolling distance to complete it).
         sidePanelSubtitleElementHeight =
           totalScrollingContentHeight - panelOuterHeight <
-          sidePanelSubtitleElementHeight
+            sidePanelSubtitleElementHeight
             ? totalScrollingContentHeight - panelOuterHeight
             : sidePanelSubtitleElementHeight === 0
               ? 16
@@ -241,127 +242,127 @@ export let SidePanel = React.forwardRef(
             : sidePanelSubtitleElementHeight
         /* istanbul ignore next */
         sidePanelScrollArea &&
-        sidePanelScrollArea.addEventListener('scroll', () => {
-          const {scrollTop} = sidePanelScrollArea
-          // if scrolling has occurred
-          if (scrollTop > 0) {
-            sidePanelOuter.classList.add(
-              `${blockClass}__with-condensed-header`
-            )
-            // Set subtitle opacity calculation here
-            // as scroll progresses
-            let titleOpacity = Math.min(
-              1,
-              (sidePanelSubtitleElementHeight - scrollTop) /
-              sidePanelSubtitleElementHeight
-            )
-            titleOpacity = titleOpacity < 0 ? 0 : titleOpacity
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--subtitle-opacity`,
-              titleOpacity
-            )
-            
-            // Calculate divider opacity to avoid border
-            // abruptly appearing when scrolling starts.
-            // This approach uses a pseudo element and sets
-            // the opacity as scroll progresses.
-            let dividerOpacity = Math.min(
-              scrollTop / sidePanelSubtitleElementHeight,
-              1
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--divider-opacity`,
-              `${Math.min(1, dividerOpacity)}`
-            )
-            
-            // We need to know the height of the title element
-            // so that we know how far to place the action toolbar
-            // from the top since it is sticky
-            const titleTextHeight = Math.max(
-              sidePanelTitleElement.offsetHeight
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--title-height`,
-              `${titleTextHeight + 16}px`
-            )
-            
-            // Set title y positioning
-            const titleYPosition = Math.min(
-              scrollTop / sidePanelSubtitleElementHeight,
-              1
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--title-y-position`,
-              `${-Math.abs(titleYPosition)}rem`
-            )
-            
-            // mark title with aria-hidden={true} if opacity reaches 0
-            if (titleOpacity === 0) {
-              sidePanelTitleElement.setAttribute('aria-hidden', 'true')
+          sidePanelScrollArea.addEventListener('scroll', () => {
+            const { scrollTop } = sidePanelScrollArea
+            // if scrolling has occurred
+            if (scrollTop > 0) {
+              sidePanelOuter.classList.add(
+                `${blockClass}__with-condensed-header`
+              )
+              // Set subtitle opacity calculation here
+              // as scroll progresses
+              let titleOpacity = Math.min(
+                1,
+                (sidePanelSubtitleElementHeight - scrollTop) /
+                sidePanelSubtitleElementHeight
+              )
+              titleOpacity = titleOpacity < 0 ? 0 : titleOpacity
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--subtitle-opacity`,
+                titleOpacity
+              )
+
+              // Calculate divider opacity to avoid border
+              // abruptly appearing when scrolling starts.
+              // This approach uses a pseudo element and sets
+              // the opacity as scroll progresses.
+              let dividerOpacity = Math.min(
+                scrollTop / sidePanelSubtitleElementHeight,
+                1
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--divider-opacity`,
+                `${Math.min(1, dividerOpacity)}`
+              )
+
+              // We need to know the height of the title element
+              // so that we know how far to place the action toolbar
+              // from the top since it is sticky
+              const titleTextHeight = Math.max(
+                sidePanelTitleElement.offsetHeight
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--title-height`,
+                `${titleTextHeight + 16}px`
+              )
+
+              // Set title y positioning
+              const titleYPosition = Math.min(
+                scrollTop / sidePanelSubtitleElementHeight,
+                1
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--title-y-position`,
+                `${-Math.abs(titleYPosition)}rem`
+              )
+
+              // mark title with aria-hidden={true} if opacity reaches 0
+              if (titleOpacity === 0) {
+                sidePanelTitleElement.setAttribute('aria-hidden', 'true')
+                sidePanelCollapsedTitleElement.setAttribute(
+                  'aria-hidden',
+                  'false'
+                )
+              }
+
+              // Set collapsed title y positioning
+              let collapsedTitleYPosition = Math.min(
+                1,
+                (sidePanelSubtitleElementHeight - scrollTop) /
+                sidePanelSubtitleElementHeight
+              )
+              collapsedTitleYPosition =
+                collapsedTitleYPosition < 0 ? 0 : collapsedTitleYPosition
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--collapsed-title-y-position`,
+                `${collapsedTitleYPosition}rem`
+              )
+
+              // Set label text height
+              const scrollAnimationProgress = dividerOpacity
+              const reduceTitleContainerHeightAmount =
+                ((labelTextHeight * scrollAnimationProgress) /
+                  titleContainerHeight) *
+                100
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--label-text-height`,
+                `${Math.trunc(reduceTitleContainerHeightAmount)}px`
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--title-container-height`,
+                `${titleContainerHeight}px`
+              )
+            } else {
+              sidePanelTitleElement.setAttribute('aria-hidden', 'false')
               sidePanelCollapsedTitleElement.setAttribute(
                 'aria-hidden',
-                'false'
+                'true'
+              )
+              sidePanelOuter.classList.remove(
+                `${blockClass}__with-condensed-header`
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--subtitle-opacity`,
+                1
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--title-y-position`,
+                0
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--divider-opacity`,
+                0
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--collapsed-title-y-position`,
+                '1rem'
+              )
+              sidePanelOuter.style.setProperty(
+                `--${blockClass}--label-text-height`,
+                '0px'
               )
             }
-            
-            // Set collapsed title y positioning
-            let collapsedTitleYPosition = Math.min(
-              1,
-              (sidePanelSubtitleElementHeight - scrollTop) /
-              sidePanelSubtitleElementHeight
-            )
-            collapsedTitleYPosition =
-              collapsedTitleYPosition < 0 ? 0 : collapsedTitleYPosition
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--collapsed-title-y-position`,
-              `${collapsedTitleYPosition}rem`
-            )
-            
-            // Set label text height
-            const scrollAnimationProgress = dividerOpacity
-            const reduceTitleContainerHeightAmount =
-              ((labelTextHeight * scrollAnimationProgress) /
-                titleContainerHeight) *
-              100
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--label-text-height`,
-              `${Math.trunc(reduceTitleContainerHeightAmount)}px`
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--title-container-height`,
-              `${titleContainerHeight}px`
-            )
-          } else {
-            sidePanelTitleElement.setAttribute('aria-hidden', 'false')
-            sidePanelCollapsedTitleElement.setAttribute(
-              'aria-hidden',
-              'true'
-            )
-            sidePanelOuter.classList.remove(
-              `${blockClass}__with-condensed-header`
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--subtitle-opacity`,
-              1
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--title-y-position`,
-              0
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--divider-opacity`,
-              0
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--collapsed-title-y-position`,
-              '1rem'
-            )
-            sidePanelOuter.style.setProperty(
-              `--${blockClass}--label-text-height`,
-              '0px'
-            )
-          }
-        })
+          })
       }
       if (open && shouldRender && !animateTitle) {
         const sidePanelOuter = document.querySelector(`#${blockClass}-outer`)
@@ -408,7 +409,7 @@ export let SidePanel = React.forwardRef(
       size,
       reducedMotion.matches
     ])
-    
+
     // click outside functionality if `includeOverlay` prop is set
     useEffect(() => {
       const handleOutsideClick = (event) => {
@@ -442,14 +443,14 @@ export let SidePanel = React.forwardRef(
       ref,
       onUnmount
     ])
-    
+
     // initialize the side panel to open
     useEffect(() => {
       if (open) {
         setRender(true)
       }
     }, [open])
-    
+
     // initializes the side panel to close
     const onAnimationEnd = () => {
       if (!open) {
@@ -458,7 +459,7 @@ export let SidePanel = React.forwardRef(
       }
       setAnimationComplete(true)
     }
-    
+
     // Set the internal state `animationComplete` to true if
     // prefers reduced motion is true
     useEffect(() => {
@@ -466,7 +467,7 @@ export let SidePanel = React.forwardRef(
         setAnimationComplete(true)
       }
     }, [reducedMotion.matches])
-    
+
     // initializes the side panel to open
     const onAnimationStart = (event) => {
       event.persist()
@@ -475,7 +476,7 @@ export let SidePanel = React.forwardRef(
         setAnimationComplete(false)
       }
     }
-    
+
     // used to reset margins of the slide in panel when closed/closing
     useEffect(() => {
       if (!open && slideIn) {
@@ -487,14 +488,14 @@ export let SidePanel = React.forwardRef(
         }
       }
     }, [open, placement, selectorPageContent, slideIn])
-    
+
     useEffect(() => {
       if (!open && previousState?.open && reducedMotion.matches) {
         setRender(false)
         onUnmount?.()
       }
     }, [open, onUnmount, reducedMotion.matches, previousState?.open])
-    
+
     // used to set margins of content for slide in panel version
     useEffect(() => {
       if (shouldRender && slideIn) {
@@ -521,7 +522,7 @@ export let SidePanel = React.forwardRef(
       size,
       reducedMotion.matches
     ])
-    
+
     // adds focus trap functionality
     /* istanbul ignore next */
     const handleBlur = ({
@@ -539,14 +540,14 @@ export let SidePanel = React.forwardRef(
         })
       }
     }
-    
+
     const primaryActionContainerClassNames = cx([
       `${blockClass}__actions-container`,
       {
         [`${blockClass}__actions-container-condensed`]: condensedActions
       }
     ])
-    
+
     const mainPanelClassNames = cx([
       blockClass,
       className,
@@ -556,13 +557,13 @@ export let SidePanel = React.forwardRef(
         [`${blockClass}__container-right-placement`]: placement === 'right',
         [`${blockClass}__container-left-placement`]: placement === 'left',
         [`${blockClass}__container-with-action-toolbar`]:
-        actionToolbarButtons && actionToolbarButtons.length,
+          actionToolbarButtons && actionToolbarButtons.length,
         [`${blockClass}__container-without-overlay`]:
-        !includeOverlay && !slideIn,
+          !includeOverlay && !slideIn,
         [`${blockClass}__container-is-animating`]: !animationComplete || !open
       }
     ])
-    
+
     const renderHeader = () => (
       <>
         <div
@@ -607,10 +608,10 @@ export let SidePanel = React.forwardRef(
             className={cx(`${blockClass}__subtitle-text`, {
               [`${blockClass}__subtitle-text-no-animation`]: !animateTitle,
               [`${blockClass}__subtitle-text-no-animation-no-action-toolbar`]:
-              !animateTitle &&
-              (!actionToolbarButtons || !actionToolbarButtons.length),
+                !animateTitle &&
+                (!actionToolbarButtons || !actionToolbarButtons.length),
               [`${blockClass}__subtitle-text-is-animating`]:
-              !animationComplete && animateTitle,
+                !animationComplete && animateTitle,
               [`${blockClass}__subtitle-without-title`]: !title
             })}
           >
@@ -650,13 +651,15 @@ export let SidePanel = React.forwardRef(
                     className,
                     {
                       [`${blockClass}__action-toolbar-icon-only-button`]:
-                      icon && !leading,
+                        icon && !leading,
                       [`${blockClass}__action-toolbar-leading-button`]: leading
                     }
                   ])}
-                  onClick={onClick}
+                  // onClick={onClick}
+                  onClick={(e) => { onClick(e, ref) }}
                 >
                   {leading && label}
+
                 </Button>
               )
             )}
@@ -664,7 +667,7 @@ export let SidePanel = React.forwardRef(
         )}
       </>
     )
-    
+
     const renderTitle = () => (
       <>
         {title && title.length && (
@@ -687,15 +690,23 @@ export let SidePanel = React.forwardRef(
         )}
       </>
     )
-    
+
     const contentRef = ref || sidePanelRef
-    
+
     useResizeDetector({
       handleHeight: true,
       onResize: handleResize,
       targetRef: contentRef
     })
-    
+    useEffect(() => {
+      // shouldRender && contentRef.current.requestFullscreen()
+    }, [shouldRender])
+
+    const fullscreen = (ref) => {
+      contentRef.current && contentRef.current.requestFullscreen()
+    }
+
+
     return (
       shouldRender && (
         <>
@@ -706,14 +717,13 @@ export let SidePanel = React.forwardRef(
             className={mainPanelClassNames}
             style={{
               animation: !reducedMotion.matches
-                ? `${
-                  open
-                    ? placement === 'right'
-                      ? `side-panel-entrance-right ${moderate02}`
-                      : `side-panel-entrance-left ${moderate02}`
-                    : placement === 'right'
-                      ? `side-panel-exit-right ${moderate02}`
-                      : `side-panel-exit-left ${moderate02}`
+                ? `${open
+                  ? placement === 'right'
+                    ? `side-panel-entrance-right ${moderate02}`
+                    : `side-panel-entrance-left ${moderate02}`
+                  : placement === 'right'
+                    ? `side-panel-exit-right ${moderate02}`
+                    : `side-panel-exit-left ${moderate02}`
                 }`
                 : null
             }}
@@ -724,23 +734,26 @@ export let SidePanel = React.forwardRef(
             role="complementary"
             aria-label={title}
           >
+
+
             <span
               ref={startTrapRef}
               tabIndex="0"
               role="link"
               className={`${blockClass}__visually-hidden`}
             >
-              Focus sentinel
+
             </span>
+
             {!animateTitle && renderHeader()}
             <div
               ref={sidePanelInnerRef}
               className={cx(`${blockClass}__inner-content`, {
                 [`${blockClass}__static-inner-content`]: !animateTitle,
                 [`${blockClass}__static-inner-content-no-actions`]:
-                !animateTitle && !actions?.length,
+                  !animateTitle && !actions?.length,
                 [`${blockClass}__inner-content-with-actions`]:
-                actions && actions.length
+                  actions && actions.length
               })}
             >
               {animateTitle && renderHeader()}
@@ -750,7 +763,9 @@ export let SidePanel = React.forwardRef(
                   <div className={cx([
                     primaryActionContainerClassNames,
                     `c4p--action-set--${size === 'xs' ? 'sm' : size}`
-                  ])}>{renderBottomAction}</div> :
+                  ])}>
+                    {renderBottomAction}
+                  </div> :
                   <ActionSet
                     actions={actions}
                     className={primaryActionContainerClassNames}
@@ -773,10 +788,9 @@ export let SidePanel = React.forwardRef(
               className={`${blockClass}__overlay`}
               style={{
                 animation: !reducedMotion.matches
-                  ? `${
-                    open
-                      ? `side-panel-overlay-entrance ${moderate02}`
-                      : `side-panel-overlay-exit ${moderate02}`
+                  ? `${open
+                    ? `side-panel-overlay-entrance ${moderate02}`
+                    : `side-panel-overlay-exit ${moderate02}`
                   }`
                   : null
               }}
@@ -808,7 +822,7 @@ SidePanel.propTypes = {
       kind: PropTypes.oneOf(['ghost', 'tertiary', 'secondary', 'primary'])
     })
   ),
-  
+
   /**
    * The primary actions to be shown in the side panel. Each action is
    * specified as an object with optional fields: 'label' to supply the button
@@ -841,12 +855,12 @@ SidePanel.propTypes = {
       })
     )
   ]),
-  
+
   /**
    * Determines if the title will animate on scroll
    */
   animateTitle: PropTypes.bool,
-  
+
   /**
    * Sets the body content of the side panel
    */
@@ -854,101 +868,101 @@ SidePanel.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  
+
   /**
    * Sets an optional className to be added to the side panel outermost element
    */
   className: PropTypes.string,
-  
+
   /**
    * Sets the close button icon description
    */
   closeIconDescription: PropTypes.string,
-  
+
   /**
    * Determines whether the side panel should render the condensed version (affects action buttons primarily)
    */
   condensedActions: PropTypes.bool,
-  
+
   /**
    * Sets the current step of the side panel
    */
   currentStep: PropTypes.number,
-  
+
   /**
    * Determines whether the side panel should render with an overlay
    */
   includeOverlay: PropTypes.bool,
-  
+
   /**
    * Sets the label text which will display above the title text
    */
   labelText: PropTypes.string,
-  
+
   /**
    * Sets the icon description for the navigation back icon button
    */
   navigationBackIconDescription: PropTypes.string,
-  
+
   /**
    * Changes the current side panel page to the previous page
    */
   onNavigationBack: PropTypes.func,
-  
+
   /**
    * Specify a handler for closing the side panel.
    * This handler closes the modal, e.g. changing `open` prop.
    */
   onRequestClose: PropTypes.func,
-  
+
   /**
    * Optional function called when the side panel exit animation is complete.
    * This handler can be used for any state cleanup needed before the panel is removed from the DOM.
    */
   onUnmount: PropTypes.func,
-  
+
   /**
    * Determines whether the side panel should render or not
    */
   open: PropTypes.bool.isRequired,
-  
+
   /**
    * Determines if the side panel is on the right or left
    */
   placement: PropTypes.oneOf(['left', 'right']),
-  
+
   /**
    * Prevent closing on click outside of the panel
    */
   preventCloseOnClickOutside: PropTypes.bool,
-  
+
   /**
    * This is the selector to the element that contains all of the page content that will shrink if the panel is a slide in.
    * This prop is required when using the `slideIn` variant of the side panel.
    */
   selectorPageContent: PropTypes.string.isRequired.if(({ slideIn }) => slideIn),
-  
+
   /**
    * Specify a CSS selector that matches the DOM element that should
    * be focused when the side panel opens
    */
   selectorPrimaryFocus: PropTypes.string,
-  
+
   /**
    * Sets the size of the side panel
    */
   size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', '2xl']),
-  
+
   /**
    * Determines if this panel slides in
    */
   slideIn: PropTypes.bool,
-  
+
   /**
    * Sets the subtitle text
    */
   subtitle: PropTypes.node,
-  
+
   /**
    * Sets the title text
    */
