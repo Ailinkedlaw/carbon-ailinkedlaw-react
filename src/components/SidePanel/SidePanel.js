@@ -66,6 +66,7 @@ export let SidePanel = React.forwardRef(
       
       actionToolbarButtons,
       fullScreen,
+      fullScreenButtomConfig,
       actions,
       animateTitle = defaults.animateTitle,
       children,
@@ -650,31 +651,32 @@ export let SidePanel = React.forwardRef(
           >
 
             {fullScreen && <Button
-             
+            
+              {...rest}
               key={'fullscreen'}
-              kind={'ghost'}
+              kind={fullScreenButtomConfig?.kind || 'ghost'}
               size="sm"
               renderIcon={isFullScreen ? ShrinkScreen : FitToScreen}
-              iconDescription={'FullScreen'}
+              iconDescription={isFullScreen ? 'Cancel' : 'FullScreen' }
               tooltipPosition="bottom"
               tooltipAlignment="center"
-              hasIconOnly={true}
+              hasIconOnly={!fullScreenButtomConfig?.leading}
               disabled={false}
               className={cx([
                     `${blockClass}__action-toolbar-button`,
                    
                     {
-                      [`${blockClass}__action-toolbar-icon-only-button`]: true,
+                      [`${blockClass}__action-toolbar-icon-only-button`]: fullScreenButtomConfig?.icon && !fullScreenButtomConfig?.leading,
                      
-                      [`${blockClass}__action-toolbar-leading-button`]: false
+                      [`${blockClass}__action-toolbar-leading-button`]: fullScreenButtomConfig?.leading
                     }
                   ])}
               onClick={() => { setIsFullScreen(!isFullScreen)}}
                 >
-       
+              {fullScreenButtomConfig?.leading && fullScreenButtomConfig?.label}
             </Button>
             }
-                
+                  
             {(actionToolbarButtons && actionToolbarButtons.length) &&  actionToolbarButtons.map(
               ({
                 label,
