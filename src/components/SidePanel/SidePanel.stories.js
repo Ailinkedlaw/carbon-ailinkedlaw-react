@@ -461,6 +461,8 @@ const SlideInTemplate = ({ actions, ...args }) => {
 export const SlideOver = prepareStory(SlideOverTemplate, {
   args: {
     includeOverlay: true,
+    // fullScreen:true,
+    // animateTitle:false,
     actions: 0,
     renderBottomAction: <>
       <ButtonSet style={{ justifyContent: 'flex-end' }}>
@@ -540,6 +542,7 @@ export const WithStaticTitle = prepareStory(SlideOverTemplate, {
 export const WithStaticTitleAndActionToolbar = prepareStory(SlideOverTemplate, {
   args: {
     ...defaultStoryProps,
+    fullScreen:true,
     actions: 0,
     animateTitle: false,
     includeOverlay: true,

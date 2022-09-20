@@ -60,7 +60,7 @@
     "arrow-spacing": 2, // 强制箭头函数的箭头前后使用一致的空格
     "no-label-var": "warn", // 不允许标签与变量同名
     // "line-comment-position": "warn", // 强制行注释的位置
-    "linebreak-style": 2, // 强制使用一致的换行风格
+    // "linebreak-style": 2, // 强制使用一致的换行风格
     // "arrow-body-style": [2, "always"], // 要求箭头函数体使用大括号
     // "arrow-parens": 2, // 强制箭头函数的参数使用圆括号括起来
     "no-var": 2,

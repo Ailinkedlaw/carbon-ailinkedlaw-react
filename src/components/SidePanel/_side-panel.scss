@@ -542,3 +542,13 @@ $action-set-block-class: #{c4p-settings.$pkg-prefix}--action-set; // $action-set
   transition: background-color $duration-moderate-02;
   transition-timing-function: motion(standard);
 }
+
+
+.fullscreen{
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: auto !important;
+  height: auto;
+}

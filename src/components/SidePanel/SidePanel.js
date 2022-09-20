@@ -17,7 +17,7 @@ import { usePreviousValue } from '@/global/js/hooks'
 
 // Carbon and package components we use.
 import { Button } from '@carbon/react'
-import { Close, ArrowLeft } from '@carbon/icons-react'
+import { Close, ArrowLeft,FitToScreen,ShrinkScreen } from '@carbon/icons-react'
 import { ActionSet } from '../ActionSet'
 
 
@@ -39,12 +39,33 @@ const defaults = {
 /**
  * Side panels keep users in-context of a page while performing tasks like navigating, editing, viewing details, or configuring something new.
  */
+
+ const useFullScreen = () => {
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const onToogle = useCallback((isOpen) => {
+    if (isOpen) {
+      setIsOpen(true)
+    } else {
+      setIsOpen(false)
+    }
+
+  }, [isOpen, setIsOpen])
+  return {
+    open: isOpen,
+    onToogle
+  }
+}
+
+
 export let SidePanel = React.forwardRef(
   (
     {
       // The component props, in alphabetical order (for consistency).
       
       actionToolbarButtons,
+      fullScreen,
       actions,
       animateTitle = defaults.animateTitle,
       children,
@@ -83,7 +104,8 @@ export let SidePanel = React.forwardRef(
     const sidePanelInnerRef = useRef()
     const sidePanelCloseRef = useRef()
     const previousState = usePreviousValue({ size, open })
-    
+    const [isFullScreen, setIsFullScreen] = useState(false)
+
     const reducedMotion =
       typeof window !== 'undefined' && window?.matchMedia
         ? window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -559,14 +581,17 @@ export let SidePanel = React.forwardRef(
         actionToolbarButtons && actionToolbarButtons.length,
         [`${blockClass}__container-without-overlay`]:
         !includeOverlay && !slideIn,
-        [`${blockClass}__container-is-animating`]: !animationComplete || !open
+        [`${blockClass}__container-is-animating`]: !animationComplete || !open,
+        'fullscreen':isFullScreen
       }
     ])
     
-    const renderHeader = () => (
-      <>
-        <div
-          className={cx(`${blockClass}__title-container`, {
+    const renderHeader = () => {
+      // const { show, onToogle } = useFullScreen(false)
+      return (
+        <>
+          <div
+            className={cx(`${blockClass}__title-container`, {
             [`${blockClass}__on-detail-step`]: currentStep > 0,
             [`${blockClass}__on-detail-step-without-title`]: currentStep > 0 && !title,
             [`${blockClass}__title-container--no-title-animation`]: !animateTitle,
@@ -575,7 +600,7 @@ export let SidePanel = React.forwardRef(
             [`${blockClass}__title-container--reduced-motion`]: reducedMotion.matches
           })}
         >
-          {currentStep > 0 && (
+            {currentStep > 0 && (
             <Button
               aria-label={navigationBackIconDescription}
               kind="ghost"
@@ -587,28 +612,28 @@ export let SidePanel = React.forwardRef(
               onClick={onNavigationBack}
             />
           )}
-          {title && title.length && labelText && labelText.length && (
+            {title && title.length && labelText && labelText.length && (
             <p className={`${blockClass}__label-text`}>{labelText}</p>
           )}
-          {title && title.length && renderTitle()}
-        </div>
-        <Button
-          aria-label={closeIconDescription}
-          kind="ghost"
-          size="sm"
-          renderIcon={(props) => <Close size={20} {...props} />}
-          iconDescription={closeIconDescription}
-          className={`${blockClass}__close-button`}
-          onClick={onRequestClose}
-          ref={sidePanelCloseRef}
+            {title && title.length && renderTitle()}
+          </div>
+          <Button
+            aria-label={closeIconDescription}
+            kind="ghost"
+            size="sm"
+            renderIcon={(props) => <Close size={20} {...props} />}
+            iconDescription={closeIconDescription}
+            className={`${blockClass}__close-button`}
+            onClick={onRequestClose}
+            ref={sidePanelCloseRef}
         />
-        {subtitle && (
+          {subtitle && (
           <p
             className={cx(`${blockClass}__subtitle-text`, {
               [`${blockClass}__subtitle-text-no-animation`]: !animateTitle,
               [`${blockClass}__subtitle-text-no-animation-no-action-toolbar`]:
               !animateTitle &&
-              (!actionToolbarButtons || !actionToolbarButtons.length),
+              ((!actionToolbarButtons || !actionToolbarButtons.length) && !fullScreen),
               [`${blockClass}__subtitle-text-is-animating`]:
               !animationComplete && animateTitle,
               [`${blockClass}__subtitle-without-title`]: !title
@@ -617,13 +642,40 @@ export let SidePanel = React.forwardRef(
             {subtitle}
           </p>
         )}
-        {actionToolbarButtons && actionToolbarButtons.length && (
+          {((actionToolbarButtons && actionToolbarButtons.length) || fullScreen) && (
           <div
             className={cx(`${blockClass}__action-toolbar`, {
               [`${blockClass}__action-toolbar-no-animation`]: !animateTitle
             })}
           >
-            {actionToolbarButtons.map(
+
+            {fullScreen && <Button
+             
+              key={'fullscreen'}
+              kind={'ghost'}
+              size="sm"
+              renderIcon={isFullScreen ? ShrinkScreen : FitToScreen}
+              iconDescription={'FullScreen'}
+              tooltipPosition="bottom"
+              tooltipAlignment="center"
+              hasIconOnly={true}
+              disabled={false}
+              className={cx([
+                    `${blockClass}__action-toolbar-button`,
+                   
+                    {
+                      [`${blockClass}__action-toolbar-icon-only-button`]: true,
+                     
+                      [`${blockClass}__action-toolbar-leading-button`]: false
+                    }
+                  ])}
+              onClick={() => { setIsFullScreen(!isFullScreen)}}
+                >
+       
+            </Button>
+            }
+                
+            {(actionToolbarButtons && actionToolbarButtons.length) &&  actionToolbarButtons.map(
               ({
                 label,
                 kind,
@@ -633,19 +685,21 @@ export let SidePanel = React.forwardRef(
                 className,
                 onClick,
                 ...rest
-              }) => (
-                <Button
-                  {...rest}
-                  key={label}
-                  kind={kind || 'ghost'}
-                  size="sm"
-                  renderIcon={icon}
-                  iconDescription={label}
-                  tooltipPosition="bottom"
-                  tooltipAlignment="center"
-                  hasIconOnly={!leading}
-                  disabled={disabled}
-                  className={cx([
+              }) => { 
+           
+                return (
+                  <Button
+                    {...rest}
+                    key={label}
+                    kind={kind || 'ghost'}
+                    size="sm"
+                    renderIcon={icon}
+                    iconDescription={label}
+                    tooltipPosition="bottom"
+                    tooltipAlignment="center"
+                    hasIconOnly={!leading}
+                    disabled={disabled}
+                    className={cx([
                     `${blockClass}__action-toolbar-button`,
                     className,
                     {
@@ -654,16 +708,16 @@ export let SidePanel = React.forwardRef(
                       [`${blockClass}__action-toolbar-leading-button`]: leading
                     }
                   ])}
-                  onClick={onClick}
+                    onClick={onClick}
                 >
-                  {leading && label}
-                </Button>
-              )
+                    {leading && label}
+                  </Button>
+              )}
             )}
           </div>
         )}
-      </>
-    )
+        </>
+    )}
     
     const renderTitle = () => (
       <>
