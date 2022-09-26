@@ -18,7 +18,7 @@
   import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
   import CloseIcon from '@mui/icons-material/Close';
 
-  import './_selectMui.scss'
+  import './_index.scss'
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const expandMoreIcon = <ExpandMoreIcon fontSize="small" />;
