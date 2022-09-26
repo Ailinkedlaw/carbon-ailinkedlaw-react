@@ -3,7 +3,7 @@
 
 import invariant from 'invariant';
 import PropTypes from 'prop-types';
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import ClickListener from '@/global/js/utils/internal/ClickListener';
 import FloatingMenu, {
   DIRECTION_TOP,
@@ -17,7 +17,7 @@ import {
 } from '@/global/js/utils/internal/keyboard';
 import mergeRefs from '@/global/js/utils/tools/mergeRefs';
 import { PrefixContext, usePrefix } from '@/global/js/utils/internal/usePrefix';
-import * as FeatureFlags from '@carbon/feature-flags';
+// import * as FeatureFlags from '@carbon/feature-flags';
 //
 import './_RangeDatePicker.scss';
 import PickerDemo from './FlatpickrDate';
@@ -112,7 +112,7 @@ class RangeDatePicker extends Component {
   // #region 参数
   static propTypes = {
     /**
-     * value 绑定传参
+     * value : start 开始日期，end 结束日期
      */
     value: PropTypes.shape({
       start: PropTypes.string,

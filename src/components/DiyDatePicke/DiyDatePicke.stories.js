@@ -14,9 +14,9 @@ export default {
 export const DiyDatePicke1 = () => {
   return (
     <div style={{ margin: spacing05 + 4 }}>
-      <RangeDatePicker id="DiyDatePicke1" ariaLabel="DiyDatePicke" />
+      <RangeDatePicker id="DiyDatePicke1" />
     </div>
   );
 };
 
-DiyDatePicke1.storyName = 'DiyDatePicke1';
+DiyDatePicke1.storyName = 'Default';
